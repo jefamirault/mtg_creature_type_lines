@@ -52,11 +52,25 @@ the remaining sets from the structure, then look them up in the pool.
 - `creature-groups.md` — markdown listing of the `groups.json` dataset.
 - `scripts/` — generators (see below).
 
+## Running
+
+Serve the UI locally (required — the JSON fetch breaks over `file://`):
+
+    ./local_server.sh        # http://localhost:8123 (port from .env)
+
+## Deploying
+
+Live at https://mtg.jefamirault.com/ (shared personal droplet; target in
+`.env`, template in `.env.example`).
+
+    ./deploy.sh --dry-run   # preview
+    ./deploy.sh
+
+Ships only `index.html` + the four dataset JSONs (allowlist in `deploy.sh`);
+`scripts/`, docs, CSV, and `.env` never leave this machine. Content deploys
+need no nginx reload. After regenerating a dataset, just deploy again.
+
 ## Workflows
-
-Serve the UI (required — images/asset paths break over `file://`):
-
-    python3 -m http.server 8123 -d /home/jef/mtg
 
 Regenerating data needs the Scryfall bulk file (~170 MB, not kept in the
 project). Get the current URL from `https://api.scryfall.com/bulk-data`
