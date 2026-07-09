@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Creature Type-Line Groups</title>
+<style>
+  :root {
+    --bg: #14100d;
+    --panel: #1e1913;
+    --panel2: #262019;
+    --ink: #e8e0d0;
+    --muted: #9a8f7a;
+    --accent: #c9a227;
+    --border: #3a3225;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 15px/1.5 Georgia, "Times New Roman", serif;
+  }
+  header {
+    padding: 1.2rem 2rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  h1 { font-size: 1.5rem; font-weight: normal; letter-spacing: .04em; }
+  h1 .rule { color: var(--accent); }
+  .sub { color: var(--muted); font-size: .85rem; margin-top: .2rem; }
+  .controls { display: flex; gap: .8rem; margin-top: .9rem; flex-wrap: wrap; align-items: center; }
+  input[type=search], select {
+    background: var(--panel2); color: var(--ink);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: .45rem .7rem; font: inherit; font-size: .9rem;
+  }
+  input[type=search] { width: 22rem; max-width: 100%; }
+  input[type=search]:focus, select:focus { outline: 1px solid var(--accent); }
+  .count { color: var(--muted); font-size: .85rem; }
+  main { padding: 1.5rem 2rem 4rem; display: grid; gap: 1.6rem; }
+  .group {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.2rem 1.2rem;
+  }
+  .group h2 {
+    font-size: .95rem; font-weight: normal; color: var(--muted);
+    letter-spacing: .05em;
+    display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap;
+  }
+  .group h2 b { color: var(--accent); font-weight: normal; }
+  .scrylink {
+    margin-left: auto; font-size: .78rem; font-family: system-ui, sans-serif;
+    color: var(--muted); text-decoration: none;
+    border-bottom: 1px dotted var(--border);
+  }
+  .scrylink:hover, .scrylink:focus-visible { color: var(--accent); border-color: var(--accent); }
+  .summary {
+    display: flex; flex-wrap: wrap; align-items: center; gap: .3rem;
+    margin: .5rem 0 .9rem;
+    padding-bottom: .8rem; border-bottom: 1px solid var(--border);
+  }
+  .summary .lbl {
+    font-size: .72rem; color: var(--muted);
+    letter-spacing: .08em; text-transform: uppercase; margin-right: .3rem;
+  }
+  .summary .chip b { font-weight: 600; }
+  .cards {
+    display: flex; flex-wrap: wrap; gap: 1rem;
+  }
+  .card { flex: 0 0 200px; width: 200px; }
+  .imgbtn {
+    display: block; width: 100%; padding: 0; border: 0;
+    background: none; cursor: pointer;
+  }
+  .card img {
+    width: 100%; aspect-ratio: 488 / 680; border-radius: 9px;
+    background: var(--panel2); display: block;
+  }
+  .imgbtn:hover img, .imgbtn:focus-visible img { outline: 2px solid var(--accent); }
+  .card .nm { font-size: .82rem; margin-top: .4rem; line-height: 1.25; }
+  .card .nm a { color: inherit; text-decoration: none; }
+  .card .nm a:hover { color: var(--accent); text-decoration: underline; }
+  .card .tl { font-size: .72rem; color: var(--muted); line-height: 1.3; margin-top: .1rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .35rem; }
+  .chip {
+    font-size: .68rem; font-family: system-ui, sans-serif;
+    padding: .05rem .45rem; border-radius: 99px;
+    border: 1px solid var(--border); color: var(--muted);
+    background: none; cursor: pointer;
+  }
+  .chip:hover, .chip:focus-visible { border-color: var(--accent); color: var(--ink); }
+  .chip.shared { color: #14100d; border: 1px solid transparent; font-weight: 600; }
+  .chip.shared:hover, .chip.shared:focus-visible { border-color: var(--ink); color: #14100d; }
+  #cardpill {
+    font-size: .8rem; font-family: system-ui, sans-serif;
+    padding: .3rem .7rem; border-radius: 99px; cursor: pointer;
+    border: 1px solid var(--accent); background: var(--panel2); color: var(--accent);
+  }
+  #cardpill:hover { background: var(--accent); color: var(--bg); }
+  .empty { color: var(--muted); text-align: center; padding: 3rem; }
+  #top-btn {
+    position: fixed; right: 1.5rem; bottom: 1.5rem; z-index: 20;
+    width: 3rem; height: 3rem; border-radius: 50%;
+    border: 1px solid var(--accent);
+    background: var(--panel2); color: var(--accent);
+    font: 1.2rem/1 Georgia, serif; cursor: pointer;
+    opacity: 0; visibility: hidden; transform: translateY(.5rem);
+    transition: opacity .25s, transform .25s, visibility .25s;
+  }
+  #top-btn.show { opacity: 1; visibility: visible; transform: none; }
+  #top-btn:hover { background: var(--accent); color: var(--bg); }
+  #top-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    #top-btn { transition: none; }
+  }
+  footer { color: var(--muted); font-size: .8rem; text-align: center; padding: 0 2rem 2rem; }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Creature Type-Line Groups <span class="rule">✦</span></h1>
+  <div class="sub">Every pair of cards in a group shares a creature subtype — but no subtype
+    is common to the whole group. All type lines within a group are unique.
+    Vintage-legal, single-faced cards only.</div>
+  <div class="controls">
+    <select id="dataset">
+      <option value="all">All groups (4–8 cards)</option>
+      <option value="a">Pattern A: 4 creatures, ≥6 subtypes</option>
+      <option value="b">Pattern B: 123 / 124 / 345 / 15 / 25</option>
+      <option value="pasch">Pasch: 123 / 145 / 246 / 356</option>
+    </select>
+    <input type="search" id="q" placeholder="Filter by card name or subtype — commas combine (Spider, Villain)">
+    <select id="size">
+      <option value="">any size</option>
+      <option value="4">size 4</option>
+      <option value="5">size 5</option>
+      <option value="6">size 6</option>
+      <option value="7">size 7</option>
+      <option value="8">size 8</option>
+    </select>
+    <button id="cardpill" type="button" hidden title="Remove card filter"></button>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<main id="groups"></main>
+<footer>Card data and images from <a href="https://scryfall.com">Scryfall</a>.
+  Images load lazily as you scroll.</footer>
+<button id="top-btn" title="Back to top" aria-label="Back to top">↑</button>
+
+<script>
+let GROUPS = [];
+let cardFilter = null;
+
+function setCardFilter(name) {
+  cardFilter = name;
+  const pill = document.getElementById('cardpill');
+  pill.hidden = !name;
+  if (name) pill.textContent = `Groups with “${name}” ✕`;
+  render();
+  if (name) scrollTo({ top: 0 });
+}
+
+// clicking a subtype chip adds that subtype as a search term
+function addSubtypeTerm(s) {
+  const input = document.getElementById('q');
+  const terms = input.value.split(',').map(t => t.trim()).filter(Boolean);
+  if (!terms.some(t => t.toLowerCase() === s.toLowerCase())) terms.push(s);
+  input.value = terms.join(', ');
+  render();
+}
+
+function mkChip(s, count, showCount) {
+  const ch = document.createElement('button');
+  ch.type = 'button';
+  ch.title = `Filter by ${s}`;
+  if (count > 1) {
+    ch.className = 'chip shared';
+    ch.style.background = `hsl(${hue(s)} 55% 70%)`;
+    ch.innerHTML = showCount ? `${s} <b>×${count}</b>` : s;
+  } else {
+    ch.className = 'chip';
+    ch.textContent = s;
+  }
+  ch.addEventListener('click', () => addSubtypeTerm(s));
+  return ch;
+}
+
+// Stable pastel color per subtype so shared subtypes read across a group
+function hue(s) {
+  let h = 0;
+  for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 360;
+  return h;
+}
+
+function render() {
+  const terms = document.getElementById('q').value
+    .split(',').map(t => t.trim().toLowerCase()).filter(Boolean);
+  const size = document.getElementById('size').value;
+  const root = document.getElementById('groups');
+  root.textContent = '';
+  let shown = 0;
+
+  GROUPS.forEach((g, i) => {
+    if (size && g.length !== +size) return;
+    if (cardFilter && !g.some(c => c.name === cardFilter)) return;
+    if (!terms.every(t => g.some(c =>
+        c.name.toLowerCase().includes(t) ||
+        c.subtypes.some(s => s.toLowerCase().includes(t))))) return;
+    shown++;
+
+    // subtypes appearing on 2+ cards in this group get a color chip
+    const freq = {};
+    g.forEach(c => c.subtypes.forEach(s => freq[s] = (freq[s] || 0) + 1));
+
+    const sec = document.createElement('section');
+    sec.className = 'group';
+    sec.id = 'g' + (i + 1);
+    const h = document.createElement('h2');
+    h.innerHTML = `<b>Group ${i + 1}</b> · ${g.length} creatures`;
+    // deck-building: Scryfall search for cards sharing a subtype with every
+    // member of the group (one or-clause per creature)
+    if (dataset === 'a' || dataset === 'b') {
+      const clause = c => '(' + c.subtypes
+        .map(s => 't:' + (s.includes(' ') ? `"${s.toLowerCase()}"` : s.toLowerCase()))
+        .join(' or ') + ')';
+      const query = '-is:digital -is:reprint ' + g.map(clause).join(' ');
+      const a = document.createElement('a');
+      a.className = 'scrylink';
+      a.href = 'https://scryfall.com/search?q=' + encodeURIComponent(query);
+      a.target = '_blank'; a.rel = 'noopener';
+      a.textContent = 'Browse matching cards on Scryfall ↗';
+      a.title = query;
+      h.appendChild(a);
+    }
+    sec.appendChild(h);
+
+    // Type summary: every subtype in the group, with how many cards carry it.
+    // Shared subtypes (the links holding the group together) keep their color.
+    const sum = document.createElement('div');
+    sum.className = 'summary';
+    const lbl = document.createElement('span');
+    lbl.className = 'lbl'; lbl.textContent = 'Type summary';
+    sum.appendChild(lbl);
+    Object.entries(freq)
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .forEach(([s, n]) => sum.appendChild(mkChip(s, n, true)));
+    sec.appendChild(sum);
+
+    const row = document.createElement('div');
+    row.className = 'cards';
+    g.forEach(c => {
+      const el = document.createElement('div');
+      el.className = 'card';
+      const imgbtn = document.createElement('button');
+      imgbtn.type = 'button'; imgbtn.className = 'imgbtn';
+      imgbtn.title = `Show only groups with ${c.name}`;
+      const img = document.createElement('img');
+      img.loading = 'lazy'; img.src = c.image; img.alt = c.name;
+      imgbtn.appendChild(img);
+      imgbtn.addEventListener('click', () => setCardFilter(c.name));
+      const nm = document.createElement('div');
+      nm.className = 'nm';
+      const link = document.createElement('a');
+      link.href = c.url; link.target = '_blank'; link.rel = 'noopener';
+      link.textContent = c.name; link.title = 'Open on Scryfall';
+      nm.appendChild(link);
+      const tl = document.createElement('div');
+      tl.className = 'tl'; tl.textContent = c.type_line;
+      const chips = document.createElement('div');
+      chips.className = 'chips';
+      c.subtypes.forEach(s => chips.appendChild(mkChip(s, freq[s], false)));
+      el.append(imgbtn, nm, tl, chips);
+      row.appendChild(el);
+    });
+    sec.appendChild(row);
+    root.appendChild(sec);
+  });
+
+  document.getElementById('count').textContent =
+    `${shown} of ${GROUPS.length} groups`;
+  if (!shown) {
+    const d = document.createElement('div');
+    d.className = 'empty';
+    d.textContent = 'No groups match that filter.';
+    root.appendChild(d);
+  }
+}
+
+const DATASETS = { all: 'groups.json', a: 'pattern-a-groups.json',
+                   b: 'pattern-b-groups.json', pasch: 'pasch-groups.json' };
+const dataset = DATASETS[new URLSearchParams(location.search).get('data')]
+  ? new URLSearchParams(location.search).get('data') : 'all';
+document.getElementById('dataset').value = dataset;
+document.getElementById('dataset').addEventListener('change', e => {
+  location.search = e.target.value === 'all' ? '' : '?data=' + e.target.value;
+});
+
+fetch(DATASETS[dataset])
+  .then(r => r.json())
+  .then(data => {
+    GROUPS = data;
+    render();
+    // groups render after the fetch, so honor #gN links once they exist
+    if (location.hash) {
+      const target = document.getElementById(location.hash.slice(1));
+      if (target) target.scrollIntoView();
+    }
+  });
+
+document.getElementById('q').addEventListener('input', render);
+document.getElementById('size').addEventListener('change', render);
+document.getElementById('cardpill').addEventListener('click', () => setCardFilter(null));
+
+const topBtn = document.getElementById('top-btn');
+addEventListener('scroll', () => {
+  topBtn.classList.toggle('show', scrollY > 600);
+}, { passive: true });
+topBtn.addEventListener('click', () => {
+  const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' });
+});
+</script>
+</body>
+</html>
