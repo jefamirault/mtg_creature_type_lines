@@ -135,13 +135,18 @@
   .namebtn:hover .lens, .namebtn:focus-visible .lens { opacity: 1; }
   #lightbox {
     position: fixed; inset: 0; z-index: 30;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: .9rem; padding: 2rem; cursor: zoom-out;
+    display: flex; align-items: center; justify-content: center;
+    padding: 2rem; cursor: zoom-out;
     background: rgba(12, 9, 6, .9);
   }
   #lightbox[hidden] { display: none; }
+  .lbwrap {
+    display: flex; gap: 1.2rem; align-items: flex-start; justify-content: center;
+    flex-wrap: wrap; max-height: 100%; max-width: 100%;
+  }
   #lightbox img {
-    max-height: min(82vh, 46rem); max-width: min(88vw, 33rem);
+    flex: 0 0 auto;
+    max-height: min(88vh, 46rem); max-width: min(88vw, 33rem);
     border-radius: 4.7% / 3.4%;
     box-shadow: 0 10px 60px rgba(0, 0, 0, .8);
     animation: lb-in .16s ease-out;
@@ -149,10 +154,48 @@
   @keyframes lb-in {
     from { transform: scale(.95); opacity: 0; }
   }
-  #lightbox .cap { font-size: .85rem; color: var(--muted); }
-  #lightbox .cap a { color: var(--accent); }
+  .lbpanel {
+    flex: 0 1 24rem; min-width: 15rem; max-width: 24rem;
+    max-height: min(88vh, 46rem); overflow-y: auto;
+    cursor: default;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    font: 14px/1.5 system-ui, -apple-system, sans-serif;
+    animation: lb-in .16s ease-out;
+  }
+  .lbrow { padding: .65rem .85rem; border-bottom: 1px solid var(--border); }
+  .lbrow:last-child { border-bottom: 0; }
+  .lbtitle { display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
+  .lbface { border-top: 2px solid var(--border); }
+  .lbname { font-size: 1.05rem; font-weight: 600; color: var(--ink); }
+  .lbname.sm { font-size: .95rem; }
+  .lbcost { display: inline-flex; align-items: center; gap: .08rem; white-space: nowrap; flex: 0 0 auto; }
+  .lbtype { color: var(--muted); font-size: .9rem; }
+  .lbtext p { margin: 0 0 .55rem; }
+  .lbtext p:last-child { margin-bottom: 0; }
+  .lbtext em { font-style: italic; color: var(--muted); }
+  .lbtext .flavor {
+    font-style: italic; color: var(--muted);
+    border-top: 1px solid var(--border); margin-top: .6rem; padding-top: .55rem;
+  }
+  .lbpt .ptval { font-size: 1.1rem; font-weight: 600; color: var(--ink); }
+  .lbartist { color: var(--muted); font-size: .82rem; }
+  .lbloading { color: var(--muted); font-style: italic; }
+  .lblink a { color: var(--accent); text-decoration: none; }
+  .lblink a:hover, .lblink a:focus-visible { text-decoration: underline; }
+  .ms { height: 1em; width: 1em; vertical-align: -.125em; }
+  .leggrid { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem .55rem; }
+  .legcell { display: flex; align-items: center; gap: .4rem; overflow: hidden; }
+  .legbadge {
+    flex: 0 0 auto; font: 700 .58rem/1.4 system-ui, sans-serif; letter-spacing: .03em;
+    padding: .1rem .35rem; border-radius: 4px; min-width: 4.4rem; text-align: center;
+  }
+  .legname { font-size: .8rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .leg-legal { background: #1a6b3a; color: #d8f5e0; }
+  .leg-restricted { background: #8a6d1f; color: #fbeecb; }
+  .leg-banned { background: #7a2320; color: #f7d6d3; }
+  .leg-not_legal { background: #2b2620; color: #877d6b; }
   @media (prefers-reduced-motion: reduce) {
-    #lightbox img { animation: none; }
+    #lightbox img, .lbpanel { animation: none; }
   }
   .card .tl { font-size: .72rem; color: var(--muted); line-height: 1.3; margin-top: .1rem; }
   .chips { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .35rem; }
@@ -230,9 +273,10 @@
   Images load lazily as you scroll.</footer>
 <button id="top-btn" title="Back to top" aria-label="Back to top">↑</button>
 <div id="lightbox" hidden role="dialog" aria-modal="true" tabindex="-1" title="Close">
-  <img alt="">
-  <div class="cap"><span class="capname"></span> ·
-    <a target="_blank" rel="noopener" title="Open on Scryfall">Open on Scryfall ↗</a></div>
+  <div class="lbwrap">
+    <img alt="">
+    <div class="lbpanel"></div>
+  </div>
 </div>
 
 <script>
@@ -276,18 +320,158 @@ function setCardFilter(name) {
   if (name) scrollTo({ top: 0 });
 }
 
-// image click zooms the card; the caption keeps its Scryfall link
+// image click zooms the card and shows a Scryfall-style detail panel.
+// The datasets only carry name/type_line/image/url/subtypes, so the rest of
+// the panel (mana cost, rules text, P/T, artist, legalities) is fetched from
+// the Scryfall API at open time, keyed by the card's UUID (embedded in its
+// image URL) and cached per session.
 const lightbox = document.getElementById('lightbox');
 let lbReturn = null;
+let lbCurrentId = null;          // guards against stale fetches filling the panel
+const CARD_CACHE = new Map();    // id -> in-flight-or-resolved promise of card JSON
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// {W/U} -> WU.svg, {T} -> T.svg — Scryfall's card-symbols naming (slash stripped)
+function symbolsToHTML(text) {
+  return String(text).replace(/\{([^}]+)\}/g, (m, code) => {
+    const file = code.replace(/\//g, '');
+    return `<img class="ms" src="https://svgs.scryfall.io/card-symbols/${encodeURIComponent(file)}.svg" alt="${esc(m)}">`;
+  });
+}
+
+// One <p> per line; inline mana/tap symbols; parenthetical reminder text italic.
+function oracleToHTML(text) {
+  return String(text).split('\n').filter(l => l.trim()).map(line => {
+    let h = symbolsToHTML(esc(line));
+    h = h.replace(/\(([^)]*)\)/g, '<em>($1)</em>');
+    return `<p>${h}</p>`;
+  }).join('');
+}
+
+function flavorHTML(text) {
+  return esc(text).replace(/\n/g, '<br>');
+}
+
+function ptHTML(f) {
+  if (f.power != null && f.toughness != null)
+    return `<span class="ptval">${esc(f.power)}/${esc(f.toughness)}</span>`;
+  if (f.loyalty != null) return `<span class="ptval">Loyalty ${esc(f.loyalty)}</span>`;
+  if (f.defense != null) return `<span class="ptval">Defense ${esc(f.defense)}</span>`;
+  return '';
+}
+
+// Scryfall's format order; API keys on the left, display labels on the right.
+const LEGALITY_FORMATS = [
+  ['standard', 'Standard'], ['alchemy', 'Alchemy'], ['pioneer', 'Pioneer'],
+  ['historic', 'Historic'], ['modern', 'Modern'], ['brawl', 'Brawl'],
+  ['legacy', 'Legacy'], ['competitivebrawl', 'Comp. Brawl'],
+  ['vintage', 'Vintage'], ['timeless', 'Timeless'], ['commander', 'Commander'],
+  ['pauper', 'Pauper'], ['oathbreaker', 'Oathbreaker'], ['penny', 'Penny'],
+];
+
+function legalityGrid(legalities) {
+  const cells = LEGALITY_FORMATS.map(([key, label]) => {
+    const st = (legalities && legalities[key]) || 'not_legal';
+    const txt = st.replace(/_/g, ' ').toUpperCase();
+    return `<div class="legcell"><span class="legbadge leg-${esc(st)}">${esc(txt)}</span>` +
+           `<span class="legname">${esc(label)}</span></div>`;
+  });
+  return `<div class="leggrid">${cells.join('')}</div>`;
+}
+
+function scryRow(c) {
+  return `<div class="lbrow lblink"><a href="${esc(c.url)}" target="_blank" rel="noopener">Open on Scryfall ↗</a></div>`;
+}
+
+// Immediate/fallback panel: just what the dataset already knows.
+function panelBasic(c, loading) {
+  const rows = [
+    `<div class="lbrow lbtitle"><span class="lbname">${esc(c.name)}</span></div>`,
+    `<div class="lbrow lbtype">${esc(c.type_line)}</div>`,
+  ];
+  if (loading) rows.push(`<div class="lbrow lbloading">Loading…</div>`);
+  rows.push(scryRow(c));
+  return rows.join('');
+}
+
+// Full panel from the Scryfall card object. Flip/adventure cards expose
+// per-face oracle_text in card_faces; render one block per face.
+function panelFull(c, data) {
+  const faces = (Array.isArray(data.card_faces) &&
+                 data.card_faces.some(f => f.oracle_text != null))
+    ? data.card_faces : null;
+  const topCost = data.mana_cost || (faces && faces[0].mana_cost) || '';
+  const rows = [];
+
+  rows.push(`<div class="lbrow lbtitle"><span class="lbname">${esc(data.name || c.name)}</span>` +
+    (!faces && topCost ? `<span class="lbcost">${symbolsToHTML(esc(topCost))}</span>` : '') +
+    `</div>`);
+
+  (faces || [data]).forEach(f => {
+    if (faces) {
+      const fcost = f.mana_cost ? `<span class="lbcost">${symbolsToHTML(esc(f.mana_cost))}</span>` : '';
+      rows.push(`<div class="lbrow lbtitle lbface"><span class="lbname sm">${esc(f.name)}</span>${fcost}</div>`);
+    }
+    if (f.type_line) rows.push(`<div class="lbrow lbtype">${esc(f.type_line)}</div>`);
+    const text = [];
+    if (f.oracle_text) text.push(oracleToHTML(f.oracle_text));
+    if (f.flavor_text) text.push(`<p class="flavor">${flavorHTML(f.flavor_text)}</p>`);
+    if (text.length) rows.push(`<div class="lbrow lbtext">${text.join('')}</div>`);
+    const pt = ptHTML(f);
+    if (pt) rows.push(`<div class="lbrow lbpt">${pt}</div>`);
+  });
+
+  const artist = data.artist || (faces && faces[0].artist);
+  if (artist) rows.push(`<div class="lbrow lbartist">Illustrated by ${esc(artist)}</div>`);
+  if (data.legalities) rows.push(`<div class="lbrow">${legalityGrid(data.legalities)}</div>`);
+  rows.push(scryRow(c));
+  return rows.join('');
+}
+
+// UUID from a Scryfall image URL: …/normal/front/9/e/9e43…-….jpg
+function cardId(c) {
+  const m = /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/.exec(c.image || '');
+  return m ? m[1] : null;
+}
+
+function fetchCard(id) {
+  if (CARD_CACHE.has(id)) return CARD_CACHE.get(id);
+  const p = fetch('https://api.scryfall.com/cards/' + id)
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+  p.catch(() => CARD_CACHE.delete(id));   // let a later open retry after a failure
+  CARD_CACHE.set(id, p);
+  return p;
+}
 
 function openLightbox(c) {
   const img = lightbox.querySelector('img');
   img.onerror = () => { img.onerror = null; img.src = c.image; };
   img.src = c.image.replace('/normal/', '/large/');  // sharper Scryfall scan
   img.alt = c.name;
-  lightbox.querySelector('.capname').textContent = c.name;
-  lightbox.querySelector('.cap a').href = c.url;
   lightbox.setAttribute('aria-label', c.name);
+
+  const panel = lightbox.querySelector('.lbpanel');
+  const id = cardId(c);
+  lbCurrentId = id;
+  panel.innerHTML = panelBasic(c, !!id);
+  panel.scrollTop = 0;
+
+  if (id) {
+    fetchCard(id).then(data => {
+      if (lbCurrentId !== id || lightbox.hidden) return;   // user moved on
+      panel.innerHTML = panelFull(c, data);
+      panel.scrollTop = 0;
+    }).catch(() => {
+      if (lbCurrentId !== id || lightbox.hidden) return;
+      panel.innerHTML = panelBasic(c, false);              // drop the loading row
+    });
+  }
+
   lbReturn = document.activeElement;
   lightbox.hidden = false;
   lightbox.focus();
@@ -296,11 +480,15 @@ function openLightbox(c) {
 function closeLightbox() {
   if (lightbox.hidden) return;
   lightbox.hidden = true;
+  lbCurrentId = null;
   if (lbReturn) { lbReturn.focus(); lbReturn = null; }
 }
 
+// Close on click outside the image and panel; clicks inside the panel
+// (including its Scryfall link) leave the lightbox open.
 lightbox.addEventListener('click', e => {
-  if (e.target.tagName !== 'A') closeLightbox();
+  if (e.target.closest('.lbpanel') || e.target.closest('img')) return;
+  closeLightbox();
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeLightbox();
