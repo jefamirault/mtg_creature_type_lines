@@ -142,11 +142,28 @@
   #lightbox[hidden] { display: none; }
   .lbwrap {
     display: flex; gap: 1.2rem; align-items: flex-start; justify-content: center;
-    flex-wrap: wrap; max-height: 100%; max-width: 100%;
+    /* nowrap: keep the card + panel deterministically side-by-side. Letting it
+       wrap made the panel briefly drop below the image while the scan loaded
+       (a shrink-to-fit flex container mis-measures an unloaded <img>). Narrow
+       screens stack intentionally via the media query below. */
+    flex-wrap: nowrap; max-height: 100%; max-width: 100%;
   }
-  #lightbox img {
+  @media (max-width: 860px) {
+    .lbwrap { flex-direction: column; align-items: center; overflow-y: auto; }
+    .lbwrap > img { width: auto; height: auto; max-width: 100%; max-height: 58vh; }
+    .lbpanel { width: 100%; height: auto; max-height: 34vh; flex: 0 0 auto; }
+  }
+  .lbwrap > img {   /* the card scan only — not the mana-symbol imgs in the panel */
     flex: 0 0 auto;
-    max-height: min(88vh, 46rem); max-width: min(88vw, 33rem);
+    cursor: default;
+    /* Reserve the card's box up front with an *explicit* width + height (card
+       aspect ratio 5:7) so an unloaded <img> — whose natural size is 0 — still
+       contributes a stable flex main size and the panel never wraps below it
+       for the split second before the scan loads. */
+    height: min(88vh, 46rem); width: calc(min(88vh, 46rem) * 5 / 7);
+    object-fit: contain;
+    max-width: min(88vw, 33rem);
+    background: rgba(255, 255, 255, .04);
     border-radius: 4.7% / 3.4%;
     box-shadow: 0 10px 60px rgba(0, 0, 0, .8);
     animation: lb-in .16s ease-out;
@@ -156,7 +173,9 @@
   }
   .lbpanel {
     flex: 0 1 24rem; min-width: 15rem; max-width: 24rem;
-    max-height: min(88vh, 46rem); overflow-y: auto;
+    /* Fixed height (not just max) so the info area holds its place while the
+       basic → full panel swap fills in — no vertical jump. */
+    height: min(88vh, 46rem); overflow-y: auto;
     cursor: default;
     background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
     font: 14px/1.5 system-ui, -apple-system, sans-serif;
@@ -195,7 +214,7 @@
   .leg-banned { background: #7a2320; color: #f7d6d3; }
   .leg-not_legal { background: #2b2620; color: #877d6b; }
   @media (prefers-reduced-motion: reduce) {
-    #lightbox img, .lbpanel { animation: none; }
+    .lbwrap > img, .lbpanel { animation: none; }
   }
   .card .tl { font-size: .72rem; color: var(--muted); line-height: 1.3; margin-top: .1rem; }
   .chips { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .35rem; }
@@ -450,8 +469,14 @@ function fetchCard(id) {
 
 function openLightbox(c) {
   const img = lightbox.querySelector('img');
+  // Hide until the new scan loads so we never flash the previously-shown card
+  // (an uncached <img> keeps rendering its old src while the new one downloads).
+  const reveal = () => { img.style.visibility = 'visible'; };
+  img.style.visibility = 'hidden';
+  img.onload = reveal;
   img.onerror = () => { img.onerror = null; img.src = c.image; };
   img.src = c.image.replace('/normal/', '/large/');  // sharper Scryfall scan
+  if (img.complete) reveal();                        // already cached — show now
   img.alt = c.name;
   lightbox.setAttribute('aria-label', c.name);
 
