@@ -27,6 +27,8 @@
   h1 { font-size: 1.5rem; font-weight: normal; letter-spacing: .04em; }
   h1 .rule { color: var(--accent); }
   .sub { color: var(--muted); font-size: .85rem; margin-top: .2rem; }
+  .patterns { margin-top: .55rem; display: grid; gap: .15rem; color: var(--muted); font-size: .85rem; }
+  .patterns b { color: var(--ink); font-weight: normal; }
   .controls { display: flex; gap: .8rem; margin-top: .9rem; flex-wrap: wrap; align-items: center; }
   input[type=search], select {
     background: var(--panel2); color: var(--ink);
@@ -35,6 +37,9 @@
   }
   input[type=search] { width: 22rem; max-width: 100%; }
   input[type=search]:focus, select:focus { outline: 1px solid var(--accent); }
+  .dsboxes { display: flex; gap: .9rem; align-items: center; font-size: .9rem; }
+  .dsboxes label { display: flex; gap: .35rem; align-items: center; cursor: pointer; }
+  .dsboxes input { accent-color: var(--accent); cursor: pointer; }
   .count { color: var(--muted); font-size: .85rem; }
   main { padding: 1.5rem 2rem 4rem; display: grid; gap: 1.6rem; }
   .group {
@@ -55,6 +60,44 @@
     border-bottom: 1px dotted var(--border);
   }
   .scrylink:hover, .scrylink:focus-visible { color: var(--accent); border-color: var(--accent); }
+  .favbtn {
+    font-size: .78rem; font-family: system-ui, sans-serif;
+    padding: .1rem .55rem; border-radius: 99px; cursor: pointer;
+    border: 1px solid var(--border); background: none; color: var(--muted);
+  }
+  .favbtn:hover, .favbtn:focus-visible { border-color: var(--accent); color: var(--accent); }
+  .favbtn.on { border-color: var(--accent); color: var(--accent); }
+  #favpill {
+    font-size: .8rem; font-family: system-ui, sans-serif;
+    padding: .3rem .7rem; border-radius: 99px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--panel2); color: var(--muted);
+  }
+  #favpill:hover { border-color: var(--accent); color: var(--accent); }
+  #favpill.on { border-color: var(--accent); background: var(--accent); color: var(--bg); }
+  #exportbtn, #statspill {
+    font-size: .8rem; font-family: system-ui, sans-serif;
+    padding: .3rem .7rem; border-radius: 99px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--panel2); color: var(--muted);
+  }
+  #exportbtn:hover, #statspill:hover { border-color: var(--accent); color: var(--accent); }
+  #statspill.on { border-color: var(--accent); background: var(--accent); color: var(--bg); }
+  .stats {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.2rem 1.2rem;
+  }
+  .stats h2 {
+    font-size: .95rem; font-weight: normal; color: var(--muted);
+    letter-spacing: .05em;
+  }
+  .stats h2 b { color: var(--accent); font-weight: normal; }
+  .statblock + .statblock { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .statchips {
+    display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .5rem;
+    max-height: 11rem; overflow-y: auto;
+  }
+  .statchips .chip b { font-weight: 600; }
   .summary {
     display: flex; flex-wrap: wrap; align-items: center; gap: .3rem;
     margin: .5rem 0 .9rem;
@@ -124,22 +167,30 @@
   <div class="sub">Every pair of cards in a group shares a creature subtype — but no subtype
     is common to the whole group. All type lines within a group are unique.
     Vintage-legal, single-faced cards only.</div>
+  <div class="patterns">
+    <div><b>Pattern A</b> — 4 creatures with at least 6 subtypes that each
+      appear on two or more of them.</div>
+    <div><b>Pattern B</b> — 5 creatures over exactly 5 subtypes, arranged
+      123 / 124 / 345 / 15 / 25 (each digit a subtype, each row one creature).</div>
+    <div><b>Pattern C</b> — Pattern A or B groups led by two Commander Legends
+      partner commanders, at least one white; the rest of the group fits within
+      the commanders' combined color identity.</div>
+  </div>
   <div class="controls">
-    <select id="dataset">
-      <option value="all">All groups (4–8 cards)</option>
-      <option value="a">Pattern A: 4 creatures, ≥6 subtypes</option>
-      <option value="b">Pattern B: 123 / 124 / 345 / 15 / 25</option>
-      <option value="pasch">Pasch: 123 / 145 / 246 / 356</option>
-    </select>
+    <span class="dsboxes">
+      <label title="4 creatures, ≥6 subtypes each on 2+ cards"><input type="checkbox" id="ds-a" checked> Pattern A</label>
+      <label title="123 / 124 / 345 / 15 / 25"><input type="checkbox" id="ds-b" checked> Pattern B</label>
+      <label title="Pattern A/B groups anchored on two CMR partner commanders (one white); other cards fit their combined color identity"><input type="checkbox" id="ds-c" checked> Pattern C</label>
+    </span>
     <input type="search" id="q" placeholder="Filter by card name or subtype — commas combine (Spider, Villain)">
     <select id="size">
       <option value="">any size</option>
       <option value="4">size 4</option>
       <option value="5">size 5</option>
-      <option value="6">size 6</option>
-      <option value="7">size 7</option>
-      <option value="8">size 8</option>
     </select>
+    <button id="favpill" type="button" title="Show only favorite groups">★ Favorites</button>
+    <button id="statspill" type="button" title="Show subtype counts per pattern">Σ Stats</button>
+    <button id="exportbtn" type="button" title="Download the groups shown as a text file">⬇ Export</button>
     <button id="cardpill" type="button" hidden title="Remove card filter"></button>
     <span class="count" id="count"></span>
   </div>
@@ -152,6 +203,34 @@
 <script>
 let GROUPS = [];
 let cardFilter = null;
+let favsOnly = false;
+let statsOn = new URLSearchParams(location.search).get('stats') === '1';
+
+// Favorites persist in localStorage, keyed by dataset + sorted card names so
+// they survive regenerated datasets reordering the groups.
+const FAV_STORE = 'mtg-favorite-groups';
+let FAVS;
+try { FAVS = new Set(JSON.parse(localStorage.getItem(FAV_STORE) || '[]')); }
+catch { FAVS = new Set(); }
+
+function favKey(e) {
+  return e.ds + '::' + e.cards.map(c => c.name).sort().join('|');
+}
+
+function toggleFav(e) {
+  const k = favKey(e);
+  FAVS.has(k) ? FAVS.delete(k) : FAVS.add(k);
+  try { localStorage.setItem(FAV_STORE, JSON.stringify([...FAVS])); } catch {}
+  render();
+}
+
+function updateFavPill() {
+  const n = GROUPS.filter(e => FAVS.has(favKey(e))).length;
+  const pill = document.getElementById('favpill');
+  pill.textContent = n ? `★ Favorites (${n})` : '★ Favorites';
+  pill.classList.toggle('on', favsOnly);
+  pill.title = favsOnly ? 'Show all groups' : 'Show only favorite groups';
+}
 
 function setCardFilter(name) {
   cardFilter = name;
@@ -194,20 +273,59 @@ function hue(s) {
   return h;
 }
 
-function render() {
+// Entries ({ds, n, cards}) passing the current filters.
+function filteredGroups() {
   const terms = document.getElementById('q').value
     .split(',').map(t => t.trim().toLowerCase()).filter(Boolean);
   const size = document.getElementById('size').value;
+  return GROUPS.filter(e => {
+    if (size && e.cards.length !== +size) return false;
+    if (favsOnly && !FAVS.has(favKey(e))) return false;
+    if (cardFilter && !e.cards.some(c => c.name === cardFilter)) return false;
+    return terms.every(t => e.cards.some(c =>
+        c.name.toLowerCase().includes(t) ||
+        c.subtypes.some(s => s.toLowerCase().includes(t))));
+  });
+}
+
+// Group label unique across combined datasets, e.g. A12 / B37.
+function groupLabel(e) {
+  return e.ds.toUpperCase() + e.n;
+}
+
+// One stats block per checked dataset: how many times each subtype occurs
+// across the dataset's card slots (a card counts once per group it is in).
+function buildStats() {
+  const sec = document.createElement('section');
+  sec.className = 'stats';
+  checkedSets().forEach(d => {
+    const freq = {};
+    (ALL[d] || []).forEach(g =>
+      g.forEach(c => c.subtypes.forEach(s => freq[s] = (freq[s] || 0) + 1)));
+    const entries = Object.entries(freq)
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    const block = document.createElement('div');
+    block.className = 'statblock';
+    const h = document.createElement('h2');
+    h.innerHTML = `<b>Pattern ${d.toUpperCase()}</b> · ${(ALL[d] || []).length} groups` +
+      ` · ${entries.length} distinct subtypes`;
+    const chips = document.createElement('div');
+    chips.className = 'statchips';
+    entries.forEach(([s, n]) => chips.appendChild(mkChip(s, n, true)));
+    block.append(h, chips);
+    sec.appendChild(block);
+  });
+  return sec;
+}
+
+function render() {
   const root = document.getElementById('groups');
   root.textContent = '';
   let shown = 0;
+  if (statsOn && checkedSets().length) root.appendChild(buildStats());
 
-  GROUPS.forEach((g, i) => {
-    if (size && g.length !== +size) return;
-    if (cardFilter && !g.some(c => c.name === cardFilter)) return;
-    if (!terms.every(t => g.some(c =>
-        c.name.toLowerCase().includes(t) ||
-        c.subtypes.some(s => s.toLowerCase().includes(t))))) return;
+  filteredGroups().forEach(e => {
+    const g = e.cards;
     shown++;
 
     // subtypes appearing on 2+ cards in this group get a color chip
@@ -216,12 +334,20 @@ function render() {
 
     const sec = document.createElement('section');
     sec.className = 'group';
-    sec.id = 'g' + (i + 1);
+    sec.id = 'g' + e.ds + e.n;
     const h = document.createElement('h2');
-    h.innerHTML = `<b>Group ${i + 1}</b> · ${g.length} creatures`;
+    h.innerHTML = `<b>Group ${groupLabel(e)}</b> · ${g.length} creatures`;
+    const fav = document.createElement('button');
+    fav.type = 'button'; fav.className = 'favbtn';
+    const isFav = FAVS.has(favKey(e));
+    fav.classList.toggle('on', isFav);
+    fav.textContent = isFav ? '★ Saved' : '☆ Save to Favorites';
+    fav.title = isFav ? 'Remove from favorites' : 'Save to favorites';
+    fav.addEventListener('click', () => toggleFav(e));
+    h.appendChild(fav);
     // deck-building: Scryfall search for cards sharing a subtype with every
     // member of the group (one or-clause per creature)
-    if (dataset === 'a' || dataset === 'b') {
+    {
       const clause = c => '(' + c.subtypes
         .map(s => 't:' + (s.includes(' ') ? `"${s.toLowerCase()}"` : s.toLowerCase()))
         .join(' or ') + ')';
@@ -280,6 +406,7 @@ function render() {
 
   document.getElementById('count').textContent =
     `${shown} of ${GROUPS.length} groups`;
+  updateFavPill();
   if (!shown) {
     const d = document.createElement('div');
     d.className = 'empty';
@@ -288,21 +415,44 @@ function render() {
   }
 }
 
-const DATASETS = { all: 'groups.json', a: 'pattern-a-groups.json',
-                   b: 'pattern-b-groups.json', pasch: 'pasch-groups.json' };
-const dataset = DATASETS[new URLSearchParams(location.search).get('data')]
-  ? new URLSearchParams(location.search).get('data') : 'all';
-document.getElementById('dataset').value = dataset;
-document.getElementById('dataset').addEventListener('change', e => {
-  location.search = e.target.value === 'all' ? '' : '?data=' + e.target.value;
+const DATASETS = { a: 'pattern-a-groups.json', b: 'pattern-b-groups.json',
+                   c: 'pattern-c-groups.json' };
+const ALL = {}; // ds -> array of card arrays, all fetched up front
+const ALL_KEYS = Object.keys(DATASETS).join(',');
+
+// ?data=<comma-separated subset of dataset keys> (default / legacy: all)
+const initSel = (new URLSearchParams(location.search).get('data') || '')
+  .split(',').filter(d => DATASETS[d]);
+Object.keys(DATASETS).forEach(d => {
+  const box = document.getElementById('ds-' + d);
+  box.checked = !initSel.length || initSel.includes(d);
+  box.addEventListener('change', () => {
+    const sel = checkedSets().join(',');
+    const params = new URLSearchParams(location.search);
+    sel === ALL_KEYS ? params.delete('data') : params.set('data', sel);
+    const qs = params.toString();
+    history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+    rebuildGroups();
+    render();
+  });
 });
 
-fetch(DATASETS[dataset])
-  .then(r => r.json())
-  .then(data => {
-    GROUPS = data;
+function checkedSets() {
+  return Object.keys(DATASETS).filter(d => document.getElementById('ds-' + d).checked);
+}
+
+function rebuildGroups() {
+  GROUPS = [];
+  checkedSets().forEach(d =>
+    (ALL[d] || []).forEach((cards, n) => GROUPS.push({ ds: d, n: n + 1, cards })));
+}
+
+Promise.all(Object.entries(DATASETS).map(([d, file]) =>
+  fetch(file).then(r => r.json()).then(data => ALL[d] = data)))
+  .then(() => {
+    rebuildGroups();
     render();
-    // groups render after the fetch, so honor #gN links once they exist
+    // groups render after the fetch, so honor #gaN / #gbN links once they exist
     if (location.hash) {
       const target = document.getElementById(location.hash.slice(1));
       if (target) target.scrollIntoView();
@@ -312,6 +462,38 @@ fetch(DATASETS[dataset])
 document.getElementById('q').addEventListener('input', render);
 document.getElementById('size').addEventListener('change', render);
 document.getElementById('cardpill').addEventListener('click', () => setCardFilter(null));
+document.getElementById('favpill').addEventListener('click', () => {
+  favsOnly = !favsOnly;
+  render();
+});
+document.getElementById('statspill').addEventListener('click', () => {
+  statsOn = !statsOn;
+  const params = new URLSearchParams(location.search);
+  statsOn ? params.set('stats', '1') : params.delete('stats');
+  const qs = params.toString();
+  history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+  document.getElementById('statspill').classList.toggle('on', statsOn);
+  render();
+});
+document.getElementById('statspill').classList.toggle('on', statsOn);
+
+// Export the currently shown groups (all active filters applied) as a
+// plain-text card list for offline use.
+document.getElementById('exportbtn').addEventListener('click', () => {
+  const shown = filteredGroups();
+  if (!shown.length) return;
+  const text = shown.map(e =>
+    `Group ${groupLabel(e)} · ${e.cards.length} creatures\n` +
+    e.cards.map(c => `${c.name} — ${c.type_line}\n  ${c.url}`).join('\n')
+  ).join('\n\n') + '\n';
+  const blob = new Blob([text], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'creature-groups-' + checkedSets().join('-') +
+    (favsOnly ? '-favorites' : '') + '.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
 
 const topBtn = document.getElementById('top-btn');
 addEventListener('scroll', () => {

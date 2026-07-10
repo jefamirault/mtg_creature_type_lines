@@ -19,7 +19,7 @@ set -a; source .env; set +a
 
 # Only the files the site actually serves — anything not listed here never
 # reaches the server, so scripts/ / CLAUDE.md / deploy.sh / .env stay local.
-FILES=(index.html groups.json pattern-a-groups.json pattern-b-groups.json pasch-groups.json)
+FILES=(index.html groups.json pattern-a-groups.json pattern-b-groups.json pattern-c-groups.json pasch-groups.json)
 
 for f in "${FILES[@]}"; do
   [[ -e "$f" ]] || { echo "missing file: $f" >&2; exit 1; }
