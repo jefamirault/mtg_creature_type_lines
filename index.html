@@ -114,7 +114,7 @@
   .card { flex: 0 0 200px; width: 200px; }
   .imgbtn {
     display: block; width: 100%; padding: 0; border: 0;
-    background: none; cursor: pointer;
+    background: none; cursor: zoom-in;
   }
   .card img {
     width: 100%; aspect-ratio: 488 / 680; border-radius: 9px;
@@ -122,8 +122,38 @@
   }
   .imgbtn:hover img, .imgbtn:focus-visible img { outline: 2px solid var(--accent); }
   .card .nm { font-size: .82rem; margin-top: .4rem; line-height: 1.25; }
-  .card .nm a { color: inherit; text-decoration: none; }
-  .card .nm a:hover { color: var(--accent); text-decoration: underline; }
+  .namebtn {
+    background: none; border: 0; padding: 0; margin: 0;
+    font: inherit; color: inherit; text-align: left; cursor: pointer;
+  }
+  .namebtn:hover, .namebtn:focus-visible { color: var(--accent); text-decoration: underline; }
+  .namebtn .lens {
+    width: .72em; height: .72em; margin-left: .3em;
+    vertical-align: -.02em; stroke: currentColor; fill: none;
+    stroke-width: 2.4; stroke-linecap: round; opacity: .5;
+  }
+  .namebtn:hover .lens, .namebtn:focus-visible .lens { opacity: 1; }
+  #lightbox {
+    position: fixed; inset: 0; z-index: 30;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: .9rem; padding: 2rem; cursor: zoom-out;
+    background: rgba(12, 9, 6, .9);
+  }
+  #lightbox[hidden] { display: none; }
+  #lightbox img {
+    max-height: min(82vh, 46rem); max-width: min(88vw, 33rem);
+    border-radius: 4.7% / 3.4%;
+    box-shadow: 0 10px 60px rgba(0, 0, 0, .8);
+    animation: lb-in .16s ease-out;
+  }
+  @keyframes lb-in {
+    from { transform: scale(.95); opacity: 0; }
+  }
+  #lightbox .cap { font-size: .85rem; color: var(--muted); }
+  #lightbox .cap a { color: var(--accent); }
+  @media (prefers-reduced-motion: reduce) {
+    #lightbox img { animation: none; }
+  }
   .card .tl { font-size: .72rem; color: var(--muted); line-height: 1.3; margin-top: .1rem; }
   .chips { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .35rem; }
   .chip {
@@ -199,6 +229,11 @@
 <footer>Card data and images from <a href="https://scryfall.com">Scryfall</a>.
   Images load lazily as you scroll.</footer>
 <button id="top-btn" title="Back to top" aria-label="Back to top">↑</button>
+<div id="lightbox" hidden role="dialog" aria-modal="true" tabindex="-1" title="Close">
+  <img alt="">
+  <div class="cap"><span class="capname"></span> ·
+    <a target="_blank" rel="noopener" title="Open on Scryfall">Open on Scryfall ↗</a></div>
+</div>
 
 <script>
 let GROUPS = [];
@@ -240,6 +275,36 @@ function setCardFilter(name) {
   render();
   if (name) scrollTo({ top: 0 });
 }
+
+// image click zooms the card; the caption keeps its Scryfall link
+const lightbox = document.getElementById('lightbox');
+let lbReturn = null;
+
+function openLightbox(c) {
+  const img = lightbox.querySelector('img');
+  img.onerror = () => { img.onerror = null; img.src = c.image; };
+  img.src = c.image.replace('/normal/', '/large/');  // sharper Scryfall scan
+  img.alt = c.name;
+  lightbox.querySelector('.capname').textContent = c.name;
+  lightbox.querySelector('.cap a').href = c.url;
+  lightbox.setAttribute('aria-label', c.name);
+  lbReturn = document.activeElement;
+  lightbox.hidden = false;
+  lightbox.focus();
+}
+
+function closeLightbox() {
+  if (lightbox.hidden) return;
+  lightbox.hidden = true;
+  if (lbReturn) { lbReturn.focus(); lbReturn = null; }
+}
+
+lightbox.addEventListener('click', e => {
+  if (e.target.tagName !== 'A') closeLightbox();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
 
 // clicking a subtype chip adds that subtype as a search term
 function addSubtypeTerm(s) {
@@ -381,17 +446,22 @@ function render() {
       el.className = 'card';
       const imgbtn = document.createElement('button');
       imgbtn.type = 'button'; imgbtn.className = 'imgbtn';
-      imgbtn.title = `Show only groups with ${c.name}`;
+      imgbtn.title = `Enlarge ${c.name}`;
       const img = document.createElement('img');
       img.loading = 'lazy'; img.src = c.image; img.alt = c.name;
       imgbtn.appendChild(img);
-      imgbtn.addEventListener('click', () => setCardFilter(c.name));
+      imgbtn.addEventListener('click', () => openLightbox(c));
       const nm = document.createElement('div');
       nm.className = 'nm';
-      const link = document.createElement('a');
-      link.href = c.url; link.target = '_blank'; link.rel = 'noopener';
-      link.textContent = c.name; link.title = 'Open on Scryfall';
-      nm.appendChild(link);
+      const namebtn = document.createElement('button');
+      namebtn.type = 'button'; namebtn.className = 'namebtn';
+      namebtn.title = `Show only groups with ${c.name}`;
+      namebtn.textContent = c.name;
+      namebtn.insertAdjacentHTML('beforeend',
+        '<svg class="lens" viewBox="0 0 24 24" aria-hidden="true">' +
+        '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.6 15.6 21 21"/></svg>');
+      namebtn.addEventListener('click', () => setCardFilter(c.name));
+      nm.appendChild(namebtn);
       const tl = document.createElement('div');
       tl.className = 'tl'; tl.textContent = c.type_line;
       const chips = document.createElement('div');

@@ -60,7 +60,9 @@ the remaining sets from the structure, then look them up in the pool.
   of `a,b,c`; default all); groups are labeled `A12`/`B37`/`C5` with
   `#gaN`/`#gbN`/`#gcN` anchors. Supports
   comma-separated AND search terms, clickable subtype chips (add term), click
-  card image (filter to groups with that card), card name links to Scryfall,
+  card image (zoom lightbox with the card's Scryfall link; Esc/click closes),
+  click card name — marked with a magnifying-glass icon — to filter to groups
+  with that card,
   per-group favorites (localStorage, keyed by dataset + sorted card names)
   with a favorites-only filter, a Stats toggle (synced to `?stats=1`) showing
   per-pattern subtype instance counts, and an Export button downloading the
