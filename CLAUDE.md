@@ -97,6 +97,10 @@ Ships only `index.html` + the five dataset JSONs (allowlist in `deploy.sh`);
 `scripts/`, docs, CSV, and `.env` never leave this machine. Content deploys
 need no nginx reload. After regenerating a dataset, just deploy again.
 
+Every deploy also ships a `deploy.json` stamp (UTC timestamp, short commit SHA, branch, dirty
+flag). It is public on purpose and is what https://status.jefamirault.com/ reads to report what
+is live here — see `~/devops/PATTERNS.md` § Deploy stamping.
+
 ## Workflows
 
 Regenerating data needs the Scryfall bulk file (~170 MB, not kept in the

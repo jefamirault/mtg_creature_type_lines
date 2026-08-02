@@ -21,6 +21,19 @@ set -a; source .env; set +a
 # reaches the server, so scripts/ / CLAUDE.md / deploy.sh / .env stay local.
 FILES=(index.html groups.json pattern-a-groups.json pattern-b-groups.json pattern-c-groups.json pasch-groups.json)
 
+# ── Deploy stamp ─────────────────────────────────────────────────────────────
+# Ship a deploy.json alongside the site so "what's live?" is answerable from
+# outside — the status dashboard reads it over plain https, and so can you.
+# Timestamp + short SHA + branch leak nothing actionable; keep it public.
+# Degrades to no stamp outside a git checkout rather than failing the deploy.
+if git rev-parse HEAD >/dev/null 2>&1; then
+  DIRTY=false; git diff --quiet HEAD -- 2>/dev/null || DIRTY=true
+  printf '{"deployed_at":"%s","commit":"%s","branch":"%s","dirty":%s}\n' \
+    "$(date -u +%FT%TZ)" "$(git rev-parse --short HEAD)" \
+    "$(git rev-parse --abbrev-ref HEAD)" "$DIRTY" > deploy.json
+  FILES+=(deploy.json)
+fi
+
 for f in "${FILES[@]}"; do
   [[ -e "$f" ]] || { echo "missing file: $f" >&2; exit 1; }
 done
