@@ -11,7 +11,7 @@ two exhaustive families:
   sharing exactly 1 — the K4/Pasch structure, enumerated by forced
   completion exactly as in pasch.py;
 - at least one card has 4+ subtypes: such subtype sets are rare (16 as of
-  Jul 2026), so each anchors an exhaustive scan of the sets intersecting it.
+  Aug 2026), so each anchors an exhaustive scan of the sets intersecting it.
 Unlike the old >= 6-distinct-subtypes definition, this is small enough to
 enumerate fully — no sampling."""
 import json

@@ -12,9 +12,10 @@ given anchor pair only if some card with that set fits the pair's identity.
 With two of the four slots pinned, pattern A is enumerated exhaustively:
 every pair shares a subtype, no subtype common to all, >=6 distinct
 subtypes that each appear on 2+ of the cards, unique type lines. Results
-are ranked and near-dupes dropped, as in pattern_a.py. Pattern B is also checked exhaustively; as of Jul 2026 no
-pattern-B group contains both anchors even before the color-identity
-filter, but any future hits are appended. Vintage-legal, single-faced."""
+are ranked and near-dupes dropped, as in pattern_a.py. Pattern B is also
+checked exhaustively; as of Aug 2026 no pattern-B group contains both
+anchors even before the color-identity filter, but any future hits are
+appended. Vintage-legal, single-faced."""
 import json
 import sys
 import urllib.parse

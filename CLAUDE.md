@@ -12,7 +12,7 @@ from the Scryfall API. Not a git repository.
   adventure cards are allowed but each face's type line is parsed separately.
 - Subtypes are the words after the em dash (—) on a face whose left side
   includes "Creature", validated against Scryfall `/catalog/creature-types`
-  (334 types). This handles the multi-word subtype "Time Lord" and drops
+  (350 types). This handles the multi-word subtype "Time Lord" and drops
   Un-set joke type lines (e.g. B.F.M.).
 - Within a group: **unique type lines**, **every pair of cards shares ≥1
   subtype**, and **no subtype is common to the whole group** (trivial
@@ -28,13 +28,15 @@ each row is one creature's subtype set (matching is up to relabeling):
   exhaustively in two families: all four cards 3-subtype (forces every
   subtype on exactly 2 cards, every pair sharing exactly 1 — the Pasch/K4
   structure) and groups containing one of the rare 4+-subtype sets (anchored
-  scan). 399 groups; near-dupes (3+ shared cards vs a kept group) dropped
-  for the browser (325 kept), sorted by shared-subtype then union count desc.
+  scan). 400 groups; near-dupes (3+ shared cards vs a kept group) dropped
+  for the browser (326 kept), sorted by shared-subtype then union count desc.
 - **Pattern B**: `123 / 124 / 345 / 15 / 25` — 5 creatures / 5 subtypes;
-  exhaustively enumerated (242 groups).
+  exhaustively enumerated (247 groups).
 - **Pasch**: `123 / 145 / 246 / 356` — 4 creatures / 6 subtypes, every subtype
-  on exactly 2 cards, every pair sharing exactly 1; exhaustive (233 groups).
-  Exactly the all-3-subtype family of Pattern A (233 of its 399 groups).
+  on exactly 2 cards, every pair sharing exactly 1; exhaustive. Exactly the
+  all-3-subtype family of Pattern A — 234 of its current 400 groups, though
+  the shipped `pasch-groups.json` still holds the 233 from the 2026-07-09
+  build (see § Data vintage).
 - **Pattern C (CMR Partners)**: Pattern A/B groups anchored on two Commander
   Legends partner cards — one matching `set:cmr o:partner c:w`, a different
   card matching `set:cmr o:partner` (anchor lists fetched from the Scryfall
@@ -44,7 +46,9 @@ each row is one creature's subtype set (matching is up to relabeling):
   pinned, pattern A is enumerated exhaustively; pattern B is exhaustive and
   empty (no B group contains two partner subtype sets even before the
   identity filter). Under the ≥6-subtypes-shared-twice Pattern A definition
-  the dataset is **currently empty** — partner anchors are too small to
+  the dataset is **still empty as of the 2026-08-11 build** (11 white / 43
+  any anchor cards, 121 viable pairs, 0 completions) — partner anchors are
+  too small to
   reach 12 subtype slots in any completable way, even ignoring the identity
   filter (under the older ≥6-distinct-subtypes rule it had 695 groups).
   Single-subtype partners (Angel, Horse, Golem…) can never anchor — their
@@ -103,22 +107,53 @@ is live here — see `~/devops/PATTERNS.md` § Deploy stamping.
 
 ## Workflows
 
-Regenerating data needs the Scryfall bulk file (~170 MB, not kept in the
-project). Get the current URL from `https://api.scryfall.com/bulk-data`
-(type `oracle_cards`) and download it, plus the creature types catalog from
-`https://api.scryfall.com/catalog/creature-types` (save the JSON response).
-Send a `User-Agent` header on Scryfall API requests; prefer bulk data over
-paging `/cards/search` for dataset work.
+Regenerating data needs the Scryfall bulk file. Fetch it and the creature
+types catalog into `data/` (gitignored, ~200 MB) with:
 
-    python3 scripts/find_groups.py  <bulk.json> <creature-types.json> creature-groups.md groups.json
-    python3 scripts/pattern_a.py    <bulk.json> <creature-types.json> pattern-a-groups.json
-    python3 scripts/pattern_b.py    <bulk.json> <creature-types.json> pattern-b-groups.json
-    python3 scripts/pattern_c.py    <bulk.json> <creature-types.json> pattern-c-groups.json
-    python3 scripts/pasch.py        <bulk.json> <creature-types.json> pasch-groups.json
-    python3 scripts/catalog_subtypes.py <bulk.json> <creature-types.json> creatures-3plus-subtypes.csv
+    ./scripts/fetch_bulk.sh
+
+Scryfall serves bulk data **only as gzipped JSONL** — the old plain-`.json`
+array URL 404s — so the helper converts it to a JSON array, which is the
+shape every generator expects (`json.load(open(BULK))`). It also writes
+`data/SOURCE.txt` recording the download URI, Scryfall's `updated_at`, the
+card count, and the catalog size; keep that, it is the only provenance for a
+given build (Scryfall publishes no historical snapshots, so a build is not
+reproducible after the fact). Send a `User-Agent` header on Scryfall API
+requests — they 403 without one; prefer bulk data over paging
+`/cards/search` for dataset work.
+
+    python3 scripts/find_groups.py  data/oracle-cards.json data/creature-types.json creature-groups.md groups.json
+    python3 scripts/pattern_a.py    data/oracle-cards.json data/creature-types.json pattern-a-groups.json
+    python3 scripts/pattern_b.py    data/oracle-cards.json data/creature-types.json pattern-b-groups.json
+    python3 scripts/pattern_c.py    data/oracle-cards.json data/creature-types.json pattern-c-groups.json
+    python3 scripts/pasch.py        data/oracle-cards.json data/creature-types.json pasch-groups.json
+    python3 scripts/catalog_subtypes.py data/oracle-cards.json data/creature-types.json creatures-3plus-subtypes.csv
+
+The bulk file carries **previewed but unreleased** sets; the Vintage-legal
+base rule gates them out automatically (they are `not_legal` until release),
+so a refresh picks up only sets that have actually gone legal.
 
 All generators verify their structural constraints with assertions before
 writing. When adding a new pattern: write `scripts/pattern_<x>.py` following
 pattern_b.py's shape, write `pattern-<x>-groups.json` in the same card-dict
 format, and register it in `index.html` (`DATASETS` map + a `.dsboxes`
 checkbox with id `ds-<x>`).
+
+## Data vintage
+
+The shipped datasets were not all built from the same bulk file:
+
+- `pattern-a-groups.json`, `pattern-b-groups.json`, `pattern-c-groups.json`
+  — built **2026-08-11** (oracle_cards `2026-08-11T21:01:58Z`, 38,626 cards,
+  350 creature types). Includes The Hobbit (`hob`/`hoc`, 2026-08-14).
+- `groups.json`, `creature-groups.md`, `pasch-groups.json` — still from the
+  **2026-07-09** build. They are deployed but no longer browsable, so the
+  staleness is cosmetic; note it means Pasch's "all-3-subtype family of
+  Pattern A" identity does not currently hold against the files on disk
+  (233 shipped vs 234 in the current Pattern A run). Re-running `pasch.py`
+  and `find_groups.py` realigns them.
+
+Note the generators key the pool by subtype set and keep **one
+representative card per set**, first-seen in bulk-file order. A new printing
+can therefore change which card a group displays without changing the group
+— when diffing datasets, compare subtype-set structures, not card names.
