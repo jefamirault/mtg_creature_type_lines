@@ -68,16 +68,51 @@ the remaining sets from the structure, then look them up in the pool.
   click card name — marked with a magnifying-glass icon — to filter to groups
   with that card,
   per-group favorites (localStorage, keyed by dataset + sorted card names)
-  with a favorites-only filter, a Stats toggle (synced to `?stats=1`) showing
-  per-pattern subtype instance counts, and an Export button downloading the
-  currently shown groups as a text file. Every group gets a deck-building
+  with a favorites-only filter, a per-group exclude list (same key, stored
+  under `mtg-excluded-groups`) whose members are hidden from every view
+  except the Exclude List toggle itself — the one place they can be put back,
+  and which is mutually exclusive with the Favorites view — a Stats toggle
+  (synced to `?stats=1`) showing per-pattern subtype instance counts, and an
+  Export button downloading the currently shown groups as a text file. Every group gets a deck-building
   Scryfall link — `-is:digital -is:reprint` plus one `(t:x or t:y …)` clause
   per creature, i.e. cards sharing a subtype with every group member.
+  A click that drops a group out of the current view (excluding it, or
+  un-saving it while Favorites is on) runs `collapseOut` first: fade, then
+  collapse the space, then re-render. That is why `main` spaces its children
+  with margins rather than a grid `gap` — a gap outlives its row shrinking to
+  0, so the space could never fully close.
+  Each card slot has ▲/▼ arrows (greyed when the slot has no alternates) that
+  cycle it through the other cards in `alternates.json` carrying the slot's
+  subtype set — a group's structure depends only on the sets, so any of them
+  fills the slot equally well and the type summary, chips, and Scryfall link
+  are unchanged by a swap. Matching is by **superset**: an Elf Soldier slot
+  also offers Citanul Stalwart (Elf Druid Soldier), which is still an Elf and
+  still a Soldier. A widened card keeps the slot's `subtypes` and carries its
+  surplus in `extra`, rendered as dashed dim chips — they never take a shared
+  color, never reach the type summary, and never enter the Scryfall link,
+  because the group does not rest on them; search does match them, so what is
+  on screen stays findable. Swaps live in `SWAPS` (session-only, deliberately not
+  persisted) keyed by `groupKey(e) + '#' + slot`; `shownCards(e)` resolves them
+  and is what render, the filters, and Export read. `e.cards` is never mutated
+  — `groupKey` is built from it, so favorites and exclusions survive a swap.
+  Cycling back onto the group's own card clears the swap; while swapped, an
+  `n/N ⟲` badge next to the name resets the slot. An arrow click rebuilds only
+  that one `.card` via `buildCard` rather than calling `render()`, which would
+  rebuild every group and could drop this one out from under the cursor when
+  the incoming card no longer matches an active search term.
 - `groups.json`, `pattern-a-groups.json`, `pattern-b-groups.json`,
   `pattern-c-groups.json`, `pasch-groups.json` — datasets: arrays of groups;
   each card has `name, type_line, subtypes, image, url`. The UI fetches only
   the Pattern A/B/C files; `groups.json` and `pasch-groups.json` are kept
   (and still deployed) but no longer browsable.
+- `alternates.json` — `"Beast|Frog|Zombie"` (sorted subtypes, the same array
+  the UI already holds per slot) → every Vintage-legal single-faced card whose
+  subtypes **include** that set, as `name, type_line, image, url`, plus
+  `extra` (sorted surplus subtypes) on the ones that carry more. Ordered
+  exact-matches-first, then by how many surplus subtypes, then alphabetically.
+  Scoped to the sets the shipped datasets use: 471 sets / 4,462 cards (920
+  with surplus subtypes), 222 of them with more than one card. A missing file
+  just leaves every arrow greyed.
 - `creatures-3plus-subtypes.csv` — catalog of creatures with 3+ subtypes
   (NOTE: predates the Vintage/single-faced filters).
 - `creature-groups.md` — markdown listing of the `groups.json` dataset.
@@ -97,7 +132,7 @@ Live at https://mtg.jefamirault.com/ (shared personal droplet; target in
     ./deploy.sh --dry-run   # preview
     ./deploy.sh
 
-Ships only `index.html` + the five dataset JSONs (allowlist in `deploy.sh`);
+Ships only `index.html` + the six dataset JSONs (allowlist in `deploy.sh`);
 `scripts/`, docs, CSV, and `.env` never leave this machine. Content deploys
 need no nginx reload. After regenerating a dataset, just deploy again.
 
@@ -129,6 +164,16 @@ requests — they 403 without one; prefer bulk data over paging
     python3 scripts/pasch.py        data/oracle-cards.json data/creature-types.json pasch-groups.json
     python3 scripts/catalog_subtypes.py data/oracle-cards.json data/creature-types.json creatures-3plus-subtypes.csv
 
+`alternates.py` reads the pattern datasets to scope itself, so it runs **after**
+them (and again whenever they are regenerated, or the UI's cycle arrows offer
+cards from the older build):
+
+    python3 scripts/alternates.py data/oracle-cards.json data/creature-types.json alternates.json pattern-a-groups.json pattern-b-groups.json pattern-c-groups.json
+
+It asserts every card the datasets display is present in its own set's
+alternates — that is the tripwire for the two files coming from different bulk
+snapshots.
+
 The bulk file carries **previewed but unreleased** sets; the Vintage-legal
 base rule gates them out automatically (they are `not_legal` until release),
 so a refresh picks up only sets that have actually gone legal.
@@ -137,15 +182,17 @@ All generators verify their structural constraints with assertions before
 writing. When adding a new pattern: write `scripts/pattern_<x>.py` following
 pattern_b.py's shape, write `pattern-<x>-groups.json` in the same card-dict
 format, and register it in `index.html` (`DATASETS` map + a `.dsboxes`
-checkbox with id `ds-<x>`).
+checkbox with id `ds-<x>`). Then re-run `alternates.py` with the new file in
+its argument list, or the new pattern's slots get no cycle arrows.
 
 ## Data vintage
 
 The shipped datasets were not all built from the same bulk file:
 
-- `pattern-a-groups.json`, `pattern-b-groups.json`, `pattern-c-groups.json`
-  — built **2026-08-11** (oracle_cards `2026-08-11T21:01:58Z`, 38,626 cards,
-  350 creature types). Includes The Hobbit (`hob`/`hoc`, 2026-08-14).
+- `pattern-a-groups.json`, `pattern-b-groups.json`, `pattern-c-groups.json`,
+  `alternates.json` — built **2026-08-11** (oracle_cards
+  `2026-08-11T21:01:58Z`, 38,626 cards, 350 creature types). Includes The
+  Hobbit (`hob`/`hoc`, 2026-08-14).
 - `groups.json`, `creature-groups.md`, `pasch-groups.json` — still from the
   **2026-07-09** build. They are deployed but no longer browsable, so the
   staleness is cosmetic; note it means Pasch's "all-3-subtype family of

@@ -12,6 +12,7 @@
     --ink: #e8e0d0;
     --muted: #9a8f7a;
     --accent: #c9a227;
+    --danger: #c06a4a;
     --border: #3a3225;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,7 +42,11 @@
   .dsboxes label { display: flex; gap: .35rem; align-items: center; cursor: pointer; }
   .dsboxes input { accent-color: var(--accent); cursor: pointer; }
   .count { color: var(--muted); font-size: .85rem; }
-  main { padding: 1.5rem 2rem 4rem; display: grid; gap: 1.6rem; }
+  /* Spacing lives on the children, not on a grid `gap`: a gap survives its
+     row shrinking to 0, so an excluded group collapsing out could never
+     reclaim all of its space. Margins collapse along with the element. */
+  main { padding: 1.5rem 2rem 2.4rem; display: grid; }
+  main > * { margin-bottom: 1.6rem; }
   .group {
     background: var(--panel);
     border: 1px solid var(--border);
@@ -60,20 +65,25 @@
     border-bottom: 1px dotted var(--border);
   }
   .scrylink:hover, .scrylink:focus-visible { color: var(--accent); border-color: var(--accent); }
-  .favbtn {
+  .favbtn, .exclbtn {
     font-size: .78rem; font-family: system-ui, sans-serif;
     padding: .1rem .55rem; border-radius: 99px; cursor: pointer;
     border: 1px solid var(--border); background: none; color: var(--muted);
   }
   .favbtn:hover, .favbtn:focus-visible { border-color: var(--accent); color: var(--accent); }
   .favbtn.on { border-color: var(--accent); color: var(--accent); }
-  #favpill {
+  .exclbtn:hover, .exclbtn:focus-visible { border-color: var(--danger); color: var(--danger); }
+  .exclbtn.on { border-color: var(--danger); color: var(--danger); }
+  .group.excluded { border-color: var(--danger); }
+  #favpill, #exclpill {
     font-size: .8rem; font-family: system-ui, sans-serif;
     padding: .3rem .7rem; border-radius: 99px; cursor: pointer;
     border: 1px solid var(--border); background: var(--panel2); color: var(--muted);
   }
   #favpill:hover { border-color: var(--accent); color: var(--accent); }
   #favpill.on { border-color: var(--accent); background: var(--accent); color: var(--bg); }
+  #exclpill:hover { border-color: var(--danger); color: var(--danger); }
+  #exclpill.on { border-color: var(--danger); background: var(--danger); color: var(--bg); }
   #exportbtn, #statspill {
     font-size: .8rem; font-family: system-ui, sans-serif;
     padding: .3rem .7rem; border-radius: 99px; cursor: pointer;
@@ -121,11 +131,42 @@
     background: var(--panel2); display: block;
   }
   .imgbtn:hover img, .imgbtn:focus-visible img { outline: 2px solid var(--accent); }
-  .card .nm { font-size: .82rem; margin-top: .4rem; line-height: 1.25; }
+  .card .nm {
+    font-size: .82rem; margin-top: .4rem; line-height: 1.25;
+    display: flex; align-items: flex-start; gap: .35rem;
+  }
+  /* Fixed two-line box for the name. Cycling a slot swaps in names of wildly
+     different lengths, and without a reserved height the re-wrap shoves the
+     type line and chips up and down on every click. Anything past two lines
+     is clamped with an ellipsis. */
+  .nmtext {
+    flex: 1; min-width: 0;
+    height: 2.5em;                                  /* 2 × line-height 1.25 */
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
   .namebtn {
     background: none; border: 0; padding: 0; margin: 0;
     font: inherit; color: inherit; text-align: left; cursor: pointer;
   }
+  /* cycle this slot through the other cards with the same subtypes */
+  .cyc { flex: 0 0 auto; display: flex; flex-direction: column; }
+  .cyc button {
+    background: none; border: 0; padding: 0 .15em; margin: 0;
+    font: inherit; font-size: .7rem; line-height: 1.15;
+    color: var(--muted); cursor: pointer;
+  }
+  .cyc button:hover:not([disabled]), .cyc button:focus-visible:not([disabled]) {
+    color: var(--accent);
+  }
+  .cyc button[disabled] { opacity: .25; cursor: default; }
+  /* inline so restoring/cycling doesn't push the type line around */
+  .cycpos {
+    background: none; border: 0; padding: 0; margin: 0 0 0 .45em;
+    font: inherit; font-size: .72rem; color: var(--muted); cursor: pointer;
+    white-space: nowrap;
+  }
+  .cycpos:hover, .cycpos:focus-visible { color: var(--accent); }
   .namebtn:hover, .namebtn:focus-visible { color: var(--accent); text-decoration: underline; }
   .namebtn .lens {
     width: .72em; height: .72em; margin-left: .3em;
@@ -216,7 +257,16 @@
   @media (prefers-reduced-motion: reduce) {
     .lbwrap > img, .lbpanel { animation: none; }
   }
-  .card .tl { font-size: .72rem; color: var(--muted); line-height: 1.3; margin-top: .1rem; }
+  /* Two-line box for the same reason as .nmtext: a supertype ("Legendary
+     Creature — Human Wizard" vs "Creature — Human Wizard") wraps to a second
+     line and would shove the chips down on every cycle. Nothing is actually
+     clipped today — no type line in the data reaches a third line. */
+  .card .tl {
+    font-size: .72rem; color: var(--muted); line-height: 1.3; margin-top: .1rem;
+    height: 2.6em;                                  /* 2 × line-height 1.3 */
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
   .chips { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .35rem; }
   .chip {
     font-size: .68rem; font-family: system-ui, sans-serif;
@@ -225,6 +275,9 @@
     background: none; cursor: pointer;
   }
   .chip:hover, .chip:focus-visible { border-color: var(--accent); color: var(--ink); }
+  /* subtypes a cycled-in card carries beyond the slot's set: dashed and dim,
+     since the group's structure does not rest on them */
+  .chip.extra { border-style: dashed; opacity: .6; }
   .chip.shared { color: #14100d; border: 1px solid transparent; font-weight: 600; }
   .chip.shared:hover, .chip.shared:focus-visible { border-color: var(--ink); color: #14100d; }
   #cardpill {
@@ -258,7 +311,9 @@
   <h1>Creature Type-Line Groups <span class="rule">✦</span></h1>
   <div class="sub">Every pair of cards in a group shares a creature subtype — but no subtype
     is common to the whole group. All type lines within a group are unique.
-    Vintage-legal, single-faced cards only.</div>
+    Vintage-legal, single-faced cards only. Which card fills a slot is arbitrary:
+    use a card’s ▲▼ arrows to cycle through every other card carrying that slot’s
+    subtypes — including cards that add more, shown as dimmed chips.</div>
   <div class="patterns">
     <div><b>Pattern A</b> — 4 creatures with at least 6 subtypes that each
       appear on two or more of them.</div>
@@ -281,6 +336,7 @@
       <option value="5">size 5</option>
     </select>
     <button id="favpill" type="button" title="Show only favorite groups">★ Favorites</button>
+    <button id="exclpill" type="button" title="Show the excluded groups">⊘ Exclude List</button>
     <button id="statspill" type="button" title="Show subtype counts per pattern">Σ Stats</button>
     <button id="exportbtn" type="button" title="Download the groups shown as a text file">⬇ Export</button>
     <button id="cardpill" type="button" hidden title="Remove card filter"></button>
@@ -302,32 +358,105 @@
 let GROUPS = [];
 let cardFilter = null;
 let favsOnly = false;
+// Excluded groups are hidden everywhere; exclOnly flips to the exclude list
+// itself, which is the only place they show up (so they can be put back).
+let exclOnly = false;
 let statsOn = new URLSearchParams(location.search).get('stats') === '1';
 
-// Favorites persist in localStorage, keyed by dataset + sorted card names so
-// they survive regenerated datasets reordering the groups.
+// Favorites and exclusions persist in localStorage, keyed by dataset + sorted
+// card names so they survive regenerated datasets reordering the groups.
 const FAV_STORE = 'mtg-favorite-groups';
-let FAVS;
+const EXCL_STORE = 'mtg-excluded-groups';
+let FAVS, EXCL;
 try { FAVS = new Set(JSON.parse(localStorage.getItem(FAV_STORE) || '[]')); }
 catch { FAVS = new Set(); }
+try { EXCL = new Set(JSON.parse(localStorage.getItem(EXCL_STORE) || '[]')); }
+catch { EXCL = new Set(); }
 
-function favKey(e) {
+function groupKey(e) {
   return e.ds + '::' + e.cards.map(c => c.name).sort().join('|');
 }
 
-function toggleFav(e) {
-  const k = favKey(e);
-  FAVS.has(k) ? FAVS.delete(k) : FAVS.add(k);
-  try { localStorage.setItem(FAV_STORE, JSON.stringify([...FAVS])); } catch {}
+// Which card fills a slot is arbitrary — the generators keep the first card
+// they see per subtype set, and a group's structure depends only on the sets.
+// alternates.json lists every card that could stand in, so a slot can cycle.
+// Matching there is by superset, so an Elf Soldier slot also offers cards like
+// Citanul Stalwart (Elf Druid Soldier): still an Elf, still a Soldier. The
+// surplus subtypes arrive as `extra` and stay out of the group's structure.
+// Session-only: swaps are deliberately not persisted.
+let ALTS = {};
+const SWAPS = new Map();   // groupKey(e) + '#' + slot -> chosen card name
+
+function altsFor(c) {
+  return ALTS[c.subtypes.join('|')] || [];   // subtypes are stored sorted
+}
+
+// The cards a group currently displays. e.cards stays untouched: groupKey is
+// built from it, so favorites and exclusions survive a swap. `subtypes` stays
+// the slot's set whatever card is in it — that is the group's structure, and
+// what altsFor keys on — so a widened card carries its surplus in `extra`.
+function shownCards(e) {
+  return e.cards.map((c, i) => {
+    const pick = SWAPS.get(groupKey(e) + '#' + i);
+    if (!pick || pick === c.name) return c;
+    const alt = altsFor(c).find(a => a.name === pick);
+    return alt ? { ...alt, subtypes: c.subtypes } : c;
+  });
+}
+
+function toggleSaved(set, store, e) {
+  const k = groupKey(e);
+  set.has(k) ? set.delete(k) : set.add(k);
+  try { localStorage.setItem(store, JSON.stringify([...set])); } catch {}
   render();
 }
 
+// When a click drops a group out of the current view — excluding it, or
+// un-saving it while the favorites view is on — fade it first and then shrink
+// the hole it leaves before re-rendering. Everything box-model has to go to 0:
+// with border-box sizing the element cannot shrink past its padding + border.
+function collapseOut(sec, done) {
+  if (sec.dataset.collapsing) return;             // ignore repeat clicks
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return done();
+  sec.dataset.collapsing = '1';
+  const cs = getComputedStyle(sec);
+  const box = {
+    height: sec.getBoundingClientRect().height + 'px',
+    marginBottom: cs.marginBottom,
+    paddingTop: cs.paddingTop, paddingBottom: cs.paddingBottom,
+    borderTopWidth: cs.borderTopWidth, borderBottomWidth: cs.borderBottomWidth,
+  };
+  const flat = { height: '0px', marginBottom: '0px',
+    paddingTop: '0px', paddingBottom: '0px',
+    borderTopWidth: '0px', borderBottomWidth: '0px' };
+  sec.style.overflow = 'hidden';
+  const anim = sec.animate([
+    { ...box, opacity: 1, offset: 0 },
+    { ...box, opacity: 0, offset: .45 },          // fade, holding its space
+    { ...flat, opacity: 0, offset: 1 },           // then close the gap
+  ], { duration: 420, easing: 'ease-in-out', fill: 'forwards' });
+  let fired = false;                              // finish + cancel can both fire
+  anim.onfinish = anim.oncancel = () => { if (!fired) { fired = true; done(); } };
+}
+
+function countIn(set) {
+  return GROUPS.filter(e => set.has(groupKey(e))).length;
+}
+
 function updateFavPill() {
-  const n = GROUPS.filter(e => FAVS.has(favKey(e))).length;
+  const n = countIn(FAVS);
   const pill = document.getElementById('favpill');
   pill.textContent = n ? `★ Favorites (${n})` : '★ Favorites';
   pill.classList.toggle('on', favsOnly);
   pill.title = favsOnly ? 'Show all groups' : 'Show only favorite groups';
+}
+
+function updateExclPill() {
+  const n = countIn(EXCL);
+  const pill = document.getElementById('exclpill');
+  pill.textContent = n ? `⊘ Exclude List (${n})` : '⊘ Exclude List';
+  pill.classList.toggle('on', exclOnly);
+  pill.title = exclOnly ? 'Back to the included groups' : 'Show the excluded groups';
 }
 
 function setCardFilter(name) {
@@ -558,11 +687,17 @@ function filteredGroups() {
   const size = document.getElementById('size').value;
   return GROUPS.filter(e => {
     if (size && e.cards.length !== +size) return false;
-    if (favsOnly && !FAVS.has(favKey(e))) return false;
-    if (cardFilter && !e.cards.some(c => c.name === cardFilter)) return false;
-    return terms.every(t => e.cards.some(c =>
+    // exclude-list view shows exactly the excluded groups; every other view
+    // hides them
+    if (EXCL.has(groupKey(e)) !== exclOnly) return false;
+    if (favsOnly && !FAVS.has(groupKey(e))) return false;
+    // name filters follow what is on screen, so a swapped-in card is findable
+    const cards = shownCards(e);
+    if (cardFilter && !cards.some(c => c.name === cardFilter)) return false;
+    return terms.every(t => cards.some(c =>
         c.name.toLowerCase().includes(t) ||
-        c.subtypes.some(s => s.toLowerCase().includes(t))));
+        c.subtypes.some(s => s.toLowerCase().includes(t)) ||
+        (c.extra || []).some(s => s.toLowerCase().includes(t))));
   });
 }
 
@@ -596,6 +731,95 @@ function buildStats() {
   return sec;
 }
 
+// One card column of a group. Rebuilt in place when the slot is cycled, so a
+// swap never re-renders the page — a full render() would rebuild every group
+// and could drop this one out from under the cursor if the incoming card no
+// longer matches an active search term.
+function buildCard(e, i, freq) {
+  const c = shownCards(e)[i];
+  const el = document.createElement('div');
+  el.className = 'card';
+  const imgbtn = document.createElement('button');
+  imgbtn.type = 'button'; imgbtn.className = 'imgbtn';
+  imgbtn.title = `Enlarge ${c.name}`;
+  const img = document.createElement('img');
+  img.loading = 'lazy'; img.src = c.image; img.alt = c.name;
+  imgbtn.appendChild(img);
+  imgbtn.addEventListener('click', () => openLightbox(c));
+  const nm = document.createElement('div');
+  nm.className = 'nm';
+  const nmtext = document.createElement('div');
+  nmtext.className = 'nmtext';
+  const namebtn = document.createElement('button');
+  namebtn.type = 'button'; namebtn.className = 'namebtn';
+  namebtn.title = `Show only groups with ${c.name}`;
+  namebtn.textContent = c.name;
+  namebtn.insertAdjacentHTML('beforeend',
+    '<svg class="lens" viewBox="0 0 24 24" aria-hidden="true">' +
+    '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.6 15.6 21 21"/></svg>');
+  namebtn.addEventListener('click', () => setCardFilter(c.name));
+  nmtext.appendChild(namebtn);
+
+  // ▲/▼ cycle the slot through the other cards carrying these subtypes; any of
+  // them fills the slot just as well, so the group is unchanged either way.
+  const key = groupKey(e) + '#' + i;
+  const alts = altsFor(c);
+  const pool = alts.length;
+  const at = alts.findIndex(a => a.name === c.name);
+  const what = c.subtypes.join(' ');
+  const cyc = document.createElement('div');
+  cyc.className = 'cyc';
+  [['▲', -1], ['▼', 1]].forEach(([glyph, step]) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = glyph;
+    b.dataset.step = step;
+    b.disabled = pool < 2;
+    b.title = pool < 2 ? `No other cards are ${what}`
+      : `${step < 0 ? 'Previous' : 'Next'} of ${pool} cards that are ${what}` +
+        (at >= 0 ? ` — showing ${at + 1}` : '');
+    b.addEventListener('click', () => {
+      const next = at < 0 ? (step < 0 ? pool - 1 : 0)
+                          : ((at + step) % pool + pool) % pool;
+      // cycling back onto the group's own card clears the swap outright
+      alts[next].name === e.cards[i].name
+        ? SWAPS.delete(key) : SWAPS.set(key, alts[next].name);
+      const focused = document.activeElement === b;
+      const fresh = buildCard(e, i, freq);
+      el.replaceWith(fresh);
+      if (focused) fresh.querySelector(`.cyc [data-step="${step}"]`)?.focus();
+    });
+    cyc.appendChild(b);
+  });
+  if (SWAPS.has(key)) {
+    const pos = document.createElement('button');
+    pos.type = 'button'; pos.className = 'cycpos';
+    pos.textContent = `${at + 1}/${pool} ⟲`;
+    pos.title = `Back to ${e.cards[i].name}`;
+    pos.addEventListener('click', () => {
+      SWAPS.delete(key);
+      el.replaceWith(buildCard(e, i, freq));
+    });
+    nmtext.appendChild(pos);
+  }
+  nm.append(nmtext, cyc);
+
+  const tl = document.createElement('div');
+  tl.className = 'tl'; tl.textContent = c.type_line;
+  const chips = document.createElement('div');
+  chips.className = 'chips';
+  c.subtypes.forEach(s => chips.appendChild(mkChip(s, freq[s], false)));
+  // Subtypes this card has on top of the slot's set. They fill no role in the
+  // group, so they never take a shared color and never reach the type summary.
+  (c.extra || []).forEach(s => {
+    const ch = mkChip(s, 0, false);
+    ch.classList.add('extra');
+    ch.title = `Filter by ${s} — extra subtype on this card, not part of the group`;
+    chips.appendChild(ch);
+  });
+  el.append(imgbtn, nm, tl, chips);
+  return el;
+}
+
 function render() {
   const root = document.getElementById('groups');
   root.textContent = '';
@@ -603,26 +827,41 @@ function render() {
   if (statsOn && checkedSets().length) root.appendChild(buildStats());
 
   filteredGroups().forEach(e => {
-    const g = e.cards;
+    const g = shownCards(e);
     shown++;
 
     // subtypes appearing on 2+ cards in this group get a color chip
     const freq = {};
     g.forEach(c => c.subtypes.forEach(s => freq[s] = (freq[s] || 0) + 1));
 
+    const isExcl = EXCL.has(groupKey(e));
     const sec = document.createElement('section');
-    sec.className = 'group';
+    sec.className = isExcl ? 'group excluded' : 'group';
     sec.id = 'g' + e.ds + e.n;
     const h = document.createElement('h2');
     h.innerHTML = `<b>Group ${groupLabel(e)}</b> · ${g.length} creatures`;
     const fav = document.createElement('button');
     fav.type = 'button'; fav.className = 'favbtn';
-    const isFav = FAVS.has(favKey(e));
+    const isFav = FAVS.has(groupKey(e));
     fav.classList.toggle('on', isFav);
     fav.textContent = isFav ? '★ Saved' : '☆ Save to Favorites';
     fav.title = isFav ? 'Remove from favorites' : 'Save to favorites';
-    fav.addEventListener('click', () => toggleFav(e));
+    fav.addEventListener('click', () => {
+      const apply = () => toggleSaved(FAVS, FAV_STORE, e);
+      // un-saving inside the favorites view drops the group out of it; in any
+      // other view the group stays and only its button flips
+      favsOnly && isFav ? collapseOut(sec, apply) : apply();
+    });
     h.appendChild(fav);
+    const excl = document.createElement('button');
+    excl.type = 'button'; excl.className = 'exclbtn';
+    excl.classList.toggle('on', isExcl);
+    excl.textContent = isExcl ? '⊘ Excluded' : '⊘ Exclude Group';
+    excl.title = isExcl ? 'Put this group back in the list'
+                        : 'Hide this group from the list';
+    excl.addEventListener('click', () =>
+      collapseOut(sec, () => toggleSaved(EXCL, EXCL_STORE, e)));
+    h.appendChild(excl);
     // deck-building: Scryfall search for cards sharing a subtype with every
     // member of the group (one or-clause per creature)
     {
@@ -654,46 +893,24 @@ function render() {
 
     const row = document.createElement('div');
     row.className = 'cards';
-    g.forEach(c => {
-      const el = document.createElement('div');
-      el.className = 'card';
-      const imgbtn = document.createElement('button');
-      imgbtn.type = 'button'; imgbtn.className = 'imgbtn';
-      imgbtn.title = `Enlarge ${c.name}`;
-      const img = document.createElement('img');
-      img.loading = 'lazy'; img.src = c.image; img.alt = c.name;
-      imgbtn.appendChild(img);
-      imgbtn.addEventListener('click', () => openLightbox(c));
-      const nm = document.createElement('div');
-      nm.className = 'nm';
-      const namebtn = document.createElement('button');
-      namebtn.type = 'button'; namebtn.className = 'namebtn';
-      namebtn.title = `Show only groups with ${c.name}`;
-      namebtn.textContent = c.name;
-      namebtn.insertAdjacentHTML('beforeend',
-        '<svg class="lens" viewBox="0 0 24 24" aria-hidden="true">' +
-        '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.6 15.6 21 21"/></svg>');
-      namebtn.addEventListener('click', () => setCardFilter(c.name));
-      nm.appendChild(namebtn);
-      const tl = document.createElement('div');
-      tl.className = 'tl'; tl.textContent = c.type_line;
-      const chips = document.createElement('div');
-      chips.className = 'chips';
-      c.subtypes.forEach(s => chips.appendChild(mkChip(s, freq[s], false)));
-      el.append(imgbtn, nm, tl, chips);
-      row.appendChild(el);
-    });
+    g.forEach((c, i) => row.appendChild(buildCard(e, i, freq)));
     sec.appendChild(row);
     root.appendChild(sec);
   });
 
-  document.getElementById('count').textContent =
-    `${shown} of ${GROUPS.length} groups`;
+  const nExcl = countIn(EXCL);
+  document.getElementById('count').textContent = exclOnly
+    ? `${shown} of ${nExcl} excluded groups`
+    : `${shown} of ${GROUPS.length - nExcl} groups` +
+      (nExcl ? ` · ${nExcl} excluded` : '');
   updateFavPill();
+  updateExclPill();
   if (!shown) {
     const d = document.createElement('div');
     d.className = 'empty';
-    d.textContent = 'No groups match that filter.';
+    d.textContent = exclOnly && !nExcl
+      ? 'Nothing excluded yet — use “⊘ Exclude Group” to build the list.'
+      : 'No groups match that filter.';
     root.appendChild(d);
   }
 }
@@ -731,7 +948,10 @@ function rebuildGroups() {
 }
 
 Promise.all(Object.entries(DATASETS).map(([d, file]) =>
-  fetch(file).then(r => r.json()).then(data => ALL[d] = data)))
+  fetch(file).then(r => r.json()).then(data => ALL[d] = data))
+  // a missing alternates.json just leaves every cycle arrow greyed out
+  .concat(fetch('alternates.json').then(r => r.json())
+    .catch(() => ({})).then(data => ALTS = data)))
   .then(() => {
     rebuildGroups();
     render();
@@ -745,8 +965,16 @@ Promise.all(Object.entries(DATASETS).map(([d, file]) =>
 document.getElementById('q').addEventListener('input', render);
 document.getElementById('size').addEventListener('change', render);
 document.getElementById('cardpill').addEventListener('click', () => setCardFilter(null));
+// Favorites and the exclude list are opposite views of the same set of
+// groups, so turning one on drops the other.
 document.getElementById('favpill').addEventListener('click', () => {
   favsOnly = !favsOnly;
+  if (favsOnly) exclOnly = false;
+  render();
+});
+document.getElementById('exclpill').addEventListener('click', () => {
+  exclOnly = !exclOnly;
+  if (exclOnly) favsOnly = false;
   render();
 });
 document.getElementById('statspill').addEventListener('click', () => {
@@ -767,13 +995,13 @@ document.getElementById('exportbtn').addEventListener('click', () => {
   if (!shown.length) return;
   const text = shown.map(e =>
     `Group ${groupLabel(e)} · ${e.cards.length} creatures\n` +
-    e.cards.map(c => `${c.name} — ${c.type_line}\n  ${c.url}`).join('\n')
+    shownCards(e).map(c => `${c.name} — ${c.type_line}\n  ${c.url}`).join('\n')
   ).join('\n\n') + '\n';
   const blob = new Blob([text], { type: 'text/plain' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'creature-groups-' + checkedSets().join('-') +
-    (favsOnly ? '-favorites' : '') + '.txt';
+    (favsOnly ? '-favorites' : '') + (exclOnly ? '-excluded' : '') + '.txt';
   a.click();
   URL.revokeObjectURL(a.href);
 });
