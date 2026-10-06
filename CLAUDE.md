@@ -95,8 +95,10 @@ the remaining sets from the structure, then look them up in the pool.
   persisted) keyed by `groupKey(e) + '#' + slot`; `shownCards(e)` resolves them
   and is what render, the filters, and Export read. `e.cards` is never mutated
   — `groupKey` is built from it, so favorites and exclusions survive a swap.
-  Cycling back onto the group's own card clears the swap; while swapped, an
-  `n/N ⟲` badge next to the name resets the slot. An arrow click rebuilds only
+  Cycling back onto the group's own card clears the swap. An `n/N` counter
+  always shows in a box between the name and the arrows (width fixed per slot from the pool size, so long
+  names never push it to another line); while swapped it gains a ⟲ and
+  clicking it resets the slot. An arrow click rebuilds only
   that one `.card` via `buildCard` rather than calling `render()`, which would
   rebuild every group and could drop this one out from under the cursor when
   the incoming card no longer matches an active search term.
