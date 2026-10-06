@@ -1,0 +1,137 @@
+[
+ {
+  "build": "2026-10-06",
+  "scryfall_updated": "2026-10-06T21:01:59.184+00:00",
+  "since": "2026-08-11T21:01:58Z",
+  "cards": 38708,
+  "releases": [
+   {
+    "set": "frc",
+    "name": "Reality Fracture Commander",
+    "released": "2026-10-02",
+    "cards": 18,
+    "creatures": 13
+   },
+   {
+    "set": "fra",
+    "name": "Reality Fracture",
+    "released": "2026-10-02",
+    "cards": 268,
+    "creatures": 157
+   }
+  ],
+  "patterns": {
+   "a": {
+    "before": 326,
+    "after": 328,
+    "added": [
+     {
+      "id": "ga-ef9a6e45",
+      "cards": [
+       {
+        "name": "Bloodline Shaman",
+        "type_line": "Creature \u2014 Elf Wizard Shaman",
+        "subtypes": [
+         "Elf",
+         "Shaman",
+         "Wizard"
+        ],
+        "url": "https://scryfall.com/card/ons/249/bloodline-shaman?utm_source=api"
+       },
+       {
+        "name": "Bloodthirsty Ogre",
+        "type_line": "Creature \u2014 Ogre Warrior Shaman",
+        "subtypes": [
+         "Ogre",
+         "Shaman",
+         "Warrior"
+        ],
+        "url": "https://scryfall.com/card/chk/104/bloodthirsty-ogre?utm_source=api"
+       },
+       {
+        "name": "Growth-Chamber Guardian",
+        "type_line": "Creature \u2014 Elf Crab Warrior",
+        "subtypes": [
+         "Crab",
+         "Elf",
+         "Warrior"
+        ],
+        "url": "https://scryfall.com/card/rna/128/growth-chamber-guardian?utm_source=api"
+       },
+       {
+        "name": "Ruric Thar, Biomagus",
+        "type_line": "Legendary Creature \u2014 Ogre Crab Wizard",
+        "subtypes": [
+         "Crab",
+         "Ogre",
+         "Wizard"
+        ],
+        "url": "https://scryfall.com/card/fra/219/ruric-thar-biomagus?utm_source=api",
+        "new": true
+       }
+      ]
+     },
+     {
+      "id": "ga-09b3e6d7",
+      "cards": [
+       {
+        "name": "Growth-Chamber Guardian",
+        "type_line": "Creature \u2014 Elf Crab Warrior",
+        "subtypes": [
+         "Crab",
+         "Elf",
+         "Warrior"
+        ],
+        "url": "https://scryfall.com/card/rna/128/growth-chamber-guardian?utm_source=api"
+       },
+       {
+        "name": "Ruric Thar, Biomagus",
+        "type_line": "Legendary Creature \u2014 Ogre Crab Wizard",
+        "subtypes": [
+         "Crab",
+         "Ogre",
+         "Wizard"
+        ],
+        "url": "https://scryfall.com/card/fra/219/ruric-thar-biomagus?utm_source=api",
+        "new": true
+       },
+       {
+        "name": "Storrev, Devkarin Lich",
+        "type_line": "Legendary Creature \u2014 Zombie Elf Wizard",
+        "subtypes": [
+         "Elf",
+         "Wizard",
+         "Zombie"
+        ],
+        "url": "https://scryfall.com/card/war/219/storrev-devkarin-lich?utm_source=api"
+       },
+       {
+        "name": "Viscera Dragger",
+        "type_line": "Creature \u2014 Zombie Ogre Warrior",
+        "subtypes": [
+         "Ogre",
+         "Warrior",
+         "Zombie"
+        ],
+        "url": "https://scryfall.com/card/ala/92/viscera-dragger?utm_source=api"
+       }
+      ]
+     }
+    ],
+    "removed": []
+   },
+   "b": {
+    "before": 247,
+    "after": 247,
+    "added": [],
+    "removed": []
+   },
+   "c": {
+    "before": 0,
+    "after": 0,
+    "added": [],
+    "removed": []
+   }
+  }
+ }
+]

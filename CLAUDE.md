@@ -28,13 +28,13 @@ each row is one creature's subtype set (matching is up to relabeling):
   exhaustively in two families: all four cards 3-subtype (forces every
   subtype on exactly 2 cards, every pair sharing exactly 1 — the Pasch/K4
   structure) and groups containing one of the rare 4+-subtype sets (anchored
-  scan). 400 groups; near-dupes (3+ shared cards vs a kept group) dropped
-  for the browser (326 kept), sorted by shared-subtype then union count desc.
+  scan). 402 groups; near-dupes (3+ shared cards vs a kept group) dropped
+  for the browser (328 kept), sorted by shared-subtype then union count desc.
 - **Pattern B**: `123 / 124 / 345 / 15 / 25` — 5 creatures / 5 subtypes;
   exhaustively enumerated (247 groups).
 - **Pasch**: `123 / 145 / 246 / 356` — 4 creatures / 6 subtypes, every subtype
   on exactly 2 cards, every pair sharing exactly 1; exhaustive. Exactly the
-  all-3-subtype family of Pattern A — 234 of its current 400 groups, though
+  all-3-subtype family of Pattern A — 236 of its current 402 groups, though
   the shipped `pasch-groups.json` still holds the 233 from the 2026-07-09
   build (see § Data vintage).
 - **Pattern C (CMR Partners)**: Pattern A/B groups anchored on two Commander
@@ -46,7 +46,7 @@ each row is one creature's subtype set (matching is up to relabeling):
   pinned, pattern A is enumerated exhaustively; pattern B is exhaustive and
   empty (no B group contains two partner subtype sets even before the
   identity filter). Under the ≥6-subtypes-shared-twice Pattern A definition
-  the dataset is **still empty as of the 2026-08-11 build** (11 white / 43
+  the dataset is **still empty as of the 2026-10-06 build** (11 white / 43
   any anchor cards, 121 viable pairs, 0 completions) — partner anchors are
   too small to
   reach 12 subtype slots in any completable way, even ignoring the identity
@@ -61,8 +61,19 @@ the remaining sets from the structure, then look them up in the pool.
 
 - `index.html` — self-contained browser UI (no dependencies). Shows Patterns
   A/B/C via combinable checkboxes synced to `?data=` (comma-separated subset
-  of `a,b,c`; default all); groups are labeled `A12`/`B37`/`C5` with
-  `#gaN`/`#gbN`/`#gcN` anchors. Supports
+  of `a,b,c`; default all); groups are labeled `A12`/`B37`/`C5`, but those
+  index labels shift whenever a refresh inserts a group, so links use a
+  **stable group ID** instead: `g<ds>-<8 hex>`, an FNV-1a hash of the dataset
+  key + the group's sorted subtype sets (not card names — representatives
+  change between builds), `-2`/`-3` suffixes for a repeated structure.
+  `groupIds()` in `index.html` and `group_ids()` in `scripts/changelog.py`
+  must stay identical. The group label is a permalink to `#<id>`; old
+  `#gaN` links are rewritten to the ID on load; a link to a group that is
+  gone, or hidden by the current view, shows a notice (the latter with a
+  "Show it" button) instead of silently landing elsewhere. A "What's new"
+  toggle (synced to `?news=1`, hidden when `changelog.json` is missing)
+  shows each refresh that added or removed groups: new releases, which new
+  cards the new groups rest on, and links to them. Supports
   comma-separated AND search terms, clickable subtype chips (add term), click
   card image (zoom lightbox with the card's Scryfall link; Esc/click closes),
   click card name — marked with a magnifying-glass icon — to filter to groups
@@ -107,13 +118,19 @@ the remaining sets from the structure, then look them up in the pool.
   each card has `name, type_line, subtypes, image, url`. The UI fetches only
   the Pattern A/B/C files; `groups.json` and `pasch-groups.json` are kept
   (and still deployed) but no longer browsable.
+- `changelog.json` — newest-first list of refreshes that changed groups (one
+  entry per build: Scryfall date, new-release sets, and per pattern the
+  before/after counts plus added/removed groups as `{id, cards}`, new cards
+  flagged `new`). History starts with the 2026-10-06 build.
+- `card-ledger.txt` — every Vintage-legal card name at the last build;
+  `changelog.py` diffs against the committed copy to decide what is "new".
+  Committed, never deployed.
 - `alternates.json` — `"Beast|Frog|Zombie"` (sorted subtypes, the same array
   the UI already holds per slot) → every Vintage-legal single-faced card whose
   subtypes **include** that set, as `name, type_line, image, url`, plus
   `extra` (sorted surplus subtypes) on the ones that carry more. Ordered
   exact-matches-first, then by how many surplus subtypes, then alphabetically.
-  Scoped to the sets the shipped datasets use: 471 sets / 4,462 cards (920
-  with surplus subtypes), 222 of them with more than one card. A missing file
+  Scoped to the sets the shipped datasets use: 474 sets / 4,487 cards. A missing file
   just leaves every arrow greyed.
 - `creatures-3plus-subtypes.csv` — catalog of creatures with 3+ subtypes
   (NOTE: predates the Vintage/single-faced filters).
@@ -134,7 +151,8 @@ Live at https://mtg.jefamirault.com/ (shared personal droplet; target in
     ./deploy.sh --dry-run   # preview
     ./deploy.sh
 
-Ships only `index.html` + the six dataset JSONs (allowlist in `deploy.sh`);
+Ships only `index.html`, the six dataset JSONs, and `changelog.json`
+(allowlist in `deploy.sh`);
 `scripts/`, docs, CSV, and `.env` never leave this machine. Content deploys
 need no nginx reload. After regenerating a dataset, just deploy again.
 
@@ -176,6 +194,18 @@ It asserts every card the datasets display is present in its own set's
 alternates — that is the tripwire for the two files coming from different bulk
 snapshots.
 
+Last, **before committing** the regenerated files (it diffs against `HEAD`'s
+copies of the datasets and `card-ledger.txt`), record the refresh for the
+"What's new" panel:
+
+    python3 scripts/changelog.py data/oracle-cards.json data/SOURCE.txt changelog.json card-ledger.txt
+
+It always rewrites `card-ledger.txt`, but adds a `changelog.json` entry only
+if some pattern gained or lost a group (compared by structure); re-running
+for the same build replaces its entry. Commit both files with the datasets.
+Release dates can't decide "new": sets go legal before their official date
+(The Hobbit was already in the 2026-08-11 build, but dated 2026-08-14).
+
 The bulk file carries **previewed but unreleased** sets; the Vintage-legal
 base rule gates them out automatically (they are `not_legal` until release),
 so a refresh picks up only sets that have actually gone legal.
@@ -192,14 +222,16 @@ its argument list, or the new pattern's slots get no cycle arrows.
 The shipped datasets were not all built from the same bulk file:
 
 - `pattern-a-groups.json`, `pattern-b-groups.json`, `pattern-c-groups.json`,
-  `alternates.json` — built **2026-08-11** (oracle_cards
-  `2026-08-11T21:01:58Z`, 38,626 cards, 350 creature types). Includes The
-  Hobbit (`hob`/`hoc`, 2026-08-14).
+  `alternates.json` — built **2026-10-06** (oracle_cards
+  `2026-10-06T21:01:59Z`, 38,708 cards, 350 creature types). Previous build
+  was 2026-08-11; the refresh added 2 Pattern A groups, both resting on one
+  new card, Ruric Thar, Biomagus (Crab Ogre Wizard, Reality Fracture); no
+  B/C changes. See `changelog.json`.
 - `groups.json`, `creature-groups.md`, `pasch-groups.json` — still from the
   **2026-07-09** build. They are deployed but no longer browsable, so the
   staleness is cosmetic; note it means Pasch's "all-3-subtype family of
   Pattern A" identity does not currently hold against the files on disk
-  (233 shipped vs 234 in the current Pattern A run). Re-running `pasch.py`
+  (233 shipped vs 236 in the current Pattern A run). Re-running `pasch.py`
   and `find_groups.py` realigns them.
 
 Note the generators key the pool by subtype set and keep **one

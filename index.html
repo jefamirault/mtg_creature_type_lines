@@ -84,13 +84,50 @@
   #favpill.on { border-color: var(--accent); background: var(--accent); color: var(--bg); }
   #exclpill:hover { border-color: var(--danger); color: var(--danger); }
   #exclpill.on { border-color: var(--danger); background: var(--danger); color: var(--bg); }
-  #exportbtn, #statspill {
+  #exportbtn, #statspill, #newspill {
     font-size: .8rem; font-family: system-ui, sans-serif;
     padding: .3rem .7rem; border-radius: 99px; cursor: pointer;
     border: 1px solid var(--border); background: var(--panel2); color: var(--muted);
   }
-  #exportbtn:hover, #statspill:hover { border-color: var(--accent); color: var(--accent); }
-  #statspill.on { border-color: var(--accent); background: var(--accent); color: var(--bg); }
+  #exportbtn:hover, #statspill:hover, #newspill:hover { border-color: var(--accent); color: var(--accent); }
+  #statspill.on, #newspill.on { border-color: var(--accent); background: var(--accent); color: var(--bg); }
+  /* Group label doubles as its permalink (stable ID, safe to bookmark). */
+  .group h2 a.permalink { color: inherit; text-decoration: none; }
+  .group h2 a.permalink:hover b, .group h2 a.permalink:focus-visible b { text-decoration: underline; }
+  .group.target { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  #notice {
+    margin: 1rem 2rem 0; padding: .7rem 1rem; border-radius: 8px;
+    border: 1px solid var(--accent); background: var(--panel2);
+    font-family: system-ui, sans-serif; font-size: .88rem;
+    display: flex; gap: .8rem; align-items: center; flex-wrap: wrap;
+  }
+  #notice[hidden] { display: none; }
+  #notice button {
+    font: inherit; font-size: .8rem; padding: .15rem .6rem; border-radius: 99px;
+    cursor: pointer; border: 1px solid var(--border); background: none; color: var(--muted);
+  }
+  #notice button:hover { border-color: var(--accent); color: var(--accent); }
+  #notice .dismiss { margin-left: auto; }
+  .news {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.2rem 1.2rem;
+  }
+  .news > h2 { font-size: .95rem; font-weight: normal; color: var(--accent); letter-spacing: .05em; }
+  .newsentry { margin-top: .8rem; }
+  .newsentry + .newsentry { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .newsentry h3 { font-size: .9rem; font-weight: normal; color: var(--muted); }
+  .newsentry h3 b { color: var(--ink); font-weight: 600; }
+  .newsentry p { margin: .45rem 0; font-size: .9rem; line-height: 1.45; }
+  .newsentry ul { margin: .3rem 0 0; padding-left: 1.2rem; font-size: .88rem; line-height: 1.5; }
+  .newsentry a { color: var(--accent); }
+  .newsentry .gone { color: var(--muted); text-decoration: line-through; }
+  .newtag {
+    font-family: system-ui, sans-serif; font-size: .68rem; letter-spacing: .06em;
+    padding: 0 .35rem; border-radius: 4px; margin-left: .25rem;
+    background: var(--accent); color: var(--bg); vertical-align: 1px;
+  }
   .stats {
     background: var(--panel);
     border: 1px solid var(--border);
@@ -349,11 +386,13 @@
     <button id="favpill" type="button" title="Show only favorite groups">★ Favorites</button>
     <button id="exclpill" type="button" title="Show the excluded groups">⊘ Exclude List</button>
     <button id="statspill" type="button" title="Show subtype counts per pattern">Σ Stats</button>
+    <button id="newspill" type="button" hidden title="New card releases and the groups they added">✦ What's new</button>
     <button id="exportbtn" type="button" title="Download the groups shown as a text file">⬇ Export</button>
     <button id="cardpill" type="button" hidden title="Remove card filter"></button>
     <span class="count" id="count"></span>
   </div>
 </header>
+<div id="notice" hidden role="status"></div>
 <main id="groups"></main>
 <footer>Card data and images from <a href="https://scryfall.com">Scryfall</a>.
   Images load lazily as you scroll.</footer>
@@ -373,6 +412,8 @@ let favsOnly = false;
 // itself, which is the only place they show up (so they can be put back).
 let exclOnly = false;
 let statsOn = new URLSearchParams(location.search).get('stats') === '1';
+let newsOn = new URLSearchParams(location.search).get('news') === '1';
+let CHANGELOG = [];   // changelog.json: one entry per refresh that changed groups
 
 // Favorites and exclusions persist in localStorage, keyed by dataset + sorted
 // card names so they survive regenerated datasets reordering the groups.
@@ -386,6 +427,27 @@ catch { EXCL = new Set(); }
 
 function groupKey(e) {
   return e.ds + '::' + e.cards.map(c => c.name).sort().join('|');
+}
+
+// Stable group IDs for links: `g<ds>-<8 hex>`, an FNV-1a hash of the dataset
+// key and the group's structure (its sorted subtype sets). Index labels like
+// A151 shift whenever a refresh inserts a group, and card names change when a
+// refresh picks a different representative, so neither can anchor a bookmark.
+// Same structure twice in one dataset (Pattern C only) → -2, -3… in order.
+// Must match group_ids() in scripts/changelog.py.
+function fnv1a32(str) {
+  let h = 0x811c9dc5;
+  for (const b of new TextEncoder().encode(str)) h = Math.imul(h ^ b, 0x01000193) >>> 0;
+  return h;
+}
+function groupIds(ds, groups) {
+  const seen = {};
+  return groups.map(g => {
+    const canon = g.map(c => [...c.subtypes].sort().join('|')).sort().join('/');
+    const base = `g${ds}-${fnv1a32(ds + ':' + canon).toString(16).padStart(8, '0')}`;
+    seen[base] = (seen[base] || 0) + 1;
+    return seen[base] === 1 ? base : `${base}-${seen[base]}`;
+  });
 }
 
 // Which card fills a slot is arbitrary — the generators keep the first card
@@ -448,6 +510,29 @@ function collapseOut(sec, done) {
   ], { duration: 420, easing: 'ease-in-out', fill: 'forwards' });
   let fired = false;                              // finish + cancel can both fire
   anim.onfinish = anim.oncancel = () => { if (!fired) { fired = true; done(); } };
+}
+
+// collapseOut in reverse, for a section just inserted: open up its space,
+// then fade it in. No fill, so it settles at its natural size afterwards.
+function expandIn(sec) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cs = getComputedStyle(sec);
+  const box = {
+    height: sec.getBoundingClientRect().height + 'px',
+    marginBottom: cs.marginBottom,
+    paddingTop: cs.paddingTop, paddingBottom: cs.paddingBottom,
+    borderTopWidth: cs.borderTopWidth, borderBottomWidth: cs.borderBottomWidth,
+  };
+  const flat = { height: '0px', marginBottom: '0px',
+    paddingTop: '0px', paddingBottom: '0px',
+    borderTopWidth: '0px', borderBottomWidth: '0px' };
+  sec.style.overflow = 'hidden';
+  const anim = sec.animate([
+    { ...flat, opacity: 0, offset: 0 },
+    { ...box, opacity: 0, offset: .55 },          // make room first
+    { ...box, opacity: 1, offset: 1 },            // then fade in
+  ], { duration: 420, easing: 'ease-in-out' });
+  anim.onfinish = anim.oncancel = () => sec.style.overflow = '';
 }
 
 function countIn(set) {
@@ -843,6 +928,7 @@ function render() {
   const root = document.getElementById('groups');
   root.textContent = '';
   let shown = 0;
+  if (newsOn && CHANGELOG.length) root.appendChild(buildNews());
   if (statsOn && checkedSets().length) root.appendChild(buildStats());
 
   filteredGroups().forEach(e => {
@@ -856,9 +942,14 @@ function render() {
     const isExcl = EXCL.has(groupKey(e));
     const sec = document.createElement('section');
     sec.className = isExcl ? 'group excluded' : 'group';
-    sec.id = 'g' + e.ds + e.n;
+    sec.id = e.id;
     const h = document.createElement('h2');
-    h.innerHTML = `<b>Group ${groupLabel(e)}</b> · ${g.length} creatures`;
+    const perma = document.createElement('a');
+    perma.className = 'permalink';
+    perma.href = '#' + e.id;
+    perma.title = 'Link to this group — safe to bookmark, it survives data refreshes';
+    perma.innerHTML = `<b>Group ${groupLabel(e)}</b> · ${g.length} creatures`;
+    h.appendChild(perma);
     const fav = document.createElement('button');
     fav.type = 'button'; fav.className = 'favbtn';
     const isFav = FAVS.has(groupKey(e));
@@ -937,6 +1028,7 @@ function render() {
 const DATASETS = { a: 'pattern-a-groups.json', b: 'pattern-b-groups.json',
                    c: 'pattern-c-groups.json' };
 const ALL = {}; // ds -> array of card arrays, all fetched up front
+const IDS = {}; // ds -> stable group IDs, parallel to ALL[ds]
 const ALL_KEYS = Object.keys(DATASETS).join(',');
 
 // ?data=<comma-separated subset of dataset keys> (default / legacy: all)
@@ -963,23 +1055,169 @@ function checkedSets() {
 function rebuildGroups() {
   GROUPS = [];
   checkedSets().forEach(d =>
-    (ALL[d] || []).forEach((cards, n) => GROUPS.push({ ds: d, n: n + 1, cards })));
+    (ALL[d] || []).forEach((cards, n) =>
+      GROUPS.push({ ds: d, n: n + 1, id: IDS[d][n], cards })));
+}
+
+// Every group in every dataset, checked or not, by stable ID.
+function findGroup(id) {
+  for (const d of Object.keys(ALL)) {
+    const n = IDS[d].indexOf(id);
+    if (n >= 0) return { ds: d, n: n + 1, id, cards: ALL[d][n] };
+  }
+  return null;
+}
+
+function showNotice(text, actions = []) {
+  const box = document.getElementById('notice');
+  box.textContent = '';
+  const span = document.createElement('span');
+  span.textContent = text;
+  box.appendChild(span);
+  actions.forEach(([label, fn]) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = label;
+    b.addEventListener('click', () => { box.hidden = true; fn(); });
+    box.appendChild(b);
+  });
+  const x = document.createElement('button');
+  x.type = 'button'; x.className = 'dismiss'; x.textContent = '✕';
+  x.title = 'Dismiss'; x.setAttribute('aria-label', 'Dismiss');
+  x.addEventListener('click', () => box.hidden = true);
+  box.appendChild(x);
+  box.hidden = false;
+}
+
+// Bring the group named in location.hash into view. Accepts stable IDs and the
+// older index form (#ga151), which is rewritten to the stable ID. A bookmarked
+// group may be gone (a refresh removed it) or merely hidden by the current
+// view — say which, rather than silently landing somewhere else.
+function goToHash() {
+  document.getElementById('notice').hidden = true;
+  document.querySelectorAll('.group.target').forEach(el => el.classList.remove('target'));
+  let id = decodeURIComponent(location.hash.slice(1));
+  if (!id) return;
+  const legacy = id.match(/^g([a-z])(\d+)$/);
+  if (legacy && IDS[legacy[1]] && IDS[legacy[1]][legacy[2] - 1]) {
+    id = IDS[legacy[1]][legacy[2] - 1];
+    history.replaceState(null, '', location.pathname + location.search + '#' + id);
+  } else if (!/^g[a-z]-[0-9a-f]{8}(-\d+)?$/.test(id)) {
+    return;                                       // not a group link
+  }
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.add('target');
+    el.scrollIntoView();
+    return;
+  }
+  const e = findGroup(id);
+  if (!e) {
+    showNotice('That group is no longer in the data — a card-data refresh ' +
+               'removed it (see What\'s new).');
+    return;
+  }
+  showNotice(`Group ${groupLabel(e)} is hidden by the current view.`, [['Show it', () => {
+    document.getElementById('ds-' + e.ds).checked = true;
+    document.getElementById('ds-' + e.ds).dispatchEvent(new Event('change'));
+    document.getElementById('q').value = '';
+    document.getElementById('size').value = '';
+    cardFilter = null;
+    document.getElementById('cardpill').hidden = true;
+    favsOnly = false;
+    exclOnly = EXCL.has(groupKey(e));   // excluded groups only show on that list
+    render();
+    goToHash();
+  }]]);
+}
+
+// "What's new": one block per data refresh that added or removed groups
+// (changelog.json, newest first — see scripts/changelog.py). Group links use
+// stable IDs; added groups resolve to their current label, removed ones stay
+// plain text since there is nothing left to link to.
+function buildNews() {
+  const sec = document.createElement('section');
+  sec.className = 'news';
+  const title = document.createElement('h2');
+  title.textContent = 'What’s new';
+  sec.appendChild(title);
+  const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+  const cardList = cards => cards.map(c =>
+    esc(c.name) + (c.new ? '<span class="newtag">NEW</span>' : '')).join(' · ');
+  CHANGELOG.forEach(entry => {
+    const div = document.createElement('div');
+    div.className = 'newsentry';
+    const pats = Object.entries(entry.patterns)
+      .filter(([, p]) => p.added.length || p.removed.length);
+    const nAdd = pats.reduce((n, [, p]) => n + p.added.length, 0);
+    const nRem = pats.reduce((n, [, p]) => n + p.removed.length, 0);
+    const h = document.createElement('h3');
+    h.innerHTML = `<b>${esc(entry.build)}</b> · Scryfall data of ` +
+      `${esc(entry.scryfall_updated.slice(0, 10))} · ` +
+      [nAdd && `+${plural(nAdd, 'group')}`, nRem && `−${plural(nRem, 'group')}`]
+        .filter(Boolean).join(', ');
+    div.appendChild(h);
+
+    // Summary: the releases, then which new cards the new groups rest on.
+    const newNames = [...new Set(pats.flatMap(([, p]) => p.added)
+      .flatMap(g => g.cards).filter(c => c.new).map(c => c.name))];
+    const rel = entry.releases.map(r =>
+      `${esc(r.name)} (${esc(r.set.toUpperCase())}, ${plural(r.creatures, 'creature')})`);
+    const p = document.createElement('p');
+    p.innerHTML = (rel.length ? `New releases: ${rel.join(', ')}. ` : '') +
+      (newNames.length
+        ? `The new groups rest on ${newNames.map(n => `<b>${esc(n)}</b>`).join(', ')}` +
+          ' — a subtype combination no Vintage-legal card had before.'
+        : nAdd ? 'The new groups come from existing cards (e.g. type-line errata).' : '');
+    div.appendChild(p);
+
+    pats.forEach(([ds, pt]) => {
+      const sub = document.createElement('p');
+      sub.innerHTML = `<b>Pattern ${ds.toUpperCase()}</b>: ${pt.before} → ${pt.after} groups`;
+      div.appendChild(sub);
+      const ul = document.createElement('ul');
+      pt.added.forEach(g => {
+        const cur = findGroup(g.id);
+        const li = document.createElement('li');
+        li.innerHTML = cur
+          ? `<a href="#${esc(g.id)}">Group ${groupLabel(cur)}</a>: ${cardList(g.cards)}`
+          : `<span class="gone">${cardList(g.cards)}</span> (since removed)`;
+        ul.appendChild(li);
+      });
+      pt.removed.forEach(g => {
+        const li = document.createElement('li');
+        li.innerHTML = `Removed: <span class="gone">${cardList(g.cards)}</span>`;
+        ul.appendChild(li);
+      });
+      div.appendChild(ul);
+    });
+    sec.appendChild(div);
+  });
+  // re-clicking the link already in the URL fires no hashchange
+  sec.addEventListener('click', ev => {
+    const a = ev.target.closest('a[href^="#"]');
+    if (a && a.hash === location.hash) goToHash();
+  });
+  return sec;
 }
 
 Promise.all(Object.entries(DATASETS).map(([d, file]) =>
-  fetch(file).then(r => r.json()).then(data => ALL[d] = data))
+  fetch(file).then(r => r.json()).then(data => { ALL[d] = data; IDS[d] = groupIds(d, data); }))
   // a missing alternates.json just leaves every cycle arrow greyed out
   .concat(fetch('alternates.json').then(r => r.json())
-    .catch(() => ({})).then(data => ALTS = data)))
+    .catch(() => ({})).then(data => ALTS = data))
+  // likewise a missing changelog.json just hides the What's new button
+  .concat(fetch('changelog.json').then(r => r.json())
+    .catch(() => []).then(data => {
+      CHANGELOG = Array.isArray(data) ? data : [];
+      document.getElementById('newspill').hidden = !CHANGELOG.length;
+    })))
   .then(() => {
     rebuildGroups();
     render();
-    // groups render after the fetch, so honor #gaN / #gbN links once they exist
-    if (location.hash) {
-      const target = document.getElementById(location.hash.slice(1));
-      if (target) target.scrollIntoView();
-    }
+    // groups render after the fetch, so honor group links once they exist
+    goToHash();
   });
+addEventListener('hashchange', goToHash);
 
 document.getElementById('q').addEventListener('input', render);
 document.getElementById('size').addEventListener('change', render);
@@ -1006,6 +1244,26 @@ document.getElementById('statspill').addEventListener('click', () => {
   render();
 });
 document.getElementById('statspill').classList.toggle('on', statsOn);
+document.getElementById('newspill').addEventListener('click', () => {
+  newsOn = !newsOn;
+  const params = new URLSearchParams(location.search);
+  newsOn ? params.set('news', '1') : params.delete('news');
+  const qs = params.toString();
+  history.replaceState(null, '', (qs ? '?' + qs : location.pathname) + location.hash);
+  document.getElementById('newspill').classList.toggle('on', newsOn);
+  // Only the panel itself comes and goes — no full render(), which would
+  // rebuild every group and could only pop the panel in or out.
+  const root = document.getElementById('groups');
+  if (newsOn) {
+    const sec = buildNews();
+    root.prepend(sec);
+    expandIn(sec);
+  } else {
+    root.querySelectorAll('.news:not([data-collapsing])').forEach(sec =>
+      collapseOut(sec, () => sec.remove()));
+  }
+});
+document.getElementById('newspill').classList.toggle('on', newsOn);
 
 // Export the currently shown groups (all active filters applied) as a
 // plain-text card list for offline use.
