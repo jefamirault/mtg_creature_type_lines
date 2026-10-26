@@ -1,0 +1,506 @@
+1 Nakia, Wakandan Operative (MSC) 69 #3-subtypes
+1 Namor the Sub-Mariner (MSH) 69 #3-subtypes
+1 Namor, Atlantean King (MSC) 88 #3-subtypes
+1 Namor, Scourge of the Seas (MSC) 631 #3-subtypes
+1 Namora, the Sea Queen (MSC) 632 #3-subtypes
+1 Nantuko Vigilante (LGN) 132 #3-subtypes
+1 Nashi, Searcher in the Dark (DSK) 223 #3-subtypes
+1 Necrogen Rotpriest (ONE) 212 #3-subtypes
+1 Neera, Wild Mage (CLB) 288 #3-subtypes
+1 Neheb, Dreadhorde Champion (WAR) 140 #3-subtypes
+1 Neheb, the Eternal (HOU) 104 #3-subtypes
+1 Nested Ghoul (MBS) 48 #3-subtypes
+1 Nethroi, Apex of Death (IKO) 197 #3-subtypes
+1 Nexos (40K) 95 #3-subtypes
+1 Nick Fury, Agent of S.H.I.E.L.D. (MSH) 25 #3-subtypes
+1 Nick Fury, Spymaster (MSC) 603 #3-subtypes
+1 Nico Minoru, Runaway (MSC) 700 #3-subtypes
+1 Night Nurse, Healer of Heroes (MSH) 26 #3-subtypes
+1 Nimana Sell-Sword (ZEN) 106 #3-subtypes
+1 Ninja of the Hand (MSH) 108 #3-subtypes
+1 Nirkana Assassin (BFZ) 118 #3-subtypes
+1 Noble Templar (SCG) 19 #3-subtypes
+1 Nomad Mythmaker (JUD) 15 #3-subtypes
+1 Nomads en-Kor (STH) 9 #3-subtypes
+1 North Pole Patrol (TLA) 65 #3-subtypes
+1 North Wind Avatar (TMT) 162 #3-subtypes
+1 Norwood Ranger (P02) 138 #3-subtypes
+1 Notorious Assassin (MMQ) 150 #3-subtypes
+1 Novijen Sages (DIS) 27 #3-subtypes
+1 Oakhame Ranger (ELD) 212 #3-subtypes
+1 Oil-Gorger Troll (ONE) 177 #3-subtypes
+1 Okoye, Dora Milaje Leader (MSH) 27 #3-subtypes
+1 Okoye, Mighty and Adored (MSC) 89 #3-subtypes
+1 Old Hob, Alleycat Blues (TMT) 99 #3-subtypes
+1 Oltec Archaeologists (LCI) 27 #3-subtypes
+1 Ondu Champion (BFZ) 149 #3-subtypes
+1 Ondu Cleric (ZEN) 30 #3-subtypes
+1 Ondu War Cleric (OGW) 31 #3-subtypes
+1 One-Clown Band (UNF) 117 #3-subtypes
+1 Oran-Rief Survivalist (ZEN) 174 #3-subtypes
+1 Order of Leitbur (FEM) 16a #3-subtypes
+1 Order of Yawgmoth (USG) 144 #3-subtypes
+1 Orochi Ranger (CHK) 235 #3-subtypes
+1 Orochi Soul-Reaver (OTC) 22 #3-subtypes
+1 Osgood, Operation Double (WHO) 191 #3-subtypes
+1 Outrider en-Kor (TSP) 31 #3-subtypes
+1 Owen Grady, Raptor Trainer (REX) 16 #3-subtypes
+1 Peggy Carter, Secret Agent (MSC) 523 #3-subtypes
+1 Phantom Flock (JUD) 16 #3-subtypes
+1 Phantom Nishoba (JUD) 140 #3-subtypes
+1 Pharaoh Rama-Tut (MSC) 634 #3-subtypes
+1 Phyrexian Crusader (MBS) 50 #3-subtypes
+1 Phyrexian Driver (NEM) 64 #3-subtypes
+1 Phyrexian Missionary (DMU) 27 #3-subtypes
+1 Phyrexian Prowler (NEM) 65 #3-subtypes
+1 Phyrexian Swarmlord (NPH) 119 #3-subtypes
+1 Pious Warrior (MMQ) 34 #3-subtypes
+1 Pipsqueak, Rebel Strongarm (TLE) 82 #3-subtypes
+1 Plague Dogs (UDS) 66 #3-subtypes
+1 Plague Stinger (SOM) 75 #3-subtypes
+1 Pol Jamaar, Illusionist (J25) 38 #3-subtypes
+1 Possessed Aven (TOR) 45 #3-subtypes
+1 Possessed Barbarian (TOR) 111 #3-subtypes
+1 Possessed Nomad (TOR) 13 #3-subtypes
+1 Predation Steward (ONE) 180 #3-subtypes
+1 Pretending Poxbearers (TLA) 237 #3-subtypes
+1 Pride of the Road (DFT) 24 #3-subtypes
+1 Priest of Urabrask (NPH) 90 #3-subtypes
+1 Priest of Yawgmoth (ATQ) 19 #3-subtypes
+1 Priest of the Crossing (DRC) 6 #3-subtypes
+1 Prime Speaker Vannifar (RNA) 195 #3-subtypes
+1 Princess Yue (TLE) 95 #3-subtypes
+1 Prodigal Sorcerer (LEA) 73 #3-subtypes
+1 Professional Wrestler (SPM) 110 #3-subtypes
+1 Professor Hulk (MSC) 37 #3-subtypes
+1 Professor Zei, Anthropologist (TLA) 238 #3-subtypes
+1 Progenitor Exarch (MOM) 32 #3-subtypes
+1 Prowler, Clawed Thief (SPM) 138 #3-subtypes
+1 Prowler, Misguided Mentor (SPE) 17 #3-subtypes
+1 Punk Frogs (TMT) 164 #3-subtypes
+1 Puppet Master, String Puller (MSC) 59 #3-subtypes
+1 Putrid Pals (TMT) 165 #3-subtypes
+1 Putrid Raptor (SCG) 71 #3-subtypes
+1 Putrid Warrior (APC) 117 #3-subtypes
+1 Quake, Agent of S.H.I.E.L.D. (MSH) 32 #3-subtypes
+1 Queen of Ice (ELD) 61 #3-subtypes
+1 Quirion Explorer (PLS) 90 #3-subtypes
+1 Radioactive Man (MSC) 665 #3-subtypes
+1 Raging Goblinoids (SPM) 85 #3-subtypes
+1 Rakish Revelers (SNC) 214 #3-subtypes
+1 Ramosian Revivalist (FUT) 30 #3-subtypes
+1 Ranger of Eos (ALA) 21 #3-subtypes
+1 Ranger-Captain of Eos (MH1) 21 #3-subtypes
+1 Raph & Leo, Sibling Rivals (TMT) 166 #3-subtypes
+1 Raph & Mikey, Troublemakers (TMT) 167 #3-subtypes
+1 Raphael, Most Attitude (TMT) 101 #3-subtypes
+1 Raphael, Ninja Destroyer (TMT) 102 #3-subtypes
+1 Raphael, Tag Team Tough (TMC) 118 #3-subtypes
+1 Raphael, Tough Turtle (TMT) 104 #3-subtypes
+1 Raphael, the Muscle (TMC) 4 #3-subtypes
+1 Raphael, the Nightwatcher (TMT) 103 #3-subtypes
+1 Rappelling Scouts (MMQ) 41 #3-subtypes
+1 Rathi Fiend (NEM) 68 #3-subtypes
+1 Rathi Intimidator (NEM) 69 #3-subtypes
+1 Rathi Trapper (PLC) 90 #3-subtypes
+1 Raul, Trouble Shooter (PIP) 115 #3-subtypes
+1 Raven Guild Master (SCG) 47 #3-subtypes
+1 Ravenloft Adventurer (CLB) 142 #3-subtypes
+1 Razorkin Hordecaller (DSK) 152 #3-subtypes
+1 Rebel Informer (PCY) 75 #3-subtypes
+1 Rebellious Captives (TLA) 191 #3-subtypes
+1 Reckless Bushwhacker (OGW) 116 #3-subtypes
+1 Reckless Cohort (BFZ) 152 #3-subtypes
+1 Red Ghost, Intangible Genius (MSC) 92 #3-subtypes
+1 Red Guardian, Super-Soldier (MSH) 34 #3-subtypes
+1 Red Hulk (MSH) 149 #3-subtypes
+1 Red Room Recruit (MSH) 110 #3-subtypes
+1 Reed Richards, Smartest Man (MSC) 636 #3-subtypes
+1 Relief Captain (OGW) 32 #3-subtypes
+1 Reliquary Monk (UDS) 14 #3-subtypes
+1 Resolute Blademaster (BFZ) 218 #3-subtypes
+1 Rhet-Tomb Mystic (DRC) 10 #3-subtypes
+1 Rhox Bodyguard (CON) 122 #3-subtypes
+1 Riftmarked Knight (PLC) 14 #3-subtypes
+1 Rinoa Heartilly (FIN) 237 #3-subtypes
+1 Rinoa, Angel Wing (FIC) 450 #3-subtypes
+1 Risen Necroregent (DFT) 102 #3-subtypes
+1 River Song (WHO) 152 #3-subtypes
+1 Robber of the Rich (ELD) 138 #3-subtypes
+1 Rockslide Sorcerer (ZNR) 154 #3-subtypes
+1 Rogue Skycaptain (ALL) 79 #3-subtypes
+1 Ronin, Shadow Stalker (MSH) 112 #3-subtypes
+1 Rosa, Resolute White Mage (FIN) 431 #3-subtypes
+1 Rowdy Snowballers (TLA) 68 #3-subtypes
+1 Roxxon Brutes (MSH) 113 #3-subtypes
+1 Ruric Thar, Biomagus (FRA) 219 #3-subtypes
+1 Rustvine Cultivator (ONE) 181 #3-subtypes
+1 Ruthless Waterbender (TLE) 110 #3-subtypes
+1 Sabertooth Nishoba (INV) 268 #3-subtypes
+1 Sabin, Master Monk (FIC) 57 #3-subtypes
+1 Safehold Duo (SHM) 238 #3-subtypes
+1 Sakura-Tribe Scout (SOK) 144 #3-subtypes
+1 Sally Pride, Lioness Leader (TMT) 24 #3-subtypes
+1 Saltfield Recluse (PLC) 16 #3-subtypes
+1 Sami, Wildcat Captain (EOE) 226 #3-subtypes
+1 Samite Archer (INV) 269 #3-subtypes
+1 Samite Censer-Bearer (FUT) 15 #3-subtypes
+1 Samut, Hazoret's Champion (FRA) 251 #3-subtypes
+1 Samut, Vizier of Naktamun (MAT) 45 #3-subtypes
+1 Samut, the Driving Force (DFT) 222 #3-subtypes
+1 Sandman, Shifting Scoundrel (SPM) 112 #3-subtypes
+1 Sandstone Warrior (TMP) 199 #3-subtypes
+1 Sandstorm Crasher (J25) 18 #3-subtypes
+1 Sanguine Guard (USG) 155 #3-subtypes
+1 Sarinth Steelseeker (BRO) 189 #3-subtypes
+1 Satoru, the Infiltrator (OTJ) 230 #3-subtypes
+1 Sauroform Hybrid (RNA) 140 #3-subtypes
+1 Sauron, Dino Devotee (MSC) 731 #3-subtypes
+1 Scared Stiff (UNF) 90 #3-subtypes
+1 Scarlet Spider, Ben Reilly (SPM) 142 #3-subtypes
+1 Scarlet Spider, Kaine (SPM) 143 #3-subtypes
+1 Scarlet Witch, Chaotic Avenger (MSC) 93 #3-subtypes
+1 Scarlet Witch, Wanda Maximoff (MSC) 855 #3-subtypes
+1 Schema Thief (MOC) 24 #3-subtypes
+1 Scientist Supreme of A.I.M. (MSH) 225 #3-subtypes
+1 Scorpion, Seething Striker (SPM) 64 #3-subtypes
+1 Scurrilous Sentry (MH3) 108 #3-subtypes
+1 Scuttlegator (RNA) 218 #3-subtypes
+1 Sea Gate Loremaster (ZEN) 63 #3-subtypes
+1 Seascape Aerialist (ZEN) 64 #3-subtypes
+1 Sensational Spider-Man (SPE) 25 #3-subtypes
+1 Sentinel of the Nameless City (LCI) 211 #3-subtypes
+1 Sephiroth, Fallen Hero (FIC) 92 #3-subtypes
+1 Sephiroth, Planet's Heir (FIN) 505 #3-subtypes
+1 Serendib Sorcerer (PLC) 61 #3-subtypes
+1 Serene Steward (BFZ) 46 #3-subtypes
+1 Serpent Specialist (MSH) 186 #3-subtypes
+1 Setzer, Wandering Gambler (FIC) 93 #3-subtypes
+1 Shadowheart, Dark Justiciar (CLB) 146 #3-subtypes
+1 Shaman en-Kor (STH) 15 #3-subtypes
+1 Shang-Chi and the Ten Rings (MSC) 94 #3-subtypes
+1 Shang-Chi, Martial Mentor (MSC) 732 #3-subtypes
+1 Shang-Chi, Master of Kung Fu (MSH) 187 #3-subtypes
+1 Shark Shredder, Killer Clone (TMT) 73 #3-subtypes
+1 Sharktocrab (RNA) 206 #3-subtypes
+1 Shatterskull Recruit (BFZ) 155 #3-subtypes
+1 Shaun & Rebecca, Agents (ACR) 64 #3-subtypes
+1 Shay Cormac (ACR) 65 #3-subtypes
+1 She-Hulk, Attorney-at-Law (MSC) 745 #3-subtypes
+1 She-Hulk, Jennifer Walters (MSC) 554 #3-subtypes
+1 Shessra, Death's Whisper (AFR) 231 #3-subtypes
+1 Shieldmage Elder (ONS) 54 #3-subtypes
+1 Shiko and Narset, Unified (TDC) 7 #3-subtypes
+1 Shivan Zombie (INV) 271 #3-subtypes
+1 Shocker, Unshakable (SPM) 89 #3-subtypes
+1 Shoreline Ranger (SCG) 51 #3-subtypes
+1 Shriekdiver (WAR) 103 #3-subtypes
+1 Shuri, Vibranium Technologist (MSC) 746 #3-subtypes
+1 Shuri, Wakandan Inventor (MSH) 75 #3-subtypes
+1 Shuri, the Black Panther (MSC) 95 #3-subtypes
+1 Sidisi, Regent of the Mire (TDM) 92 #3-subtypes
+1 Siegfried, Famed Swordsman (FIC) 51 #3-subtypes
+1 Sif's Spearmaster (MSC) 765 #3-subtypes
+1 Sighted-Caste Sorcerer (ALA) 26 #3-subtypes
+1 Silent Assassin (MMQ) 160 #3-subtypes
+1 Silhana Starfletcher (GPT) 95 #3-subtypes
+1 Silk, Web Weaver (SPM) 145 #3-subtypes
+1 Silumgar Sorcerer (DTK) 76 #3-subtypes
+1 Silver Sable, Mercenary Leader (SPM) 13 #3-subtypes
+1 Siren Stormtamer (XLN) 79 #3-subtypes
+1 Sivriss, Nightmare Speaker (CLB) 148 #3-subtypes
+1 Skatewing Spy (RNA) 52 #3-subtypes
+1 Skithiryx, the Blight Dragon (SOM) 79 #3-subtypes
+1 Skyrider Elf (BFZ) 220 #3-subtypes
+1 Skyshroud Troopers (STH) 115 #3-subtypes
+1 Skyward Spider (SPM) 146 #3-subtypes
+1 Slash, Reptile Rampager (TMT) 108 #3-subtypes
+1 Slobad, Iron Goblin (ONE) 149 #3-subtypes
+1 Smellerbee, Rebel Fighter (TLE) 125 #3-subtypes
+1 Smirking Spelljacker (OTC) 16 #3-subtypes
+1 Snapdax, Apex of the Hunt (IKO) 209 #3-subtypes
+1 Snow Villiers (FIN) 33 #3-subtypes
+1 Sokenzan Renegade (SOK) 114 #3-subtypes
+1 Sokenzan Spellblade (SOK) 115 #3-subtypes
+1 Sokka and Suki (TLE) 71 #3-subtypes
+1 Sokka, Bold Boomeranger (PF25) 18 #3-subtypes
+1 Sokka, Lateral Strategist (TLA) 241 #3-subtypes
+1 Sokka, Swordmaster (TLE) 83 #3-subtypes
+1 Sokka, Tenacious Tactician (TLA) 242 #3-subtypes
+1 Sokka, Wolf Cove's Protector (TLE) 219 #3-subtypes
+1 Soldevi Machinist (ICE) 102 #3-subtypes
+1 Soltari Monk (TMP) 45 #3-subtypes
+1 Sorcerer of the Fang (M20) 114 #3-subtypes
+1 Sorceress Queen (ARN) 32 #3-subtypes
+1 South Pole Voyager (TLA) 35 #3-subtypes
+1 South Wind Avatar (TMT) 78 #3-subtypes
+1 Spawnbinder Mage (OGW) 35 #3-subtypes
+1 Spectacular Spider-Man (SPM) 14 #3-subtypes
+1 Spellgorger Barbarian (JUD) 100 #3-subtypes
+1 Spellweaver Eternal (HOU) 46 #3-subtypes
+1 Spider-Bot (SPM) 173 #3-subtypes
+1 Spider-Byte, Web Warden (SPM) 44 #3-subtypes
+1 Spider-Girl, Legacy Hero (SPM) 149 #3-subtypes
+1 Spider-Gwen, Free Spirit (SPM) 90 #3-subtypes
+1 Spider-Ham, Peter Porker (SPM) 114 #3-subtypes
+1 Spider-Islanders (SPM) 91 #3-subtypes
+1 Spider-Man 2099 (SPM) 150 #3-subtypes
+1 Spider-Man 2099, Miguel O'Hara (SPE) 8 #3-subtypes
+1 Spider-Man India (SPM) 151 #3-subtypes
+1 Spider-Man Noir (SPM) 67 #3-subtypes
+1 Spider-Man, Brooklyn Visionary (SPM) 115 #3-subtypes
+1 Spider-Man, Hometown Hero (MSC) 857 #3-subtypes
+1 Spider-Man, Miles Morales (SPE) 18 #3-subtypes
+1 Spider-Man, New Champion (MSC) 705 #3-subtypes
+1 Spider-Man, Peter Parker (SPE) 4 #3-subtypes
+1 Spider-Man, To the Rescue (MSH) 228 #3-subtypes
+1 Spider-Man, Web-Slinger (SPM) 16 #3-subtypes
+1 Spider-Man, Web-Spinner (MSC) 832 #3-subtypes
+1 Spider-Punk (SPM) 92 #3-subtypes
+1 Spider-Rex, Daring Dino (SPM) 116 #3-subtypes
+1 Spider-UK (SPM) 17 #3-subtypes
+1 Spider-Woman, Stunning Savior (SPM) 152 #3-subtypes
+1 Spineless Thug (NEM) 71 #3-subtypes
+1 Spinneret and Spiderling (SPM) 94 #3-subtypes
+1 Spiteful Bully (NEM) 72 #3-subtypes
+1 Splinter, Aging Champion (TMC) 104 #3-subtypes
+1 Splinter, Hamato Yoshi (TMT) 79 #3-subtypes
+1 Splinter, Radical Rat (TMT) 169 #3-subtypes
+1 Splinter, the Mentor (TMC) 3 #3-subtypes
+1 Squall, SeeD Mercenary (FIN) 243 #3-subtypes
+1 Starlight Invoker (LGN) 20 #3-subtypes
+1 Steward of Valeron (ALA) 198 #3-subtypes
+1 Stick, Fearless Mentor (MSC) 706 #3-subtypes
+1 Stilt-Man, Towering Terror (MSC) 61 #3-subtypes
+1 Stockman, Mad Fly-entist (TMT) 54 #3-subtypes
+1 Stone Haven Outfitter (OGW) 37 #3-subtypes
+1 Stoneforge Acolyte (OGW) 38 #3-subtypes
+1 Storm Fleet Pyromancer (XLN) 163 #3-subtypes
+1 Storm Shaman (ALL) 81a #3-subtypes
+1 Storm, Queen of Wakanda (MSC) 97 #3-subtypes
+1 Storrev, Devkarin Lich (WAR) 219 #3-subtypes
+1 Stronghold Assassin (STH) 71 #3-subtypes
+1 Stubborn Burrowfiend (OTJ) 184 #3-subtypes
+1 Suki, Courageous Rescuer (TLA) 37 #3-subtypes
+1 Suki, Kyoshi Captain (TLE) 85 #3-subtypes
+1 Suki, Kyoshi Warrior (TLA) 243 #3-subtypes
+1 Sultai Devotee (TDM) 160 #3-subtypes
+1 Sun Warriors (TLA) 244 #3-subtypes
+1 Sun-Spider, Nimble Webber (SPM) 154 #3-subtypes
+1 Sunseed Nurturer (ALA) 29 #3-subtypes
+1 Super Shredder (TMT) 83 #3-subtypes
+1 Super-Skrull (MSH) 115 #3-subtypes
+1 Superior Foes of Spider-Man (SPM) 96 #3-subtypes
+1 Superior Spider-Man (SPM) 155 #3-subtypes
+1 Surtr, Fiery Jötun (ACR) 293 #3-subtypes
+1 Swampbenders (TLE) 65 #3-subtypes
+1 Swashbuckler Extraordinaire (CLB) 198 #3-subtypes
+1 Swordsman, Sharp Scoundrel (MSH) 116 #3-subtypes
+1 Sylvan Advocate (OGW) 144 #3-subtypes
+1 Sylvan Ranger (M11) 198 #3-subtypes
+1 Symbiote Spider-Man (SPM) 156 #3-subtypes
+1 T'Chaka, Venerable King (MSC) 98 #3-subtypes
+1 T'Challa, the Black Panther (MSC) 7 #3-subtypes
+1 Tajuru Archer (ZEN) 185 #3-subtypes
+1 Tajuru Beastmaster (BFZ) 193 #3-subtypes
+1 Tajuru Pathwarden (OGW) 145 #3-subtypes
+1 Tajuru Stalwart (BFZ) 194 #3-subtypes
+1 Tajuru Warcaller (BFZ) 195 #3-subtypes
+1 Takeno's Cavalry (BOK) 24 #3-subtypes
+1 Talas Explorer (P02) 49 #3-subtypes
+1 Talas Researcher (P02) 51 #3-subtypes
+1 Talas Scout (P02) 52 #3-subtypes
+1 Talas Warrior (P02) 53 #3-subtypes
+1 Talus Paladin (WWK) 21 #3-subtypes
+1 Taskmaster, Mercenary Mimic (MSH) 232 #3-subtypes
+1 Tato Farmer (PIP) 86 #3-subtypes
+1 Tattermunge Duo (SHM) 218 #3-subtypes
+1 Tel-Jilad Fallen (SOM) 130 #3-subtypes
+1 Teo, Spirited Glider (TLA) 74 #3-subtypes
+1 Terra, Herald of Hope (FIC) 4 #3-subtypes
+1 Thalakos Scout (EXO) 48 #3-subtypes
+1 Thalia and The Gitrog Monster (MOM) 255 #3-subtypes
+1 The Astonishing Ant-Man (MSH) 204 #3-subtypes
+1 The Beamtown Bullies (NCC) 6 #3-subtypes
+1 The Blue Spirit (TLE) 90 #3-subtypes
+1 The Boulder, Ready to Rumble (TLA) 168 #3-subtypes
+1 The Duke, Rebel Sentry (TLE) 76 #3-subtypes
+1 The Earth King (TLA) 172 #3-subtypes
+1 The Flood of Mars (WHO) 45 #3-subtypes
+1 The Foretold Soldier (WHO) 102 #3-subtypes
+1 The Ghoul, Gunslinger (SLD) 2448 #3-subtypes
+1 The Gitrog, Ravenous Ride (OTJ) 206 #3-subtypes
+1 The Howling Abomination (SLD) 431 #3-subtypes
+1 The Howling Commandos (MSC) 598 #3-subtypes
+1 The Immortal Weapons (MSC) 547 #3-subtypes
+1 The Lion-Turtle (TLA) 232 #3-subtypes
+1 The Mary Janes (SPE) 15 #3-subtypes
+1 The Mechanist, Aerial Artisan (TLA) 64 #3-subtypes
+1 The Mighty Thor, Jane Foster (MSH) 222 #3-subtypes
+1 The Pride of Hull Clade (MKM) 172 #3-subtypes
+1 The Scarlet Witch (MSH) 151 #3-subtypes
+1 The Serpent Society (MSH) 226 #3-subtypes
+1 The Spot, Living Portal (SPM) 153 #3-subtypes
+1 The Unbeatable Squirrel Girl (MSH) 193 #3-subtypes
+1 The Wandering Rescuer (DSK) 41 #3-subtypes
+1 Thelonite Druid (FEM) 78 #3-subtypes
+1 Thelonite Monk (FEM) 79 #3-subtypes
+1 Thistledown Duo (SHM) 152 #3-subtypes
+1 Thor Odinson (MSH) 234 #3-subtypes
+1 Thor, Asgard's Avenger (MSC) 756 #3-subtypes
+1 Thor, God of Thunder (MSH) 156 #3-subtypes
+1 Thor, Guardian of Midgard (MSC) 503 #3-subtypes
+1 Thrummingbird (SOM) 47 #3-subtypes
+1 Tiger Shark, Abyssal Hunter (MSC) 747 #3-subtypes
+1 Tigra, Feline Fury (MSH) 191 #3-subtypes
+1 Timestream Navigator (RIX) 59 #3-subtypes
+1 Tokka & Rahzar, Terrible Twos (TMT) 171 #3-subtypes
+1 Tokka & Rahzar, Unsupervised (TMC) 28 #3-subtypes
+1 Toph, Earthbending Master (TLE) 145 #3-subtypes
+1 Toph, Greatest Earthbender (TLE) 70 #3-subtypes
+1 Toph, Hardheaded Teacher (TLA) 246 #3-subtypes
+1 Toph, the Blind Bandit (TLA) 198 #3-subtypes
+1 Toph, the First Metalbender (TLA) 247 #3-subtypes
+1 Totentanz, Swarm Piper (WOE) 216 #3-subtypes
+1 Trained Arynx (OTJ) 36 #3-subtypes
+1 Transcendent Master (ROE) 51 #3-subtypes
+1 Treetop Freedom Fighters (TLA) 156 #3-subtypes
+1 Trollbred Guardian (RNA) 148 #3-subtypes
+1 Tsabo's Assassin (INV) 128 #3-subtypes
+1 Tuktuk Grunts (ZEN) 152 #3-subtypes
+1 Tuktuk Scrapper (WWK) 94 #3-subtypes
+1 Turncoat Kunoichi (TMT) 26 #3-subtypes
+1 Ty Lee, Chi Blocker (TLA) 76 #3-subtypes
+1 U.S.Agent, John Walker (MSH) 236 #3-subtypes
+1 Uchuulon (CLB) 626 #3-subtypes
+1 Umara Entangler (OGW) 65 #3-subtypes
+1 Unassuming Sage (WOE) 37 #3-subtypes
+1 Uncle Iroh (TLA) 248 #3-subtypes
+1 Undead Hand Ninja (MSC) 670 #3-subtypes
+1 Undercover Crocodelf (MKM) 239 #3-subtypes
+1 Undercover Skrull (MSH) 194 #3-subtypes
+1 Underrealm Lich (GRN) 211 #3-subtypes
+1 Unruly Krasis (CLU) 50 #3-subtypes
+1 Utrom Scientists (TMT) 56 #3-subtypes
+1 Vadrok, Apex of Thunder (IKO) 214 #3-subtypes
+1 Valentina Allegra de Fontaine (MSC) 671 #3-subtypes
+1 Valeria Richards, Precocious (MSC) 38 #3-subtypes
+1 Valkyrior Skyrider (MSC) 525 #3-subtypes
+1 Vampire Aristocrat (M10) 117 #3-subtypes
+1 Vampire Envoy (OGW) 92 #3-subtypes
+1 Vannifar, Evolved Enigma (MKM) 241 #3-subtypes
+1 Varis, Silverymoon Ranger (AFR) 209 #3-subtypes
+1 Vastwood Animist (WWK) 116 #3-subtypes
+1 Vedalken Anatomist (MBS) 36 #3-subtypes
+1 Venerable Monk (POR) 35 #3-subtypes
+1 Venomized Cat (SPM) 72 #3-subtypes
+1 Venser, Corpse Puppet (ONE) 219 #3-subtypes
+1 Venus, Torn Between Worlds (TMT) 136 #3-subtypes
+1 Verge Rangers (C20) 29 #3-subtypes
+1 Veronica, Dissident Scribe (PIP) 70 #3-subtypes
+1 Veteran Explorer (WTH) 144 #3-subtypes
+1 Veteran Warleader (DDP) 27 #3-subtypes
+1 Victor Timely, Wily Tycoon (MSC) 642 #3-subtypes
+1 Vigean Graftmage (DIS) 35 #3-subtypes
+1 Viper, Cruel Conspirator (MSC) 673 #3-subtypes
+1 Viridian Betrayers (NPH) 124 #3-subtypes
+1 Viridian Corrupter (MBS) 94 #3-subtypes
+1 Viridian Emissary (MBS) 95 #3-subtypes
+1 Viridian Scout (5DN) 100 #3-subtypes
+1 Virtuous Variant (MSC) 758 #3-subtypes
+1 Viscera Dragger (ALA) 92 #3-subtypes
+1 Vital Splicer (NPH) 126 #3-subtypes
+1 Vohar, Vodalian Desecrator (DMU) 226 #3-subtypes
+1 Vrestin, Menoptra Leader (WHO) 166 #3-subtypes
+1 Vulshok Sorcerer (5DN) 80 #3-subtypes
+1 Vulture, Feathered Fiend (MSC) 645 #3-subtypes
+1 Vulture, Scheming Scavenger (SPM) 158 #3-subtypes
+1 W'Kabi, Shield of the Nation (MSC) 70 #3-subtypes
+1 Wakandan Royal Guard (MSH) 195 #3-subtypes
+1 Walltop Sentries (TLA) 202 #3-subtypes
+1 Wandering Mage (ALL) 111 #3-subtypes
+1 Wandering Musicians (TLA) 250 #3-subtypes
+1 Warped Researcher (LGN) 56 #3-subtypes
+1 Warped Tusker (MH3) 16 #3-subtypes
+1 Warren Soultrader (MH3) 110 #3-subtypes
+1 Warrior en-Kor (STH) 23 #3-subtypes
+1 Wartime Protestors (TLA) 160 #3-subtypes
+1 Water Tribe Captain (TLA) 41 #3-subtypes
+1 Water Tribe Rallier (TLA) 42 #3-subtypes
+1 Weapons Trainer (OGW) 160 #3-subtypes
+1 Weathered Wayfarer (ONS) 59 #3-subtypes
+1 Wee Champion (UNF) 127 #3-subtypes
+1 Wei Assassins (PTK) 86 #3-subtypes
+1 Wei Scout (PTK) 90 #3-subtypes
+1 Werebear (ODY) 282 #3-subtypes
+1 Werefox Bodyguard (WOE) 39 #3-subtypes
+1 West Wind Avatar (TMT) 137 #3-subtypes
+1 Western Paladin (USG) 168 #3-subtypes
+1 Whipcorder (ONS) 60 #3-subtypes
+1 Whiplash, Vengeful Engineer (MSH) 121 #3-subtypes
+1 Whirler Rogue (ORI) 83 #3-subtypes
+1 White Lotus Reinforcements (TLA) 251 #3-subtypes
+1 White Widow, Free Agent (MSH) 42 #3-subtypes
+1 White Widow, Yelena Belova (MSC) 676 #3-subtypes
+1 Wiccan, Rising Magician (MSH) 83 #3-subtypes
+1 Wiccan, Young Avenger (MSC) 557 #3-subtypes
+1 Wild-Magic Sorcerer (AFC) 36 #3-subtypes
+1 Wildfire Eternal (HOU) 109 #3-subtypes
+1 Wing Splicer (NPH) 50 #3-subtypes
+1 Wingbeat Warrior (LGN) 29 #3-subtypes
+1 Winter Eladrin (CLB) 104 #3-subtypes
+1 Winter Soldier, Bucky Barnes (MSC) 845 #3-subtypes
+1 Winter Soldier, Icy Assassin (MSH) 239 #3-subtypes
+1 Winter Soldier, Reborn Avenger (MSC) 27 #3-subtypes
+1 Wolfsbane, Highland Hero (MSC) 767 #3-subtypes
+1 Wolverine, Best There Is (SLD) 1737 #3-subtypes
+1 Wolverine, Claws Out (MSC) 737 #3-subtypes
+1 Wolverine, Fierce Fighter (MSH) 240 #3-subtypes
+1 Wonder Man, Hollywood Hero (MSH) 160 #3-subtypes
+1 Woodland Liege (J25) 27 #3-subtypes
+1 Wormfang Behemoth (JUD) 55 #3-subtypes
+1 Wormfang Manta (JUD) 58 #3-subtypes
+1 Wormfang Newt (JUD) 59 #3-subtypes
+1 Wormfang Turtle (JUD) 60 #3-subtypes
+1 Wraith, Vicious Vigilante (SPM) 160 #3-subtypes
+1 Wretched Anurid (ONS) 183 #3-subtypes
+1 Wu Longbowman (PTK) 61 #3-subtypes
+1 Wu Scout (PTK) 62 #3-subtypes
+1 Wu Spy (PTK) 63 #3-subtypes
+1 X-23, Deadly Weapon (MSC) 738 #3-subtypes
+1 Xavier Sal, Infested Captain (LCC) 14 #3-subtypes
+1 Yargle and Multani (MOM) 256 #3-subtypes
+1 Yellowjacket, Heartless Marauder (MSH) 123 #3-subtypes
+1 Yisan, the Wanderer Bard (M15) 209 #3-subtypes
+1 Yotian Medic (BRO) 33 #3-subtypes
+1 Zada's Commando (OGW) 120 #3-subtypes
+1 Zaffai and the Tempests (SOS) 246 #3-subtypes
+1 Zahur, Glory's Past (DFT) 229 #3-subtypes
+1 Zarda, the Power Princess (MSC) 615 #3-subtypes
+1 Zhang Fei, Fierce Warrior (PTK) 32 #3-subtypes
+1 Zhao Zilong, Tiger General (PTK) 33 #3-subtypes
+1 Zidane, Tantalus Thief (FIN) 251 #3-subtypes
+1 Zuko, Firebending Master (TLE) 127 #3-subtypes
+1 Zulaport Chainmage (OGW) 93 #3-subtypes
+1 Zulaport Cutthroat (BFZ) 126 #3-subtypes
+1 Zuri, Warrior of Wakanda (MSC) 72 #3-subtypes
+1 Zygon Infiltrator (WHO) 63 #3-subtypes
+1 Aberrant Mind Sorcerer (AFR) 44 #4-subtypes
+1 Casey & Raph, Hotheads (TMC) 114 #4-subtypes
+1 Curious Farm Animals (TLA) 14 #4-subtypes
+1 Dark Leo & Shredder (TMT) 142 #4-subtypes
+1 Donnie & April, Adorkable Duo (TMC) 111 #4-subtypes
+1 Joraga Bard (ZEN) 166 #4-subtypes
+1 Leonardo, Sewer Samurai (TMT) 17 #4-subtypes
+1 Mathise, Surge Channeler (SLD) 1238 #4-subtypes
+1 Mikey & Mona, Mutant Sitters (TMC) 125 #4-subtypes
+1 Monster Mashup (TMC) 117 #4-subtypes
+1 Prehistoric Turtlesaurus (TMC) 127 #4-subtypes
+1 Priest of Gix (USG) 150 #4-subtypes
+1 Ranger en-Vec (TMP) 268 #4-subtypes
+1 Rathi Assassin (PNEM) 67 #4-subtypes
+1 Seton's Scout (TOR) 138 #4-subtypes
+1 Spider-Woman, Secret Agent (MSH) 229 #4-subtypes
+1 Splinter & Leo, Father & Son (TMC) 103 #4-subtypes
+1 Turntimber Ranger (ZEN) 191 #4-subtypes
+1 Pet Avengers (MSH) 178 #6-subtypes

@@ -34,9 +34,7 @@ each row is one creature's subtype set (matching is up to relabeling):
   exhaustively enumerated (247 groups).
 - **Pasch**: `123 / 145 / 246 / 356` — 4 creatures / 6 subtypes, every subtype
   on exactly 2 cards, every pair sharing exactly 1; exhaustive. Exactly the
-  all-3-subtype family of Pattern A — 236 of its current 402 groups, though
-  the shipped `pasch-groups.json` still holds the 233 from the 2026-07-09
-  build (see § Data vintage).
+  all-3-subtype family of Pattern A — 236 of its 402 groups.
 - **Pattern C (CMR Partners)**: Pattern A/B groups anchored on two Commander
   Legends partner cards — one matching `set:cmr o:partner c:w`, a different
   card matching `set:cmr o:partner` (anchor lists fetched from the Scryfall
@@ -46,7 +44,7 @@ each row is one creature's subtype set (matching is up to relabeling):
   pinned, pattern A is enumerated exhaustively; pattern B is exhaustive and
   empty (no B group contains two partner subtype sets even before the
   identity filter). Under the ≥6-subtypes-shared-twice Pattern A definition
-  the dataset is **still empty as of the 2026-10-06 build** (11 white / 43
+  the dataset is **still empty as of the 2026-10-25 build** (11 white / 43
   any anchor cards, 121 viable pairs, 0 completions) — partner anchors are
   too small to
   reach 12 subtype slots in any completable way, even ignoring the identity
@@ -132,6 +130,11 @@ the remaining sets from the structure, then look them up in the pool.
   exact-matches-first, then by how many surplus subtypes, then alphabetically.
   Scoped to the sets the shipped datasets use: 474 sets / 4,487 cards. A missing file
   just leaves every arrow greyed.
+- `moxfield/` — Moxfield import lists of every eligible creature with 3+
+  subtypes (base rules above; 1,084 cards as of 2026-10-25), one line per
+  card as `1 Name (SET) CN #N-subtypes` — earliest paper printing, tagged by
+  subtype count. Split into two parts (A–M / N–Z plus all 4+) because Moxfield
+  lists don't handle more than ~1,000 cards. Never deployed.
 - `creatures-3plus-subtypes.csv` — catalog of creatures with 3+ subtypes
   (NOTE: predates the Vintage/single-faced filters).
 - `creature-groups.md` — markdown listing of the `groups.json` dataset.
@@ -219,20 +222,16 @@ its argument list, or the new pattern's slots get no cycle arrows.
 
 ## Data vintage
 
-The shipped datasets were not all built from the same bulk file:
-
-- `pattern-a-groups.json`, `pattern-b-groups.json`, `pattern-c-groups.json`,
-  `alternates.json` — built **2026-10-06** (oracle_cards
-  `2026-10-06T21:01:59Z`, 38,708 cards, 350 creature types). Previous build
-  was 2026-08-11; the refresh added 2 Pattern A groups, both resting on one
-  new card, Ruric Thar, Biomagus (Crab Ogre Wizard, Reality Fracture); no
-  B/C changes. See `changelog.json`.
-- `groups.json`, `creature-groups.md`, `pasch-groups.json` — still from the
-  **2026-07-09** build. They are deployed but no longer browsable, so the
-  staleness is cosmetic; note it means Pasch's "all-3-subtype family of
-  Pattern A" identity does not currently hold against the files on disk
-  (233 shipped vs 236 in the current Pattern A run). Re-running `pasch.py`
-  and `find_groups.py` realigns them.
+All shipped datasets are from the **2026-10-25** build (oracle_cards
+`2026-10-25T21:01:54Z`, 38,998 cards, 367 creature types). That refresh
+changed no groups: no new cards had gone Vintage-legal since 2026-10-06 (the
+extra bulk cards were unreleased previews; the catalog also grew by 17
+types), so Patterns A/B/C came out byte-identical and `alternates.json`
+only picked up new image URLs. It did realign the long-stale `groups.json`,
+`creature-groups.md` and `pasch-groups.json` (from 2026-07-09; Pasch 233 →
+236). The last build that changed groups was 2026-10-06, which added 2 Pattern A
+groups resting on Ruric Thar, Biomagus (Crab Ogre Wizard, Reality Fracture) —
+see `changelog.json`.
 
 Note the generators key the pool by subtype set and keep **one
 representative card per set**, first-seen in bulk-file order. A new printing
