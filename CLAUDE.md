@@ -82,7 +82,9 @@ the remaining sets from the structure, then look them up in the pool.
   except the Exclude List toggle itself — the one place they can be put back,
   and which is mutually exclusive with the Favorites view — a Stats toggle
   (synced to `?stats=1`) showing per-pattern subtype instance counts, and an
-  Export button downloading the currently shown groups as a text file. Every group gets a deck-building
+  Export button that opens a dialog with the currently shown groups as text —
+  one read-only textarea per part, each with Copy and an optional Download
+  (nothing downloads unless asked). Every group gets a deck-building
   Scryfall link — `-is:digital -is:reprint` plus one `(t:x or t:y …)` clause
   per creature, i.e. cards sharing a subtype with every group member.
   A click that drops a group out of the current view (excluding it, or
@@ -111,6 +113,16 @@ the remaining sets from the structure, then look them up in the pool.
   that one `.card` via `buildCard` rather than calling `render()`, which would
   rebuild every group and could drop this one out from under the cursor when
   the incoming card no longer matches an active search term.
+  A **Groups | Creatures** switch (synced to `?view=creatures`; hidden when
+  `creatures-3plus.json` is missing) flips to a flat grid of every creature
+  with 3+ subtypes. It is cards, not groups, so every group-only control
+  (pattern boxes, size, favorites, exclusions, stats, What's new, card filter)
+  is hidden there: controls carry `grouponly` / `creatonly` classes and
+  `body.vc` hides the wrong set. It has its own subtype-count select (any / 3 /
+  4+), shares the search box, chips and lightbox, and Export becomes a
+  Moxfield import list of the cards shown, split into parts of at most 1,000
+  cards (`MOXFIELD_PAGE`; Moxfield's import limit). No favorites or exclusions here, on
+  purpose.
 - `groups.json`, `pattern-a-groups.json`, `pattern-b-groups.json`,
   `pattern-c-groups.json`, `pasch-groups.json` — datasets: arrays of groups;
   each card has `name, type_line, subtypes, image, url`. The UI fetches only
@@ -130,13 +142,18 @@ the remaining sets from the structure, then look them up in the pool.
   exact-matches-first, then by how many surplus subtypes, then alphabetically.
   Scoped to the sets the shipped datasets use: 474 sets / 4,487 cards. A missing file
   just leaves every arrow greyed.
-- `moxfield/` — Moxfield import lists of every eligible creature with 3+
-  subtypes (base rules above; 1,084 cards as of 2026-10-25), one line per
-  card as `1 Name (SET) CN #N-subtypes` — earliest paper printing, tagged by
-  subtype count. Split into two parts (A–M / N–Z plus all 4+) because Moxfield
-  lists don't handle more than ~1,000 cards. Never deployed.
-- `creatures-3plus-subtypes.csv` — catalog of creatures with 3+ subtypes
-  (NOTE: predates the Vintage/single-faced filters).
+- `creatures-3plus.json` — the Creatures view: every eligible creature with
+  3+ subtypes (base rules above; 1,084 cards as of 2026-10-25) as a flat list
+  of `name, type_line, subtypes, image, url, set, cn, released`, ordered by
+  subtype count desc then name. Each card is its **first paper printing**:
+  earliest `released_at` among paper, non-oversized printings, non-promo
+  preferred on a date tie (store/prerelease promos share the set's date),
+  then lowest collector number. Flip/adventure/prepare cards use the front
+  face's name and their creature face's type line.
+- `moxfield/` — Moxfield import lists of the same cards, generated alongside
+  `creatures-3plus.json`, one line per card as `1 Name (SET) CN #N-subtypes`.
+  Split into two parts (3-subtype A–M / 3-subtype N–Z plus all 4+) because
+  Moxfield lists don't handle more than ~1,000 cards. Never deployed.
 - `creature-groups.md` — markdown listing of the `groups.json` dataset.
 - `scripts/` — generators (see below).
 
@@ -154,9 +171,9 @@ Live at https://mtg.jefamirault.com/ (shared personal droplet; target in
     ./deploy.sh --dry-run   # preview
     ./deploy.sh
 
-Ships only `index.html`, the six dataset JSONs, and `changelog.json`
+Ships only `index.html`, the seven dataset JSONs, and `changelog.json`
 (allowlist in `deploy.sh`);
-`scripts/`, docs, CSV, and `.env` never leave this machine. Content deploys
+`scripts/`, docs, `moxfield/`, and `.env` never leave this machine. Content deploys
 need no nginx reload. After regenerating a dataset, just deploy again.
 
 Every deploy also ships a `deploy.json` stamp (UTC timestamp, short commit SHA, branch, dirty
@@ -165,16 +182,19 @@ is live here — see `~/devops/PATTERNS.md` § Deploy stamping.
 
 ## Workflows
 
-Regenerating data needs the Scryfall bulk file. Fetch it and the creature
-types catalog into `data/` (gitignored, ~200 MB) with:
+Regenerating data needs the Scryfall bulk files. Fetch them and the creature
+types catalog into `data/` (gitignored, ~300 MB) with:
 
     ./scripts/fetch_bulk.sh
 
 Scryfall serves bulk data **only as gzipped JSONL** — the old plain-`.json`
 array URL 404s — so the helper converts it to a JSON array, which is the
-shape every generator expects (`json.load(open(BULK))`). It also writes
-`data/SOURCE.txt` recording the download URI, Scryfall's `updated_at`, the
-card count, and the catalog size; keep that, it is the only provenance for a
+shape every generator expects (`json.load(open(BULK))`). It also downloads
+`default_cards` (every printing) as `data/default-cards.jsonl.gz`, left
+gzipped — only `creatures_3plus.py` reads it, line by line, to find first
+printings. It also writes
+`data/SOURCE.txt` recording the download URIs, Scryfall's `updated_at` for
+both files, the card count, and the catalog size; keep that, it is the only provenance for a
 given build (Scryfall publishes no historical snapshots, so a build is not
 reproducible after the fact). Send a `User-Agent` header on Scryfall API
 requests — they 403 without one; prefer bulk data over paging
@@ -185,7 +205,11 @@ requests — they 403 without one; prefer bulk data over paging
     python3 scripts/pattern_b.py    data/oracle-cards.json data/creature-types.json pattern-b-groups.json
     python3 scripts/pattern_c.py    data/oracle-cards.json data/creature-types.json pattern-c-groups.json
     python3 scripts/pasch.py        data/oracle-cards.json data/creature-types.json pasch-groups.json
-    python3 scripts/catalog_subtypes.py data/oracle-cards.json data/creature-types.json creatures-3plus-subtypes.csv
+    python3 scripts/creatures_3plus.py data/oracle-cards.json data/creature-types.json data/default-cards.jsonl.gz creatures-3plus.json moxfield
+
+`creatures_3plus.py` writes both `creatures-3plus.json` and the two
+`moxfield/` lists — never edit those by hand. A diff in the Moxfield lists
+after a refresh is the quickest read on which 3+ subtype creatures arrived.
 
 `alternates.py` reads the pattern datasets to scope itself, so it runs **after**
 them (and again whenever they are regenerated, or the UI's cycle arrows offer

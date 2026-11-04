@@ -350,6 +350,62 @@
   @media (prefers-reduced-motion: reduce) {
     #top-btn { transition: none; }
   }
+  /* Groups | Creatures view switch. body.vc = the Creatures view; each control
+     is marked for the view it belongs to and hidden in the other. */
+  .viewsw { display: inline-flex; border: 1px solid var(--border); border-radius: 99px; overflow: hidden; }
+  .viewsw button {
+    font-size: .8rem; font-family: system-ui, sans-serif;
+    padding: .3rem .8rem; cursor: pointer; border: 0;
+    background: var(--panel2); color: var(--muted);
+  }
+  .viewsw button + button { border-left: 1px solid var(--border); }
+  .viewsw button:hover { color: var(--accent); }
+  .viewsw button.on { background: var(--accent); color: var(--bg); }
+  .viewsw[hidden] { display: none; }
+  body.vc .grouponly, body:not(.vc) .creatonly { display: none; }
+  .creatures {
+    display: grid; gap: 1.2rem 1rem;
+    grid-template-columns: repeat(auto-fill, 200px);
+  }
+  .creatures .card .nmtext { height: auto; min-height: 2.5em; }
+  .card .print { font-size: .68rem; color: var(--muted); font-family: system-ui, sans-serif; }
+  /* Export: the text shown on the page to copy, with an optional download */
+  #exportbox {
+    position: fixed; inset: 0; z-index: 30;
+    display: flex; align-items: center; justify-content: center;
+    padding: 2rem; background: rgba(12, 9, 6, .9);
+  }
+  #exportbox[hidden] { display: none; }
+  /* While the export dialog is open the page behind it must not scroll. The
+     gutter stays reserved so hiding the scrollbar doesn't shift the layout. */
+  html { scrollbar-gutter: stable; }
+  html.modal-open { overflow: hidden; }
+  .expanel {
+    width: min(48rem, 100%); max-height: 100%; overflow-y: auto;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 1rem 1.2rem 1.2rem;
+  }
+  .exhead { display: flex; align-items: baseline; gap: 1rem; }
+  .exhead h2 { font-size: .95rem; font-weight: normal; color: var(--accent); letter-spacing: .05em; }
+  .exhead .exnote { color: var(--muted); font-size: .82rem; }
+  .exhead .exclose { margin-left: auto; }
+  .expart { margin-top: .9rem; }
+  .expart .exbar { display: flex; align-items: center; gap: .6rem; margin-bottom: .35rem;
+    font-size: .85rem; color: var(--muted); }
+  .expart .exbar span { margin-right: auto; }
+  .expanel button {
+    font-size: .8rem; font-family: system-ui, sans-serif;
+    padding: .2rem .7rem; border-radius: 99px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--panel2); color: var(--muted);
+  }
+  .expanel button:hover, .expanel button:focus-visible { border-color: var(--accent); color: var(--accent); }
+  .expanel textarea {
+    width: 100%; height: 14rem; resize: vertical; color-scheme: dark;
+    background: var(--panel2); color: var(--ink);
+    border: 1px solid var(--border); border-radius: 6px; padding: .5rem .7rem;
+    font: .8rem/1.4 ui-monospace, Menlo, Consolas, monospace;
+  }
+  .expanel textarea:focus { outline: 1px solid var(--accent); }
   footer { color: var(--muted); font-size: .8rem; text-align: center; padding: 0 2rem 2rem; }
   footer a { color: var(--accent); }
 </style>
@@ -357,12 +413,17 @@
 <body>
 <header>
   <h1>Creature Type-Line Groups <span class="rule">✦</span></h1>
-  <div class="sub">Every pair of cards in a group shares a creature subtype — but no subtype
+  <div class="sub grouponly">Every pair of cards in a group shares a creature subtype — but no subtype
     is common to the whole group. All type lines within a group are unique.
     Vintage-legal, single-faced cards only. Which card fills a slot is arbitrary:
     use a card’s ▲▼ arrows to cycle through every other card carrying that slot’s
     subtypes — including cards that add more, shown as dimmed chips.</div>
-  <div class="patterns">
+  <div class="patterns creatonly">
+    <div><b>Creatures</b> — every Vintage-legal, single-faced creature with three or
+      more subtypes, shown as its first paper printing. These are the raw material
+      for the groups.</div>
+  </div>
+  <div class="patterns grouponly">
     <div><b>Pattern A</b> — 4 creatures with at least 6 subtypes that each
       appear on two or more of them.</div>
     <div><b>Pattern B</b> — 5 creatures over exactly 5 subtypes, arranged
@@ -372,23 +433,32 @@
       the commanders' combined color identity.</div>
   </div>
   <div class="controls">
-    <span class="dsboxes">
+    <span class="viewsw" id="viewsw" hidden>
+      <button type="button" data-view="groups" title="Browse the type-line groups">Groups</button>
+      <button type="button" data-view="creatures" title="Browse every creature with 3+ subtypes">Creatures</button>
+    </span>
+    <span class="dsboxes grouponly">
       <label title="4 creatures, ≥6 subtypes each on 2+ cards"><input type="checkbox" id="ds-a" checked> Pattern A</label>
       <label title="123 / 124 / 345 / 15 / 25"><input type="checkbox" id="ds-b" checked> Pattern B</label>
       <label title="Pattern A/B groups anchored on two CMR partner commanders (one white); other cards fit their combined color identity"><input type="checkbox" id="ds-c" checked> Pattern C</label>
     </span>
     <input type="search" id="q" placeholder="Filter by card name or subtype — commas combine (Spider, Villain)">
-    <select id="size">
+    <select id="nsubs" class="creatonly">
+      <option value="">any subtype count</option>
+      <option value="3">3 subtypes</option>
+      <option value="4">4+ subtypes</option>
+    </select>
+    <select id="size" class="grouponly">
       <option value="">any size</option>
       <option value="4">size 4</option>
       <option value="5">size 5</option>
     </select>
-    <button id="favpill" type="button" title="Show only favorite groups">★ Favorites</button>
-    <button id="exclpill" type="button" title="Show the excluded groups">⊘ Exclude List</button>
-    <button id="statspill" type="button" title="Show subtype counts per pattern">Σ Stats</button>
-    <button id="newspill" type="button" hidden title="New card releases and the groups they added">✦ What's new</button>
-    <button id="exportbtn" type="button" title="Download the groups shown as a text file">⬇ Export</button>
-    <button id="cardpill" type="button" hidden title="Remove card filter"></button>
+    <button id="favpill" type="button" class="grouponly" title="Show only favorite groups">★ Favorites</button>
+    <button id="exclpill" type="button" class="grouponly" title="Show the excluded groups">⊘ Exclude List</button>
+    <button id="statspill" type="button" class="grouponly" title="Show subtype counts per pattern">Σ Stats</button>
+    <button id="newspill" type="button" class="grouponly" hidden title="New card releases and the groups they added">✦ What's new</button>
+    <button id="exportbtn" type="button" title="Show what is listed as text to copy or download">⬇ Export</button>
+    <button id="cardpill" type="button" class="grouponly" hidden title="Remove card filter"></button>
     <span class="count" id="count"></span>
   </div>
 </header>
@@ -397,6 +467,9 @@
 <footer>Card data and images from <a href="https://scryfall.com">Scryfall</a>.
   Images load lazily as you scroll.</footer>
 <button id="top-btn" title="Back to top" aria-label="Back to top">↑</button>
+<div id="exportbox" hidden role="dialog" aria-modal="true" aria-label="Export" tabindex="-1">
+  <div class="expanel"></div>
+</div>
 <div id="lightbox" hidden role="dialog" aria-modal="true" tabindex="-1" title="Close">
   <div class="lbwrap">
     <img alt="">
@@ -414,6 +487,14 @@ let exclOnly = false;
 let statsOn = new URLSearchParams(location.search).get('stats') === '1';
 let newsOn = new URLSearchParams(location.search).get('news') === '1';
 let CHANGELOG = [];   // changelog.json: one entry per refresh that changed groups
+// Creatures view (?view=creatures): a flat list of every eligible creature with
+// 3+ subtypes, from creatures-3plus.json (scripts/creatures_3plus.py). Cards,
+// not groups — so none of the group controls (patterns, favorites, exclusions,
+// stats, news) apply there and they are hidden while it is on.
+let VIEW = new URLSearchParams(location.search).get('view') === 'creatures'
+  ? 'creatures' : 'groups';
+let CREATURES = [];
+document.body.classList.toggle('vc', VIEW === 'creatures');   // before data loads
 
 // Favorites and exclusions persist in localStorage, keyed by dataset + sorted
 // card names so they survive regenerated datasets reordering the groups.
@@ -741,7 +822,7 @@ lightbox.addEventListener('click', e => {
   closeLightbox();
 });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'Escape') { closeLightbox(); closeExport(); }
 });
 
 // clicking a subtype chip adds that subtype as a search term
@@ -924,7 +1005,88 @@ function buildCard(e, i, freq) {
   return el;
 }
 
+// Creatures passing the search box and the subtype-count select.
+function filteredCreatures() {
+  const terms = document.getElementById('q').value
+    .split(',').map(t => t.trim().toLowerCase()).filter(Boolean);
+  const n = document.getElementById('nsubs').value;
+  return CREATURES.filter(c => {
+    if (n === '3' && c.subtypes.length !== 3) return false;
+    if (n === '4' && c.subtypes.length < 4) return false;
+    return terms.every(t => c.name.toLowerCase().includes(t) ||
+      c.subtypes.some(s => s.toLowerCase().includes(t)));
+  });
+}
+
+function buildCreature(c) {
+  const el = document.createElement('div');
+  el.className = 'card';
+  const imgbtn = document.createElement('button');
+  imgbtn.type = 'button'; imgbtn.className = 'imgbtn';
+  imgbtn.title = `Enlarge ${c.name}`;
+  const img = document.createElement('img');
+  img.loading = 'lazy'; img.src = c.image; img.alt = c.name;
+  imgbtn.appendChild(img);
+  imgbtn.addEventListener('click', () => openLightbox(c));
+  const nm = document.createElement('div');
+  nm.className = 'nm';
+  const nmtext = document.createElement('div');
+  nmtext.className = 'nmtext';
+  nmtext.textContent = c.name;
+  nm.appendChild(nmtext);
+  const tl = document.createElement('div');
+  tl.className = 'tl'; tl.textContent = c.type_line;
+  const pr = document.createElement('div');
+  pr.className = 'print';
+  pr.textContent = `${c.set} ${c.cn} · ${c.released.slice(0, 4)}`;
+  pr.title = `First paper printing: ${c.set} #${c.cn}, released ${c.released}`;
+  const chips = document.createElement('div');
+  chips.className = 'chips';
+  c.subtypes.forEach(s => chips.appendChild(mkChip(s, 0, false)));
+  el.append(imgbtn, nm, tl, pr, chips);
+  return el;
+}
+
+function renderCreatures() {
+  const root = document.getElementById('groups');
+  root.textContent = '';
+  const shown = filteredCreatures();
+  if (shown.length) {
+    const grid = document.createElement('section');
+    grid.className = 'creatures';
+    shown.forEach(c => grid.appendChild(buildCreature(c)));
+    root.appendChild(grid);
+  } else {
+    const d = document.createElement('div');
+    d.className = 'empty';
+    d.textContent = 'No creatures match that filter.';
+    root.appendChild(d);
+  }
+  document.getElementById('count').textContent =
+    `${shown.length} of ${CREATURES.length} creatures`;
+}
+
+function setView(v) {
+  VIEW = v;
+  document.body.classList.toggle('vc', v === 'creatures');
+  document.querySelectorAll('#viewsw button').forEach(b =>
+    b.classList.toggle('on', b.dataset.view === v));
+  const params = new URLSearchParams(location.search);
+  v === 'creatures' ? params.set('view', 'creatures') : params.delete('view');
+  const qs = params.toString();
+  history.replaceState(null, '', (qs ? '?' + qs : location.pathname) + location.hash);
+}
+
+document.querySelectorAll('#viewsw button').forEach(b =>
+  b.addEventListener('click', () => {
+    if (b.dataset.view === VIEW) return;
+    setView(b.dataset.view);
+    render();
+    scrollTo({ top: 0 });
+  }));
+
 function render() {
+  if (VIEW === 'creatures') return renderCreatures();
   const root = document.getElementById('groups');
   root.textContent = '';
   let shown = 0;
@@ -1117,6 +1279,7 @@ function goToHash() {
     return;
   }
   showNotice(`Group ${groupLabel(e)} is hidden by the current view.`, [['Show it', () => {
+    setView('groups');
     document.getElementById('ds-' + e.ds).checked = true;
     document.getElementById('ds-' + e.ds).dispatchEvent(new Event('change'));
     document.getElementById('q').value = '';
@@ -1210,8 +1373,15 @@ Promise.all(Object.entries(DATASETS).map(([d, file]) =>
     .catch(() => []).then(data => {
       CHANGELOG = Array.isArray(data) ? data : [];
       document.getElementById('newspill').hidden = !CHANGELOG.length;
+    }))
+  // and a missing creatures-3plus.json hides the Groups | Creatures switch
+  .concat(fetch('creatures-3plus.json').then(r => r.json())
+    .catch(() => []).then(data => {
+      CREATURES = Array.isArray(data) ? data : [];
+      document.getElementById('viewsw').hidden = !CREATURES.length;
     })))
   .then(() => {
+    setView(CREATURES.length ? VIEW : 'groups');
     rebuildGroups();
     render();
     // groups render after the fetch, so honor group links once they exist
@@ -1220,6 +1390,7 @@ Promise.all(Object.entries(DATASETS).map(([d, file]) =>
 addEventListener('hashchange', goToHash);
 
 document.getElementById('q').addEventListener('input', render);
+document.getElementById('nsubs').addEventListener('change', render);
 document.getElementById('size').addEventListener('change', render);
 document.getElementById('cardpill').addEventListener('click', () => setCardFilter(null));
 // Favorites and the exclude list are opposite views of the same set of
@@ -1265,22 +1436,123 @@ document.getElementById('newspill').addEventListener('click', () => {
 });
 document.getElementById('newspill').classList.toggle('on', newsOn);
 
-// Export the currently shown groups (all active filters applied) as a
-// plain-text card list for offline use.
+// Export shows the currently listed groups (all active filters applied) as
+// plain text in a dialog, to copy or, optionally, download. In the Creatures
+// view the text is a Moxfield import list of the cards shown, split into
+// parts of at most MOXFIELD_PAGE cards — Moxfield's import chokes past ~1,000.
+const MOXFIELD_PAGE = 1000;
+const exportbox = document.getElementById('exportbox');
+let exReturn = null;
+
+function download(text, name) {
+  const blob = new Blob([text], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);   // let the save start first
+}
+
+function copyText(ta, btn) {
+  const done = ok => {
+    btn.textContent = ok ? 'Copied ✓' : 'Select + Ctrl-C';
+    setTimeout(() => btn.textContent = 'Copy', 1600);
+  };
+  if (navigator.clipboard && isSecureContext) {
+    navigator.clipboard.writeText(ta.value).then(() => done(true), () => {
+      ta.select(); done(document.execCommand('copy'));
+    });
+  } else {
+    ta.select(); done(document.execCommand('copy'));
+  }
+}
+
+// parts: [{label, text, file}]
+function openExport(title, note, parts) {
+  const panel = exportbox.querySelector('.expanel');
+  panel.textContent = '';
+  const head = document.createElement('div');
+  head.className = 'exhead';
+  const h = document.createElement('h2');
+  h.textContent = title;
+  const n = document.createElement('span');
+  n.className = 'exnote'; n.textContent = note;
+  const x = document.createElement('button');
+  x.type = 'button'; x.className = 'exclose'; x.textContent = '✕';
+  x.title = 'Close'; x.setAttribute('aria-label', 'Close');
+  x.addEventListener('click', closeExport);
+  head.append(h, n, x);
+  panel.appendChild(head);
+  parts.forEach(p => {
+    const box = document.createElement('div');
+    box.className = 'expart';
+    const bar = document.createElement('div');
+    bar.className = 'exbar';
+    const lbl = document.createElement('span');
+    lbl.textContent = p.label;
+    const ta = document.createElement('textarea');
+    ta.readOnly = true; ta.spellcheck = false; ta.value = p.text;
+    ta.setAttribute('aria-label', p.label);
+    const copy = document.createElement('button');
+    copy.type = 'button'; copy.textContent = 'Copy';
+    copy.addEventListener('click', () => copyText(ta, copy));
+    const dl = document.createElement('button');
+    dl.type = 'button'; dl.textContent = '⬇ Download';
+    dl.title = p.file;
+    dl.addEventListener('click', () => download(p.text, p.file));
+    bar.append(lbl, copy, dl);
+    box.append(bar, ta);
+    panel.appendChild(box);
+  });
+  exReturn = document.activeElement;
+  document.documentElement.classList.add('modal-open');
+  exportbox.hidden = false;
+  panel.scrollTop = 0;
+  exportbox.focus();
+}
+
+function closeExport() {
+  if (exportbox.hidden) return;
+  exportbox.hidden = true;
+  document.documentElement.classList.remove('modal-open');
+  if (exReturn) { exReturn.focus(); exReturn = null; }
+}
+exportbox.addEventListener('click', e => { if (e.target === exportbox) closeExport(); });
+
 document.getElementById('exportbtn').addEventListener('click', () => {
+  if (VIEW === 'creatures') {
+    const lines = filteredCreatures().map(c => `1 ${c.name} (${c.set}) ${c.cn}\n`);
+    if (!lines.length) return;
+    const pages = Math.ceil(lines.length / MOXFIELD_PAGE);
+    const parts = [];
+    for (let i = 0; i < pages; i++) {
+      const chunk = lines.slice(i * MOXFIELD_PAGE, (i + 1) * MOXFIELD_PAGE);
+      parts.push({
+        label: pages === 1 ? `${chunk.length} cards`
+          : `Part ${i + 1} of ${pages} · ${chunk.length} cards`,
+        text: chunk.join(''),
+        file: pages === 1 ? 'creatures-3plus-moxfield.txt'
+          : `creatures-3plus-moxfield-part${i + 1}-of-${pages}.txt`,
+      });
+    }
+    openExport('Moxfield import list',
+      pages > 1 ? `Moxfield takes up to ${MOXFIELD_PAGE} cards per import — paste each part separately.`
+                : 'Paste into Moxfield’s import box.',
+      parts);
+    return;
+  }
   const shown = filteredGroups();
   if (!shown.length) return;
   const text = shown.map(e =>
     `Group ${groupLabel(e)} · ${e.cards.length} creatures\n` +
     shownCards(e).map(c => `${c.name} — ${c.type_line}\n  ${c.url}`).join('\n')
   ).join('\n\n') + '\n';
-  const blob = new Blob([text], { type: 'text/plain' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'creature-groups-' + checkedSets().join('-') +
-    (favsOnly ? '-favorites' : '') + (exclOnly ? '-excluded' : '') + '.txt';
-  a.click();
-  URL.revokeObjectURL(a.href);
+  openExport('Export', '', [{
+    label: `${shown.length} group${shown.length === 1 ? '' : 's'}`,
+    text,
+    file: 'creature-groups-' + checkedSets().join('-') +
+      (favsOnly ? '-favorites' : '') + (exclOnly ? '-excluded' : '') + '.txt',
+  }]);
 });
 
 const topBtn = document.getElementById('top-btn');
