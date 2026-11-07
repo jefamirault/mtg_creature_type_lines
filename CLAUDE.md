@@ -71,8 +71,24 @@ the remaining sets from the structure, then look them up in the pool.
   "Show it" button) instead of silently landing elsewhere. A "What's new"
   toggle (synced to `?news=1`, hidden when `changelog.json` is missing)
   shows each refresh that added or removed groups: new releases, which new
-  cards the new groups rest on, and links to them. Supports
-  comma-separated AND search terms, clickable subtype chips (add term), click
+  cards the new groups rest on, and links to them. The search
+  box takes **Scryfall-style syntax** (issue #4): words / `"phrases"`, `-`
+  negation, `or`, `( )`, and `key:value` terms with `: = < > <= >=`. The
+  engine is `createSearch()`, inlined from the `scryfall-search` skill's
+  template (range/size types dropped, `compare` exported); `GROUP_SEARCH` and
+  `CREATURE_SEARCH` configure each view. Groups: `t:`/`type:` (exact
+  subtype, so `t:elf` ≠ Elemental), `n:`/`name:`, `p:`/`pattern:`, `size`,
+  `shared:<subtype>` or `shared>=N` (count of subtypes on 2+ cards, from
+  `e.cards` — `extra` never counts). Terms test **per group**: `t:zombie` =
+  some card is, `-t:zombie` = none is; bare words, `t:` and `n:` read
+  `shownCards()` (swaps and `extra` included). Creatures: `t:`, `n:`,
+  `st`/`subs`, `s:`/`set:` (code), `year`/`date`. Commas outside quotes
+  still mean AND (the old syntax); unquoted `time lord` is two words, quote
+  it for the phrase. The query syncs to `?q=`; `/` focuses the box; a
+  collapsible "Search syntax" table lists the current view's keys (rows
+  carry `grouponly`/`creatonly`) — keep it in sync with the configs. The
+  size / subtype-count selects stay and AND with the query. Clickable
+  subtype chips add `t:<type>` (quoted when multi-word), click
   card image (zoom lightbox with the card's Scryfall link; Esc/click closes),
   click card name — marked with a magnifying-glass icon — to filter to groups
   with that card,
