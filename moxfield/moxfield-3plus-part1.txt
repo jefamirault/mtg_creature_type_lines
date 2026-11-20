@@ -27,6 +27,7 @@
 1 Al Bhed Salvagers (FIN) 88 #3-subtypes
 1 Alex Wilder, Runaway (MSC) 677 #3-subtypes
 1 Amazing Spider-Girl (MSC) 583 #3-subtypes
+1 Ambassador K'Ehleyr (TRC) 9 #3-subtypes
 1 Ammit Eternal (HOU) 57 #3-subtypes
 1 Amrou Scout (TSP) 1 #3-subtypes
 1 Angelfire Crusader (APC) 1 #3-subtypes
@@ -58,6 +59,7 @@
 1 Aven Riftwatcher (PLC) 1 #3-subtypes
 1 Aven Windreader (ODY) 65 #3-subtypes
 1 Azula, Cunning Usurper (TLA) 208 #3-subtypes
+1 B'Elanna Torres, Scrapper (TRC) 82 #3-subtypes
 1 Bala Ged Thief (ZEN) 79 #3-subtypes
 1 Balduvian Shaman (ICE) 59 #3-subtypes
 1 Banon, the Returners' Leader (FIC) 78 #3-subtypes
@@ -143,6 +145,7 @@
 1 Captain Marvel, Apex Avenger (MSC) 78 #3-subtypes
 1 Captain Marvel, Earth's Protector (MSH) 11 #3-subtypes
 1 Captain Marvel, Shooting Star (MSC) 589 #3-subtypes
+1 Captain Pike, Fullness of Time (TRK) 188 #3-subtypes
 1 Captain Rex Nebula (UNF) 164 #3-subtypes
 1 Carnivorous Moss-Beast (M15) 170 #3-subtypes
 1 Cat Burglar (EXO) 54 #3-subtypes
@@ -151,6 +154,7 @@
 1 Cephalid Scout (ODY) 74 #3-subtypes
 1 Chameleon, Master of Disguise (SPM) 27 #3-subtypes
 1 Chasm Guide (BFZ) 143 #3-subtypes
+1 Chekov and McCoy (TRC) 183 #3-subtypes
 1 Children of Korlis (TSP) 8 #3-subtypes
 1 Chimney Rabble (ONE) 126 #3-subtypes
 1 Chong and Lily, Nomads (TLE) 113 #3-subtypes
@@ -167,10 +171,12 @@
 1 Cloud, Midgar Mercenary (PSPL) 4 #3-subtypes
 1 Cloud, Planet's Champion (FIN) 482 #3-subtypes
 1 Cloudgoat Ranger (LRW) 10 #3-subtypes
+1 Cmdr. Troi, Outgoing Empath (TRC) 89 #3-subtypes
 1 Coiling Oracle (PAL06) 8 #3-subtypes
 1 Colleen Wing, Street Samurai (MSH) 13 #3-subtypes
 1 Combat Medic (FEM) 1a #3-subtypes
 1 Commander Greven il-Vec (TMP) 115 #3-subtypes
+1 Commander Spock (TRC) 2 #3-subtypes
 1 Common Crook (SPM) 53 #3-subtypes
 1 Compassionate Healer (TLA) 13 #3-subtypes
 1 Compleated Huntmaster (MOM) 96 #3-subtypes
@@ -184,14 +190,17 @@
 1 Crossbow Infantry (MMQ) 16 #3-subtypes
 1 Crustacean Commando (TMT) 33 #3-subtypes
 1 Crystal, Inhuman Princess (MSC) 80 #3-subtypes
+1 Culber and Stamets, Star-Crossed (TRK) 191 #3-subtypes
 1 Cytoplast Manipulator (DIS) 23 #3-subtypes
 1 D'Avenant Archer (LEG) 7 #3-subtypes
 1 D'Avenant Healer (TSP) 11 #3-subtypes
 1 Dai Li Censor (TLE) 102 #3-subtypes
 1 Dakmor Sorceress (P02) 71 #3-subtypes
+1 Dal R'El, Augment Orphan (TRK) 231 #3-subtypes
 1 Danny Pink (WHO) 39 #3-subtypes
 1 Dauthi Mercenary (TMP) 124 #3-subtypes
 1 Deadpool, Trading Card (SLD) 1753 #3-subtypes
+1 Deanna Troi, Psychic Counsel (TRK) 11 #3-subtypes
 1 Definitely Not a Turtle (TMC) 98 #3-subtypes
 1 Deserter's Disciple (TLA) 131 #3-subtypes
 1 Devout Monk (S99) 14 #3-subtypes
@@ -290,11 +299,14 @@
 1 Freedom Fighter Recruit (TLE) 118 #3-subtypes
 1 Frilled Mystic (RNA) 174 #3-subtypes
 1 Frontline Devastator (HOU) 93 #3-subtypes
+1 Gabriel Lorca, Mirror Menace (TRK) 108 #3-subtypes
 1 Gamma Grotesque (MSC) 562 #3-subtypes
 1 Garnet, Princess of Alexandria (FIN) 222 #3-subtypes
 1 Gemcutter Buccaneer (LCC) 55 #3-subtypes
 1 Gempalm Sorcerer (LGN) 39 #3-subtypes
+1 General Chang, Cold Warrior (TRK) 109 #3-subtypes
 1 Genghis Frog (TMT) 148 #3-subtypes
+1 Georgiou, Terran Emperor (TRK) 110 #3-subtypes
 1 Gert and Old Lace, Runaways (MSC) 568 #3-subtypes
 1 Geyser Leaper (TLA) 52 #3-subtypes
 1 Ghost, Spectral Saboteur (MSH) 214 #3-subtypes
@@ -317,6 +329,7 @@
 1 Gran-Gran (PW25) 14 #3-subtypes
 1 Grassland Crusader (ONS) 32 #3-subtypes
 1 Gravelgill Duo (SHM) 165 #3-subtypes
+1 Gray and Adira, Forever Joined (TRK) 238 #3-subtypes
 1 Graypelt Hunter (WWK) 103 #3-subtypes
 1 Great Divide Guide (TLA) 181 #3-subtypes
 1 Green Goblin, Back for More (MSC) 657 #3-subtypes
@@ -384,6 +397,7 @@
 1 Illuna, Apex of Wishes (IKO) 190 #3-subtypes
 1 Immortus, Master of Eternity (MSC) 623 #3-subtypes
 1 Imoen, Mystic Trickster (CLB) 77 #3-subtypes
+1 Indelicate Healer (TRC) 19 #3-subtypes
 1 Inner Demons Gangsters (SPM) 57 #3-subtypes
 1 Inspired Insurgent (TLE) 77 #3-subtypes
 1 Invasion Reinforcements (TLA) 24 #3-subtypes
@@ -421,6 +435,7 @@
 1 Kalain, Reclusive Painter (AFR) 225 #3-subtypes
 1 Kalastria Healer (BFZ) 114 #3-subtypes
 1 Kalastria Nightwatch (BFZ) 115 #3-subtypes
+1 Kang, Suspicious Captain (TRC) 71 #3-subtypes
 1 Karvanista, Loyal Lupari (WHO) 106 #3-subtypes
 1 Kassandra, Eagle Bearer (ACR) 59 #3-subtypes
 1 Katara, Bending Prodigy (TLA) 59 #3-subtypes
@@ -448,11 +463,13 @@
 1 Knight of Wundagore (MSH) 175 #3-subtypes
 1 Knight of the Holy Nimbus (TSP) 26 #3-subtypes
 1 Kogla and Yidaro (MOM) 244 #3-subtypes
+1 Koloth, Tribble Hunter (TRC) 72 #3-subtypes
 1 Kor Bladewhirl (BFZ) 34 #3-subtypes
 1 Kor Castigator (BFZ) 35 #3-subtypes
 1 Kor Entanglers (BFZ) 36 #3-subtypes
 1 Kor Scythemaster (OGW) 23 #3-subtypes
 1 Kor Sky Climber (OGW) 24 #3-subtypes
+1 Kor, Cause of Vengeance (TRC) 96 #3-subtypes
 1 Koya, Death from Above (TMT) 11 #3-subtypes
 1 Krang & Shredder (TMT) 153 #3-subtypes
 1 Kraven the Hunter (SPM) 133 #3-subtypes
@@ -462,6 +479,7 @@
 1 Krovikan Sorcerer (ICE) 81 #3-subtypes
 1 Kroxa and Kunoros (MOM) 245 #3-subtypes
 1 Krydle of Baldur's Gate (AFR) 226 #3-subtypes
+1 Kurn, Son of Mogh (TRC) 60 #3-subtypes
 1 Kyoshi Warrior Exemplars (TLE) 140 #3-subtypes
 1 Kyoshi Warrior Guard (TLE) 216 #3-subtypes
 1 Kyoshi Warriors (TLA) 26 #3-subtypes
@@ -562,6 +580,7 @@
 1 Moseo, Vein's New Dean (SOS) 91 #3-subtypes
 1 Mountain Bandit (PTK) 117 #3-subtypes
 1 Mounted Archers (TMP) 30 #3-subtypes
+1 Mr. Spock, Science Officer (TRK) 74 #3-subtypes
 1 Ms. Marvel, Elastic Ally (MSC) 744 #3-subtypes
 1 Ms. Marvel, Kamala Khan (MSH) 67 #3-subtypes
 1 Mu Yanling, Wind Rider (DFT) 52 #3-subtypes

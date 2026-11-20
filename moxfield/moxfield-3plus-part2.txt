@@ -28,6 +28,7 @@
 1 Notorious Assassin (MMQ) 150 #3-subtypes
 1 Novijen Sages (DIS) 27 #3-subtypes
 1 Oakhame Ranger (ELD) 212 #3-subtypes
+1 Obsidian Order Operative (TRK) 120 #3-subtypes
 1 Oil-Gorger Troll (ONE) 177 #3-subtypes
 1 Okoye, Dora Milaje Leader (MSH) 27 #3-subtypes
 1 Okoye, Mighty and Adored (MSC) 89 #3-subtypes
@@ -126,6 +127,7 @@
 1 Rinoa, Angel Wing (FIC) 450 #3-subtypes
 1 Risen Necroregent (DFT) 102 #3-subtypes
 1 River Song (WHO) 152 #3-subtypes
+1 Ro Laren, Double Agent (TRC) 75 #3-subtypes
 1 Robber of the Rich (ELD) 138 #3-subtypes
 1 Rockslide Sorcerer (ZNR) 154 #3-subtypes
 1 Rogue Skycaptain (ALL) 79 #3-subtypes
@@ -168,6 +170,7 @@
 1 Scuttlegator (RNA) 218 #3-subtypes
 1 Sea Gate Loremaster (ZEN) 63 #3-subtypes
 1 Seascape Aerialist (ZEN) 64 #3-subtypes
+1 Sela, Tal Shiar Paradox (TRK) 128 #3-subtypes
 1 Sensational Spider-Man (SPE) 25 #3-subtypes
 1 Sentinel of the Nameless City (LCI) 211 #3-subtypes
 1 Sephiroth, Fallen Hero (FIC) 92 #3-subtypes
@@ -267,6 +270,9 @@
 1 Splinter, Hamato Yoshi (TMT) 79 #3-subtypes
 1 Splinter, Radical Rat (TMT) 169 #3-subtypes
 1 Splinter, the Mentor (TMC) 3 #3-subtypes
+1 Spock, Always Your Friend (TRK) 253 #3-subtypes
+1 Spock, Logical Choice (PMEI) 2026-23 #3-subtypes
+1 Spock, Voice of Reason (TRC) 181 #3-subtypes
 1 Squall, SeeD Mercenary (FIN) 243 #3-subtypes
 1 Starlight Invoker (LGN) 20 #3-subtypes
 1 Steward of Valeron (ALA) 198 #3-subtypes
@@ -298,6 +304,7 @@
 1 Swordsman, Sharp Scoundrel (MSH) 116 #3-subtypes
 1 Sylvan Advocate (OGW) 144 #3-subtypes
 1 Sylvan Ranger (M11) 198 #3-subtypes
+1 Sylvia Tilly, Joy of Discovery (TRK) 217 #3-subtypes
 1 Symbiote Spider-Man (SPM) 156 #3-subtypes
 1 T'Chaka, Venerable King (MSC) 98 #3-subtypes
 1 T'Challa, the Black Panther (MSC) 7 #3-subtypes
@@ -307,6 +314,7 @@
 1 Tajuru Stalwart (BFZ) 194 #3-subtypes
 1 Tajuru Warcaller (BFZ) 195 #3-subtypes
 1 Takeno's Cavalry (BOK) 24 #3-subtypes
+1 Tal Shiar Operative (TRK) 131 #3-subtypes
 1 Talas Explorer (P02) 49 #3-subtypes
 1 Talas Researcher (P02) 51 #3-subtypes
 1 Talas Scout (P02) 52 #3-subtypes
@@ -365,6 +373,7 @@
 1 Trained Arynx (OTJ) 36 #3-subtypes
 1 Transcendent Master (ROE) 51 #3-subtypes
 1 Treetop Freedom Fighters (TLA) 156 #3-subtypes
+1 Troi, Winging It (TRC) 191 #3-subtypes
 1 Trollbred Guardian (RNA) 148 #3-subtypes
 1 Tsabo's Assassin (INV) 128 #3-subtypes
 1 Tuktuk Grunts (ZEN) 152 #3-subtypes
@@ -390,6 +399,7 @@
 1 Vampire Envoy (OGW) 92 #3-subtypes
 1 Vannifar, Evolved Enigma (MKM) 241 #3-subtypes
 1 Varis, Silverymoon Ranger (AFR) 209 #3-subtypes
+1 Vash, Freelance Archaeologist (TRK) 255 #3-subtypes
 1 Vastwood Animist (WWK) 116 #3-subtypes
 1 Vedalken Anatomist (MBS) 36 #3-subtypes
 1 Venerable Monk (POR) 35 #3-subtypes
@@ -458,6 +468,12 @@
 1 Wolverine, Fierce Fighter (MSH) 240 #3-subtypes
 1 Wonder Man, Hollywood Hero (MSH) 160 #3-subtypes
 1 Woodland Liege (J25) 27 #3-subtypes
+1 Worf, Chief Tactical Officer (TRC) 141 #3-subtypes
+1 Worf, Defiant Commander (TRC) 4 #3-subtypes
+1 Worf, Honor-Bound Warrior (TRK) 256 #3-subtypes
+1 Worf, Intelligence Contractor (TRK) 180 #3-subtypes
+1 Worf, Son of Mogh (TRC) 109 #3-subtypes
+1 Worf, Still Not Merry (TRC) 186 #3-subtypes
 1 Wormfang Behemoth (JUD) 55 #3-subtypes
 1 Wormfang Manta (JUD) 58 #3-subtypes
 1 Wormfang Newt (JUD) 59 #3-subtypes

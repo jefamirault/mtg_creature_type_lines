@@ -1,5 +1,159 @@
 [
  {
+  "build": "2026-11-20",
+  "scryfall_updated": "2026-11-20T22:01:57.955+00:00",
+  "since": "2026-10-06T21:01:59.184+00:00",
+  "cards": 39356,
+  "releases": [
+   {
+    "set": "pspl",
+    "name": "Spotlight Series",
+    "released": "2027-01-09",
+    "cards": 1,
+    "creatures": 1
+   },
+   {
+    "set": "trc",
+    "name": "Star Trek Commander",
+    "released": "2026-11-13",
+    "cards": 172,
+    "creatures": 122
+   },
+   {
+    "set": "trk",
+    "name": "Star Trek",
+    "released": "2026-11-13",
+    "cards": 294,
+    "creatures": 166
+   }
+  ],
+  "patterns": {
+   "a": {
+    "before": 328,
+    "after": 329,
+    "added": [
+     {
+      "id": "ga-0c2de159",
+      "cards": [
+       {
+        "name": "Baron Helmut Zemo",
+        "type_line": "Legendary Creature \u2014 Human Noble Villain",
+        "subtypes": [
+         "Human",
+         "Noble",
+         "Villain"
+        ],
+        "url": "https://scryfall.com/card/msh/87/baron-helmut-zemo?utm_source=api"
+       },
+       {
+        "name": "Morbius the Living Vampire",
+        "type_line": "Legendary Creature \u2014 Vampire Scientist Villain",
+        "subtypes": [
+         "Scientist",
+         "Vampire",
+         "Villain"
+        ],
+        "url": "https://scryfall.com/card/spm/137/morbius-the-living-vampire?utm_source=api"
+       },
+       {
+        "name": "Vampire Aristocrat",
+        "type_line": "Creature \u2014 Vampire Rogue Noble",
+        "subtypes": [
+         "Noble",
+         "Rogue",
+         "Vampire"
+        ],
+        "url": "https://scryfall.com/card/mm3/86/vampire-aristocrat?utm_source=api"
+       },
+       {
+        "name": "Vash, Freelance Archaeologist",
+        "type_line": "Legendary Creature \u2014 Human Rogue Scientist",
+        "subtypes": [
+         "Human",
+         "Rogue",
+         "Scientist"
+        ],
+        "url": "https://scryfall.com/card/trk/255/vash-freelance-archaeologist?utm_source=api",
+        "new": true
+       }
+      ]
+     }
+    ],
+    "removed": []
+   },
+   "b": {
+    "before": 247,
+    "after": 248,
+    "added": [
+     {
+      "id": "gb-93ef70da",
+      "cards": [
+       {
+        "name": "Chekov and McCoy",
+        "type_line": "Legendary Creature \u2014 Human Pilot Doctor",
+        "subtypes": [
+         "Doctor",
+         "Human",
+         "Pilot"
+        ],
+        "url": "https://scryfall.com/card/trc/183/chekov-and-mccoy?utm_source=api",
+        "new": true
+       },
+       {
+        "name": "Cid, Freeflier Pilot",
+        "type_line": "Legendary Creature \u2014 Human Warrior Pilot",
+        "subtypes": [
+         "Human",
+         "Pilot",
+         "Warrior"
+        ],
+        "url": "https://scryfall.com/card/fic/13/cid-freeflier-pilot?utm_source=api"
+       },
+       {
+        "name": "Indelicate Healer",
+        "type_line": "Creature \u2014 Klingon Warrior Doctor",
+        "subtypes": [
+         "Doctor",
+         "Klingon",
+         "Warrior"
+        ],
+        "url": "https://scryfall.com/card/trc/19/indelicate-healer?utm_source=api",
+        "new": true
+       },
+       {
+        "name": "Alexander, Ship's Fool",
+        "type_line": "Legendary Creature \u2014 Klingon Human",
+        "subtypes": [
+         "Human",
+         "Klingon"
+        ],
+        "url": "https://scryfall.com/card/trc/81/alexander-ships-fool?utm_source=api",
+        "new": true
+       },
+       {
+        "name": "Warship Flight Crew",
+        "type_line": "Creature \u2014 Klingon Pilot",
+        "subtypes": [
+         "Klingon",
+         "Pilot"
+        ],
+        "url": "https://scryfall.com/card/trc/168/warship-flight-crew?utm_source=api",
+        "new": true
+       }
+      ]
+     }
+    ],
+    "removed": []
+   },
+   "c": {
+    "before": 0,
+    "after": 0,
+    "added": [],
+    "removed": []
+   }
+  }
+ },
+ {
   "build": "2026-10-06",
   "scryfall_updated": "2026-10-06T21:01:59.184+00:00",
   "since": "2026-08-11T21:01:58Z",

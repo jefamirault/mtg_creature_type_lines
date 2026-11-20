@@ -28,13 +28,13 @@ each row is one creature's subtype set (matching is up to relabeling):
   exhaustively in two families: all four cards 3-subtype (forces every
   subtype on exactly 2 cards, every pair sharing exactly 1 — the Pasch/K4
   structure) and groups containing one of the rare 4+-subtype sets (anchored
-  scan). 402 groups; near-dupes (3+ shared cards vs a kept group) dropped
-  for the browser (328 kept), sorted by shared-subtype then union count desc.
+  scan). 403 groups; near-dupes (3+ shared cards vs a kept group) dropped
+  for the browser (329 kept), sorted by shared-subtype then union count desc.
 - **Pattern B**: `123 / 124 / 345 / 15 / 25` — 5 creatures / 5 subtypes;
-  exhaustively enumerated (247 groups).
+  exhaustively enumerated (248 groups).
 - **Pasch**: `123 / 145 / 246 / 356` — 4 creatures / 6 subtypes, every subtype
   on exactly 2 cards, every pair sharing exactly 1; exhaustive. Exactly the
-  all-3-subtype family of Pattern A — 236 of its 402 groups.
+  all-3-subtype family of Pattern A — 237 of its 403 groups.
 - **Pattern C (CMR Partners)**: Pattern A/B groups anchored on two Commander
   Legends partner cards — one matching `set:cmr o:partner c:w`, a different
   card matching `set:cmr o:partner` (anchor lists fetched from the Scryfall
@@ -44,7 +44,7 @@ each row is one creature's subtype set (matching is up to relabeling):
   pinned, pattern A is enumerated exhaustively; pattern B is exhaustive and
   empty (no B group contains two partner subtype sets even before the
   identity filter). Under the ≥6-subtypes-shared-twice Pattern A definition
-  the dataset is **still empty as of the 2026-10-25 build** (11 white / 43
+  the dataset is **still empty as of the 2026-11-20 build** (11 white / 43
   any anchor cards, 121 viable pairs, 0 completions) — partner anchors are
   too small to
   reach 12 subtype slots in any completable way, even ignoring the identity
@@ -156,10 +156,10 @@ the remaining sets from the structure, then look them up in the pool.
   subtypes **include** that set, as `name, type_line, image, url`, plus
   `extra` (sorted surplus subtypes) on the ones that carry more. Ordered
   exact-matches-first, then by how many surplus subtypes, then alphabetically.
-  Scoped to the sets the shipped datasets use: 474 sets / 4,487 cards. A missing file
+  Scoped to the sets the shipped datasets use: 480 sets / 4,509 cards. A missing file
   just leaves every arrow greyed.
 - `creatures-3plus.json` — the Creatures view: every eligible creature with
-  3+ subtypes (base rules above; 1,084 cards as of 2026-10-25) as a flat list
+  3+ subtypes (base rules above; 1,119 cards as of 2026-11-20) as a flat list
   of `name, type_line, subtypes, image, url, set, cn, released`, ordered by
   subtype count desc then name. Each card is its **first paper printing**:
   earliest `released_at` among paper, non-oversized printings, non-promo
@@ -262,16 +262,15 @@ its argument list, or the new pattern's slots get no cycle arrows.
 
 ## Data vintage
 
-All shipped datasets are from the **2026-10-25** build (oracle_cards
-`2026-10-25T21:01:54Z`, 38,998 cards, 367 creature types). That refresh
-changed no groups: no new cards had gone Vintage-legal since 2026-10-06 (the
-extra bulk cards were unreleased previews; the catalog also grew by 17
-types), so Patterns A/B/C came out byte-identical and `alternates.json`
-only picked up new image URLs. It did realign the long-stale `groups.json`,
-`creature-groups.md` and `pasch-groups.json` (from 2026-07-09; Pasch 233 →
-236). The last build that changed groups was 2026-10-06, which added 2 Pattern A
-groups resting on Ruric Thar, Biomagus (Crab Ogre Wizard, Reality Fracture) —
-see `changelog.json`.
+All shipped datasets are from the **2026-11-20** build (oracle_cards
+`2026-11-20T22:01:57Z`, 39,356 cards, 377 creature types). It is the first build
+with the Star Trek sets (`trk` and `trc`, released 2026-11-13; 466 new cards) and
+it changed groups: Pattern A 402 → 403 (329 kept; the new group rests on Vash,
+Freelance Archaeologist), Pattern B 247 → 248 (Chekov and McCoy, Indelicate
+Healer, Alexander, Ship's Fool and Warship Flight Crew), Pasch 236 → 237. Pattern
+C is still empty. The Creatures view gained 35 cards (1,084 → 1,119). See
+`changelog.json`. That build also counts one Spotlight Series (`pspl`) card,
+dated 2027-01-09 but already Vintage-legal.
 
 Note the generators key the pool by subtype set and keep **one
 representative card per set**, first-seen in bulk-file order. A new printing
