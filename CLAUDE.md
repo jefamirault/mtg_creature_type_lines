@@ -181,8 +181,13 @@ Serve the UI locally (required — the JSON fetch breaks over `file://`):
 
 ## Deploying
 
-Live at https://mtg.jefamirault.com/ (shared personal droplet; target in
-`.env`, template in `.env.example`).
+Live at https://mtg.jefamirault.com/creature_type_combos/ (shared personal droplet, webroot
+`/var/www/creature_type_combos`; target in `.env`, template in `.env.example`). Every MTG app has
+its own path on mtg.jefamirault.com: `nginx-mtg-creature_type_combos.conf` is this app's nginx
+snippet (installed as `/etc/nginx/snippets/mtg-creature_type_combos.conf`), and the host's server
+block and landing page are in `~/projects/mtg/mtg_jefamirault_com`. The page uses relative URLs
+only, so it works under that path; keep it that way. Until 2026-11 it was at the root, and the
+host redirects those old URLs here.
 
     ./deploy.sh --dry-run   # preview
     ./deploy.sh

@@ -15,7 +15,7 @@ set -a; source .env; set +a
 : "${DEPLOY_USER:?DEPLOY_USER not set in .env}"
 : "${DEPLOY_HOST:?DEPLOY_HOST not set in .env}"
 : "${DEPLOY_PATH:?DEPLOY_PATH not set in .env}"
-: "${DEPLOY_DOMAIN:?DEPLOY_DOMAIN not set in .env}"
+: "${SITE_URL:?SITE_URL not set in .env}"
 
 # Only the files the site actually serves — anything not listed here never
 # reaches the server, so scripts/ / CLAUDE.md / deploy.sh / .env stay local.
@@ -47,7 +47,7 @@ if [[ "${1:-}" == "--dry-run" || "${1:-}" == "-n" ]]; then
   echo "── dry run: no files will be transferred ──"
 fi
 
-echo "Deploying to ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/ (${DEPLOY_DOMAIN})"
+echo "Deploying to ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/ (${SITE_URL}/)"
 rsync "${RSYNC_OPTS[@]}" "${FILES[@]}" "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/"
 
-echo "Done. → https://${DEPLOY_DOMAIN}/"
+echo "Done. → ${SITE_URL}/"
